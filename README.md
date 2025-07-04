@@ -6,24 +6,26 @@ rasberry-pi 5 + mysql workbench + node.js로 구성되어 있습니다.
 
 ## 디렉토리 구조
 
-📂/calendar   
-📂config/
-  └── database.js       //db 연결 전용
-📂controllers/           //요청 로직 처리
-  └── basicController.js 
-📂feedback/
-📂mainpage/
-📂models/               //db 모델 로직 처리 (ex. 쿼리)
-  └── basicModel.js
-📂register/
-📂routes/                 //url 경로 라우팅 처리
-  └── basicRouter.js
-📄.env                     //환경 변수 
-📄.gitignore             //git 추적 제외 파일 목록
-📄package-lock.json
-📄package.json        //프로젝트 의존성 및 스크립트
-📄README.md          
-📄server.js               //서버 시작, 앱 진입   
+ainterview_back/
+├── calendar/
+├── config/
+│   └── database.js             # DB 연결 전용
+├── controllers/                # 요청 로직 처리
+│   └── basicController.js
+├── feedback/
+├── mainpage/
+├── models/                     # DB 모델 로직 처리 (ex. 쿼리)
+│   └── basicModel.js
+├── register/
+├── routes/                     # URL 경로 라우팅 처리
+│   └── basicRouter.js
+├── .env                        # 환경 변수
+├── .gitignore                  # Git 추적 제외 파일 목록
+├── package-lock.json
+├── package.json                # 프로젝트 의존성 및 스크립트
+├── README.md
+└── server.js                   # 서버 시작, 앱 진입
+
 
 ### register/
 로그인/회원가입에 대한 코드 저장 파일입니다.
