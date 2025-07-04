@@ -51,8 +51,6 @@ ainterview_back/
 
 ### 기본 실행
 git clone 이후 > 터미널 내에서 npm install 진행 <br>
-자동 저장 프로그램 설치 > npm install nodemon --save-dev <br>
-.env 파일을 관리하기 위한 설치 > npm install dotenv <br>
 프로젝트 실행 > npm start <br>
 
 ### 권장 사항
