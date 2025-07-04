@@ -59,6 +59,7 @@ git clone 이후 > 터미널 내에서 npm install 진행 <br>
 프로젝트 실행은 모두 get 방식으로 진행할 수 있도록 하며, 작동에 대한 확인은 각 개인의 postman으로 확인 <br>
 기본 세팅의 실행 링크는 localhost:3000/example <br>
 기본 세팅 프로젝트 실행 후 에러가 나지 않는다면 basicContorller, basicModel, basicRouter는 삭제 후 개발 진행 <br>
+basicContorller, basicModel, basicRouter는 서버 연결과 데이터베이스 연결 확인을 위한 코드 
 
 
 ## 파일명 지정 방법
