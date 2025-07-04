@@ -50,17 +50,17 @@ ainterview_back/
 ## 실행
 
 ### 기본 실행
-git clone 이후 > 터미널 내에서 npm install 진행
-자동 저장 프로그램 설치 > npm install nodemon --save-dev
-.env 파일을 관리하기 위한 설치 > npm install dotenv
-프로젝트 실행 > npm start
+git clone 이후 > 터미널 내에서 npm install 진행 <br>
+자동 저장 프로그램 설치 > npm install nodemon --save-dev <br>
+.env 파일을 관리하기 위한 설치 > npm install dotenv <br>
+프로젝트 실행 > npm start <br>
 
 ### 권장 사항
-프로젝트 실행은 모두 get 방식으로 진행할 수 있도록 하며, 작동에 대한 확인은 각 개인의 postman으로 확인
-기본 세팅의 실행 링크는 localhost:3000/example
-기본 세팅 프로젝트 실행 후 에러가 나지 않는다면 basicContorller, basicModel, basicRouter는 삭제 후 개발 진행
+프로젝트 실행은 모두 get 방식으로 진행할 수 있도록 하며, 작동에 대한 확인은 각 개인의 postman으로 확인 <br>
+기본 세팅의 실행 링크는 localhost:3000/example <br>
+기본 세팅 프로젝트 실행 후 에러가 나지 않는다면 basicContorller, basicModel, basicRouter는 삭제 후 개발 진행 <br>
 
 
 ## 파일명 지정 방법
-파일명은 기능 및 페이지가 잘 드러날 수 있도록 하며, 너무 길지 않게 작성
+파일명은 기능 및 페이지가 잘 드러날 수 있도록 하며, 너무 길지 않게 작성 <br>
 길어질 경우 문자가 끝나는 사이에 대문자 삽입 ex)usercontroller > userController
