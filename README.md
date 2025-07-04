@@ -6,6 +6,7 @@ rasberry-pi 5 + mysql workbench + node.js로 구성되어 있습니다.
 
 ## 디렉토리 구조
 
+```plaintext
 ainterview_back/
 ├── calendar/
 ├── config/
@@ -25,6 +26,7 @@ ainterview_back/
 ├── package.json                # 프로젝트 의존성 및 스크립트
 ├── README.md
 └── server.js                   # 서버 시작, 앱 진입
+```
 
 
 ### register/
