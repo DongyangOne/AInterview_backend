@@ -8,16 +8,16 @@ rasberry-pi 5 + mysql workbench + node.js로 구성되어 있습니다.
 
 ```plaintext
 ainterview_back/
-├── calendar/
 ├── config/
 │   └── database.js             # DB 연결 전용
 ├── controllers/                # 요청 로직 처리
 │   └── basicController.js
-├── feedback/
-├── mainpage/
+│   └── calendar/
+│   └── feedback/
+│   └── mainpage/
+│   └── register/
 ├── models/                     # DB 모델 로직 처리 (ex. 쿼리)
 │   └── basicModel.js
-├── register/
 ├── routes/                     # URL 경로 라우팅 처리
 │   └── basicRouter.js
 ├── .env                        # 환경 변수
