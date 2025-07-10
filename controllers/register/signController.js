@@ -1,6 +1,6 @@
 const { loginCheck, addUser, userIdCheck } = require('../../models/signModel');
 
-//로그인 함수
+
 const signinProgress = (req, res) => {
     const userId = req.query.userId;
     const password = req.query.password;
@@ -14,7 +14,7 @@ const signinProgress = (req, res) => {
     }
     loginCheck(userId, password, (err, result) => {
         if (err) {
-            switch (err.code) { //각종 에러 처리
+            switch (err.code) { 
                 case 'DB_ERROR':
                     return res.status(500).json({ success: false, message: err.message });
                 case 'USER_NOT_FOUND':
@@ -24,7 +24,7 @@ const signinProgress = (req, res) => {
             }
         }
 
-        //세션 등록
+        
         req.session.user = {
             id: result[0].id,
             userId: result[0].user_id
@@ -35,7 +35,7 @@ const signinProgress = (req, res) => {
     })
 }
 
-//회원가입 함수
+
 const signupProgress = (req, res) => {
     const userId = req.query.userId;
     const nickname = req.query.nickname;
@@ -43,16 +43,14 @@ const signupProgress = (req, res) => {
     const passwordCheck = req.query.passwordCheck;
     let appPush = req.query.appPush === 'Y' ? 'Y' : 'N';
     const idCheck = req.query.idCheck;
-    //사용자 아이디 중복확인 여부 : 해당 여부는 프론트에서 중복확인 검사를 햇을 경우에 true로 넘겨줘야 함. 기본 값 fasle로 안햇을 경우는 false로 넘기기
-    //->주의할 점 : 사용자가 중복확인 후 다른 아이디로 바꿔서 썼을 때는 다시 false로 돌려줘야 된다.
-    //아래는 정규표현식 정의(아이디 조건 등)
+    
     const idRegex = /^[A-Za-z0-9]{3,15}$/;
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
 
     const errors = [];
 
-    //조건충족 검사
+    
     if (!userId) errors.push('아이디를 입력해주세요.');
     else if (!idRegex.test(userId)) errors.push('아이디는 3-15자의 영어, 숫자만 가능합니다.');
 
@@ -72,7 +70,7 @@ const signupProgress = (req, res) => {
     }
 
 
-    //아이디 중복확인 여부 검사
+    
     if (!idCheck) {
         console.log('아이디 중복확인 필요');
         return res.status(400).json({ success: false, message: '아이디 중복확인을 해주세요.' });
@@ -102,7 +100,7 @@ const signupProgress = (req, res) => {
 }
 
 
-//중복확인 함수
+
 const userIdCheckProgress = (req, res) => {
     const userId = req.query.userId;
     const idRegex = /^[A-Za-z0-9]{3,15}$/;

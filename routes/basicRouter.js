@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const exampleRouter = require('../controllers/basicController');
+const basicController = require('../controllers/basicController');
 
-router.get('/', exampleRouter.getExample);
+router.get('/', basicController.checkDbConnection);
 
 module.exports = router;

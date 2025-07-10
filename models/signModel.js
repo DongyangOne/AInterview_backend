@@ -28,7 +28,7 @@ const loginCheck = (userId, password, callback)=>{
     })
 };
 
-const addUser = (userId, userName, password, appPush, callback)=>{ //모든 조건 충족 시 실행하는 회원가입 함수
+const addUser = (userId, userName, password, appPush, callback)=>{ 
     const sql = `
         insert into users(user_id, nickname, password, push_agreed)
         values (?, ?, ?, ?)
@@ -44,7 +44,7 @@ const addUser = (userId, userName, password, appPush, callback)=>{ //모든 조�
     })
 };
 
-const userIdCheck = (userId, callback) =>{ //아이디 중복 확인
+const userIdCheck = (userId, callback) =>{ 
     const sql = `
         select user_id
         from users

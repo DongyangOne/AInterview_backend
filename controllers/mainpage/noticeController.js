@@ -1,7 +1,7 @@
 const { getUserNotices } = require('../../models/noticeModel');
 
 const getNotices = (req, res) => {
-    const userId = req.query.userId; // 쿼리 파라미터 (?userId=)로 전달해야 함
+    const userId = req.query.userId; 
 
     if (!userId) {
         return res.status(400).json({ success: false, message: 'user_id가 필요합니다.' });
