@@ -1,7 +1,7 @@
 const db = require('../config/database');
 
 const getUserMonth = (userId, year, month, callback) => {
-    const sql = `select \`year\` , date_format(time, '%m'), calendar_id, title
+    const sql = `select \`year\` , date_format(time, '%m') as 월, calendar_id, title
     from calendar where users_id = ? and \`year\` = ? and MONTH(time) = ?
     order by created_at desc`;
 
