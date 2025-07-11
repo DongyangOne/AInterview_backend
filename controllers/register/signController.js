@@ -41,6 +41,7 @@ const signupProgress = (req, res) => {
     const nickname = req.query.nickname;
     const password = req.query.password;
     const passwordCheck = req.query.passwordCheck;
+    let service = req.query.service === 'Y' ? 'Y' : 'N'; //서비스 동의 추가
     let appPush = req.query.appPush === 'Y' ? 'Y' : 'N';
     const idCheck = req.query.idCheck;
     //사용자 아이디 중복확인 여부 : 해당 여부는 프론트에서 중복확인 검사를 햇을 경우에 true로 넘겨줘야 함. 기본 값 fasle로 안햇을 경우는 false로 넘기기
@@ -64,6 +65,10 @@ const signupProgress = (req, res) => {
 
     if (!passwordCheck) errors.push('비밀번호 확인을 입력해주세요.');
     else if (password !== passwordCheck) errors.push('비밀번호가 일치하지 않습니다.');
+
+    if(service === 'N'){
+        errors.push('서비스 이용약관에 동의해 주세요.');
+    }
 
 
     if (errors.length > 0) {
