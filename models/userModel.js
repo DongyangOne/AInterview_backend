@@ -1,5 +1,7 @@
+const e = require('express');
 const db = require('../config/database');
 
+//비밀번호 일치 확인
 const pwCheck = (id, pw, callback)=>{
     const sql = `
         select password
@@ -23,6 +25,7 @@ const pwCheck = (id, pw, callback)=>{
     })
 }
 
+//비밀번호 변경
 const updatePw = (id, pw, callback)=>{
     const sql = `
         update users
@@ -40,8 +43,31 @@ const updatePw = (id, pw, callback)=>{
     })
 }
 
+//닉네임 변경
+const updateName = (id, nickname, callback)=>{
+    const sql = `
+        update users
+        set nickname = ?
+        where id = ?;
+    `;
+    db.query(sql, [nickname, id], (err, result)=>{
+        if(err){
+            console.log('db오류');
+            return callback(err);
+        }
+        else{
+            console.log('닉네임 변경 완료');
+            callback(null, true);
+        }
+    })
+}
+
+
+
+
 
 module.exports = {
     pwCheck,
-    updatePw
+    updatePw,
+    updateName
 }
