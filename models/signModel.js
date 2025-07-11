@@ -30,8 +30,8 @@ const loginCheck = (userId, password, callback)=>{
 
 const addUser = (userId, userName, password, appPush, callback)=>{ //모든 조건 충족 시 실행하는 회원가입 함수
     const sql = `
-        insert into users(user_id, nickname, password, push_agreed)
-        values (?, ?, ?, ?)
+        insert into users(user_id, nickname, password, service_agreed, push_agreed)
+        values (?, ?, ?, 'Y', ?)
     `;
     db.query(sql, [userId, userName, password, appPush], (err, result)=>{
         if(err){
