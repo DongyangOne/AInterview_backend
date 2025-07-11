@@ -1,4 +1,4 @@
-const { pwCheck, updatePw } = require('../../models/pwModel');
+const { pwCheck, updatePw } = require('../../models/userModel');
 
 const pwChange = (req, res) => {
     const pw = req.query.password;
