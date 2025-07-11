@@ -12,6 +12,7 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "mysql2": "^3.14.1",
+    "node-fetch": "^3.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "5.0.1",

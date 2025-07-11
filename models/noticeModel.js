@@ -13,6 +13,16 @@ const getUserNotices = (userId, callback) => {
     });
 };
 
+const insertNotice = async (users_id, title, content) => {
+    const [result] = await db.query(`
+        INSERT INTO notice (users_id, title, content)
+        VALUES (?, ?, ?)`,
+        [users_id, title, content]
+    );
+    return result.insertId;
+};
+
 module.exports = {
     getUserNotices,
+    insertNotice,
 };
