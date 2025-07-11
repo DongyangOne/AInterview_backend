@@ -4,6 +4,6 @@ const feedbackController = require('../controllers/feedback/feedbackController')
 
 router.get('/', feedbackController.getFeedbackList);
 
-router.patch('/:feedbackId', feedbackController.updateFeedbackTitle);
+router.patch('/:feedbackId', feedbackController.updateFeedback);
 
 module.exports = router;

@@ -21,20 +21,31 @@ exports.getFeedbackList = async (req, res) => {
   }
 };
 
-exports.updateFeedbackTitle = async (req, res) => {
+exports.updateFeedback = async (req, res) => {
   try {
     const { feedbackId } = req.params;
-    const { title } = req.body;
+    const { title, memo } = req.body;
     const userId = 1;
 
-    if (!title) {
+    if (!title && !memo) {
       return res.status(400).json({
         success: false,
-        message: '수정할 제목을 입력해주세요.'
+        message: '수정할 제목이나 메모를 입력해주세요.'
       });
     }
 
-    const result = await feedbackModel.updateTitle({ feedbackId, title, userId });
+    let result;
+    let message = '피드백이 성공적으로 수정되었습니다.';
+
+    if (title) {
+      result = await feedbackModel.updateTitle({ feedbackId, title, userId });
+      message = '피드백 제목이 성공적으로 수정되었습니다.';
+    }
+
+    if (memo) {
+      result = await feedbackModel.updateMemo({ feedbackId, memo, userId });
+      message = '피드백 메모가 성공적으로 수정되었습니다.';
+    }
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
@@ -43,10 +54,7 @@ exports.updateFeedbackTitle = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: '피드백 제목이 성공적으로 수정되었습니다.'
-    });
+    res.status(200).json({ success: true, message });
 
   } catch (error) {
     res.status(500).json({

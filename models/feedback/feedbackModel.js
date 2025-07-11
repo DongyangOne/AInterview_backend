@@ -47,3 +47,18 @@ exports.updateTitle = async ({ feedbackId, title, userId }) => {
     connection.release();
   }
 };
+
+exports.updateMemo = async ({ feedbackId, memo, userId }) => {
+  const connection = await pool.getConnection();
+  try {
+    const sql = `
+      UPDATE feedback 
+      SET memo = ? 
+      WHERE feedback_id = ? AND userId = ?
+    `;
+    const [result] = await connection.query(sql, [memo, feedbackId, userId]);
+    return result;
+  } finally {
+    connection.release();
+  }
+};
