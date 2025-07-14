@@ -1,23 +1,24 @@
 require('dotenv').config();
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 
-const dbInfo = {
-   host: process.env.db_host, //183.101.17.181으로 작성
-   port: process.env.db_port,
-   user: process.env.db_user, //이름 이니셜대로 작성
-   password: process.env.db_pw, 
-   database: process.env.db,
-};
-
-const connection = mysql.createConnection(dbInfo);
-
-connection.connect((err) => {
-    if (err){
-        console.error('mysql error: ', err);
-        return;
-    }
-    console.log("mysql 연결");
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
 })
 
+pool.getConnection()
+  .then(conn => {
+    console.log('db 연결 성공');
+    conn.release();
+  })
 
-module.exports = connection;
+  .catch(err => {
+    console.error('db 생성 실패했습니다:', err);
+
+  })
+
+
+module.exports = pool;
