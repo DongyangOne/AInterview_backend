@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { sortFeedbacks } = require('../controllers/feedbacks/sort');
+const { pinFeedback, unpinFeedback } = require('../controllers/feedbacks/pin');
 
-// 피드백 정렬
-router.get('/sort', sortFeedbacks);
+// 피드백 상단 고정
+router.patch('/pin/:id', pinFeedback);
+
+// 피드백 상단 고정 해제
+router.patch('/unpin/:id', unpinFeedback);
 
 module.exports = router;
