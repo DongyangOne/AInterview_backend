@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { searchFeedbacks } = require('../controllers/feedbacks/search');
+const { sortFeedbacks } = require('../controllers/feedbacks/sort');
 
-// 피드백 검색
-router.get('/feedbacks', searchFeedbacks);
+// 피드백 정렬
+router.get('/sort', sortFeedbacks);
 
 module.exports = router;
