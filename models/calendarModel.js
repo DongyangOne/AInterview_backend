@@ -10,9 +10,9 @@ const getCalendarAdd = (userId, year, title, time, importance, memo, callback) =
     });
 };
 
-const getCalendarDelete = (userId, callback) => {
-    const sql = `delete from calendar where users_id = ?`;
-    db.query(sql, [userId], (err, results) => {
+const getCalendarDelete = (calendar_id, callback) => {
+    const sql = `delete from calendar where calendar_id = ?`;
+    db.query(sql, [calendar_id], (err, results) => {
         if (err) return callback(err);
         callback(null, results);
     });
