@@ -21,7 +21,25 @@ app.use('/notice', noticeRouter);
 app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 
-const port = process.env.s_port || 3000;
+
+const calendarRouter = require('./routes/calendarRouter');
+app.use('/calendar', calendarRouter);
+
+
+app.post('/',(req,res)=>{
+  res.send('hello');
+  console.log("post response");
+})
+
+app.get('/',(req,res)=>{
+  res.send('hello');
+  console.log("get response");
+})
+
+
+
+
+const port =  3000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`서버 시작 ${port}`);
 });
