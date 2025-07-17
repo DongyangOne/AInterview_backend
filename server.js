@@ -22,8 +22,8 @@ app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 
 
-const calendarRouter = require('./routes/calendarRouter');
-app.use('/calendar', calendarRouter);
+const feedbackRouter=require('./routes/feedbackRouter');
+app.use('/feedback',feedbackRouter);
 
 
 app.post('/',(req,res)=>{
