@@ -1,14 +1,10 @@
 const db = require('../../config/database');
 
-
-
-
-//최근 피드백 조회
-const recentFeedback=(userId,callback)=>{
+const todayQuestion=(userId,callback)=>{
 
 
     const sql=
-    'select *from feedback where feedback_id = (SELECT max(feedback_id) FROM feedback) AND user_id=?;';
+    'SELECT * FROM question WHERE DATE(time) = CURRENT_DATE() AND user_id = ?;';
 
      db.query(sql,[userId],(err,result)=>{
           if(err){
@@ -24,8 +20,4 @@ const recentFeedback=(userId,callback)=>{
     })
 }
 
-
-
-module.exports={
-    recentFeedback
-};
+module.exports = { todayQuestion };

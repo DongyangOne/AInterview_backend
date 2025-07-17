@@ -22,8 +22,8 @@ app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 
 
-const feedbackRouter=require('./routes/feedbackRouter');
-app.use('/feedback',feedbackRouter);
+const questionRouter=require('./routes/questionRouter');
+app.use('/question',questionRouter);
 
 
 app.post('/',(req,res)=>{
