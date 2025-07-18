@@ -8,6 +8,14 @@ const getUpdate = (req, res) => {
     const importance = req.query.importance;
     const memo = req.query.memo;
 
+    const importanceText = ['S', 'I', 'N'];
+    const importanceArr ={
+        S: '매우 중요',
+        I: '중요',
+        N: 'X'
+    };
+
+
     if (!userId){
         return res.status(400).json({success: false, message: '아이디가 존재하지 않습니다.'});
     }
@@ -37,7 +45,9 @@ getCalendarUpdate(userId, year, title, time, importance, memo, (err, result) => 
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
 
-        res.status(200).json({success: true, data: result});
+    const importanceResult = importanceArr[importance]
+
+        res.status(200).json({success: true, data: result, importanceResult});
 })
 };
 
