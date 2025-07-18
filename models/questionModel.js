@@ -1,10 +1,10 @@
 const db = require('../config/database');
 
-const todayQuestion=(userId,callback)=>{
+const todayQuestion=(callback)=>{
 
 
     const sql=
-    'SELECT * FROM questions WHERE DATE(time) = CURRENT_DATE() AND user_id = ?;';
+    'SELECT * FROM questions ORDER BY RAND()LIMIT 1;';
 
      db.query(sql,[userId],(err,result)=>{
           if(err){

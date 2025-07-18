@@ -27,10 +27,7 @@ app.use('/question',questionRouter);
 
 
 
-app.get('/',(req,res)=>{
-  res.send('hello');
-  console.log("get response");
-})
+
 
 
 
