@@ -5,7 +5,7 @@ const {pwChange, nicknameChange, setAppPush, passwordCheck} = require('../contro
 router.get('/changePw', pwChange);
 router.get('/changeName', nicknameChange);
 router.get('/setAppPush', setAppPush);
-router.get('/checkPw', passwordCheck);
+router.post('/checkPw', passwordCheck);
 
 
 module.exports = router;
