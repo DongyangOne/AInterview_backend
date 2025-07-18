@@ -57,7 +57,7 @@ const pwChange = (req, res) => {
 
 //닉네임 변경 함수
 const nicknameChange = (req, res)=>{
-    const newName = req.query.newName;
+    const newName = req.body.newName;
     const loginUser = req.session.user;
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
 
