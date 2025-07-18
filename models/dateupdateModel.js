@@ -1,23 +1,5 @@
 const db = require('../config/database');
 
-const getCalendarAdd = (userId, year, title, time, importance, memo, callback) => {
-    const sql = `insert into calendar (users_id, year, title, time, importance, memo)
-    values (?, ?, ?, ?, ?, ?)`;
-
-    db.query(sql, [userId, year, title, time, importance, memo], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results);
-    });
-};
-
-const getCalendarDelete = (calendar_id, callback) => {
-    const sql = `delete from calendar where calendar_id = ?`;
-    db.query(sql, [calendar_id], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results);
-    });
-};
-
 const getCalendarUpdate = (userId, year, title, time, importance, memo, callback) => { //모든 컬럼을 한 번에 수정하지 않고 하나하나 컬럼을 수정할 수 있게 함
     let sql = `update calendar set `;
     const arr = [], values = [];
@@ -55,8 +37,6 @@ const getCalendarUpdate = (userId, year, title, time, importance, memo, callback
         callback(null, results);
     });
 };
-
-
 module.exports = {
-    getCalendarAdd, getCalendarDelete, getCalendarUpdate
+    getCalendarUpdate
 };
