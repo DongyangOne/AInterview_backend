@@ -26,10 +26,7 @@ const calendarRouter = require('./routes/twcalendarRouter');
 app.use('/calendar', calendarRouter);
 
 
-app.post('/',(req,res)=>{
-  res.send('hello');
-  console.log("post response");
-})
+
 
 app.get('/',(req,res)=>{
   res.send('hello');
