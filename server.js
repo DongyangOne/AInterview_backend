@@ -27,10 +27,6 @@ app.use('/feedback',feedbackRouter);
 
   
 
-app.get('/',(req,res)=>{
-  res.send('hello');
-  console.log("get response");
-})
 
 
 
