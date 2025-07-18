@@ -4,7 +4,7 @@ const todayQuestion=(userId,callback)=>{
 
 
     const sql=
-    'SELECT * FROM question WHERE DATE(time) = CURRENT_DATE() AND user_id = ?;';
+    'SELECT * FROM questions WHERE DATE(time) = CURRENT_DATE() AND user_id = ?;';
 
      db.query(sql,[userId],(err,result)=>{
           if(err){
