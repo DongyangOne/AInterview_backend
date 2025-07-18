@@ -1,12 +1,23 @@
 require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
 const app = express();
 app.use(express.json());
+app.use(session({
+  secret: 'yourSecretKey', //세션 보호용 키
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
 const monthRouter = require('./routes/monthRouter');
+const Router = require('./routes/basicRouter');
+const noticeRouter = require('./routes/noticeRouter');
+const signRouter = require('./routes/signRouter');
+const logoutRouter = require('./routes/logoutRouter');
 const db = require('./config/database');
 
 app.use('/example', Router);

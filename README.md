@@ -8,16 +8,16 @@ rasberry-pi 5 + mysql workbench + node.js로 구성되어 있습니다.
 
 ```plaintext
 ainterview_back/
-├── calendar/
 ├── config/
 │   └── database.js             # DB 연결 전용
 ├── controllers/                # 요청 로직 처리
 │   └── basicController.js
-├── feedback/
-├── mainpage/
+│   └── calendar/
+│   └── feedback/
+│   └── mainpage/
+│   └── register/
 ├── models/                     # DB 모델 로직 처리 (ex. 쿼리)
 │   └── basicModel.js
-├── register/
 ├── routes/                     # URL 경로 라우팅 처리
 │   └── basicRouter.js
 ├── .env                        # 환경 변수
@@ -51,8 +51,6 @@ ainterview_back/
 
 ### 기본 실행
 git clone 이후 > 터미널 내에서 npm install 진행 <br>
-자동 저장 프로그램 설치 > npm install nodemon --save-dev <br>
-.env 파일을 관리하기 위한 설치 > npm install dotenv <br>
 프로젝트 실행 > npm start <br>
 
 ### 권장 사항
