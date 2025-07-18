@@ -1,9 +1,9 @@
 const { pwCheck, updatePw } = require('../../models/userModel');
 
 const pwChange = (req, res) => {
-    const pw = req.query.password;
-    const newPw = req.query.newPassword;
-    const newPwCheck = req.query.newPasswordCheck;
+    const pw = req.body.password;
+    const newPw = req.body.newPassword;
+    const newPwCheck = req.body.newPasswordCheck;
     const loginUser = req.session.user;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
     if (!loginUser) {
