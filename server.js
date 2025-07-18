@@ -22,14 +22,10 @@ app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 
 
-const feedbackRouter=require('./routes/feedbackRouter');
+const feedbackRouter=require('./routes/recentfeedbackRouter');
 app.use('/feedback',feedbackRouter);
 
-
-app.post('/',(req,res)=>{
-  res.send('hello');
-  console.log("post response");
-})
+  
 
 app.get('/',(req,res)=>{
   res.send('hello');
