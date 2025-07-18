@@ -1,22 +1,20 @@
 require('dotenv').config();
 const mysql = require("mysql2");
 
-const dbInfo = {
-   host: process.env.db_host,      
-   port: process.env.db_port,
-   user: process.env.db_user,
-   password: process.env.db_pw,    
-   database: process.env.db,
-};
-
-const connection = mysql.createConnection(dbInfo);
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+});
 
 connection.connect((err) => {
     if (err){
-        console.error('mysql error: ', err);
+        console.error('DB 연결에 실패했습니다:', err);
         return;
     }
-    console.log("mysql 연결");
+    console.log('DB에 성공적으로 연결되었습니다.');
 });
 
 module.exports = connection;
