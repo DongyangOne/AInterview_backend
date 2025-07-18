@@ -10,7 +10,12 @@ const getUserDay = (userId, year, month, day, callback) => {
         WHEN 4 THEN '수'
         WHEN 5 THEN '목'
         WHEN 6 THEN '금'
-        WHEN 7 THEN '토' END as 요일, importance, memo 
+        WHEN 7 THEN '토' END as 요일, 
+        CASE importance
+        when 'S' then '매우 중요'
+        when 'I' then '중요'
+        when 'N' then 'X'
+        end as importance, memo 
     from calendar where users_id = ? and \`year\` = ? and MONTH(time) = ? and DAY(time) =?
     order by created_at desc`;
 
