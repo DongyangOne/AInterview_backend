@@ -21,7 +21,21 @@ app.use('/notice', noticeRouter);
 app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 
-const port = process.env.s_port || 3000;
+
+const questionRouter=require('./routes/questionRouter');
+app.use('/question',questionRouter);
+
+
+
+app.get('/',(req,res)=>{
+  res.send('hello');
+  console.log("get response");
+})
+
+
+
+
+const port =  3000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`서버 시작 ${port}`);
 });
