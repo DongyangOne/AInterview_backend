@@ -28,11 +28,6 @@ app.use('/calendar', calendarRouter);
 
 
 
-app.get('/',(req,res)=>{
-  res.send('hello');
-  console.log("get response");
-})
-
 
 
 
