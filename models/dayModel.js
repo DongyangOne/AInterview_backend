@@ -2,6 +2,7 @@ const db = require('../config/database');
 
 const getUserDay = (userId, year, month, day, callback) => {
     const sql = `select calendar_id, title, DATE_FORMAT(time, '%Y-%m-%d') AS 날짜,
+    date_format(time, '%k:%i') as 시간,
     CASE DAYOFWEEK(time)
         WHEN 1 THEN '일'
         WHEN 2 THEN '월'
