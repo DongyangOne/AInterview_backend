@@ -11,21 +11,18 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-
 const Router = require('./routes/basicRouter');
 const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
-const feedbackRouter = require('./routes/feedback');  
+const feedbackRouter = require('./routes/searchfeedbackRoute');  
 const db = require('./config/database');
 
 app.use('/example', Router);
 app.use('/notice', noticeRouter);
 app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
-
-
-app.use('/', feedbackRouter);
+app.use('/feedback', feedbackRouter); 
 
 const port = process.env.S_PORT || 3000;
 app.listen(port, '0.0.0.0', () => {
