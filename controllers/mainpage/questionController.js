@@ -1,4 +1,4 @@
-const { todayQuestion } = require('../mainpage/questionModel');
+const { todayQuestion } = require('../../models/questionModel');
 
 // 오늘의 질문 조회
 const getTodayQuestion = (req, res) => {
