@@ -26,10 +26,6 @@ const questionRouter=require('./routes/questionRouter');
 app.use('/question',questionRouter);
 
 
-app.post('/',(req,res)=>{
-  res.send('hello');
-  console.log("post response");
-})
 
 app.get('/',(req,res)=>{
   res.send('hello');
