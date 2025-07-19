@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const feedbackController = require('../controllers/feedback/feedbackController');
+const feedbackController = require('../controllers/feedbacks/feedbackController');
 
 router.get('/:userId', feedbackController.getAllFeedback);
 
