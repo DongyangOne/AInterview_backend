@@ -14,16 +14,25 @@ app.use(session({
 const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
-const feedbackRouter = require('./routes/feedbackRouter');
-
+const mainfeedbackRouter = require('./routes/mainfeedbackRouter');
+const feedbackRouter=require('./routes/recentfeedbackRouter');
+const calendarRouter = require('./routes/twcalendarRouter');
 const db = require('./config/database');
 
 app.use('/notice', noticeRouter);
 app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
-app.use('/feedback', feedbackRouter);
+app.use('/feedback', mainfeedbackRouter);
+app.use('/feedback',feedbackRouter);
+app.use('/calendar', calendarRouter);
 
-const port = process.env.s_port || 3000;
+
+  
+
+
+
+
+const port =  3000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`서버 시작 ${port}`);
 });
