@@ -2,7 +2,7 @@ const { TwTODO } = require('../../models/twcalendarModel');
 
 
 const Twcalendar = (req, res) => {
-    const userId = req.query.user_id;
+    const userId = req.query.userId;
 
     if (!userId) {
         return res.status(400).json({ success: false, message: 'user_id가 필요합니다.' });
