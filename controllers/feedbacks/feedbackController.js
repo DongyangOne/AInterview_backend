@@ -59,4 +59,30 @@ exports.updateFeedbackTitle = (req, res) => {
   });
 };
 
+exports.updateTitle = async (req, res) => {
+  try {
+    const { userId, feedbackId } = req.params;
+    const { title } = req.body;
+
+    if (typeof title !== 'string' || title.length > 20) {
+      return res.status(400).json({
+        success: false,
+        message: "제목은 20자 이하로 입력해주세요."
+      });
+    }
+
+    const feedback = await Feedback.findOne({ where: { id: feedbackId, userId } });
+    if (!feedback) {
+      return res.status(404).json({ success: false, message: "피드백을 찾을 수 없거나 수정 권한이 없습니다." });
+    }
+
+    await feedback.update({ title });
+    res.json({ success: true, message: "제목이 수정되었습니다." });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "서버 오류입니다." });
+  }
+};
+
 
