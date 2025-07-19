@@ -1,16 +1,19 @@
 const connection = require('../config/database');
 
-exports.deleteById = ({ feedbackId, userId }, callback) => {
+exports.findById = ({ feedbackId, userId }, callback) => {
   const sql = `
-    DELETE FROM feedback
+    SELECT 
+      feedback_id AS id, 
+      userId, 
+      title, 
+      content, 
+      memo, 
+      created_at
+    FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
-  connection.query(sql, [feedbackId, userId], (err, result) => {
+  connection.query(sql, [feedbackId, userId], (err, rows) => {
     if (err) return callback(err, null);
-    callback(null, result);
+    callback(null, rows[0]);
   });
 };
-
-
-
-
