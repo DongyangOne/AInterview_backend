@@ -12,4 +12,3 @@ exports.findAllByUserId = ({ userId }, callback) => {
     callback(null, rows);
   });
 };
-

@@ -13,12 +13,17 @@ exports.getAllFeedback = (req, res) => {
     }
 
     const formattedList = feedbackList.map(feedback => ({
-      ...feedback,
-      created_at: formatDate(feedback.created_at),
-      updated_at: formatDate(feedback.updated_at)
+      id: feedback.id,
+      title: feedback.title,
+      memo: feedback.memo,
+      created_at: formatDate(feedback.created_at)
+      // ❌ updated_at은 포함하지 않음
     }));
 
-    res.status(200).json({ success: true, message: '모든 피드백 조회 성공', data: formattedList });
+    res.status(200).json({
+      success: true,
+      message: '모든 피드백 조회 성공',
+      data: formattedList
+    });
   });
 };
-
