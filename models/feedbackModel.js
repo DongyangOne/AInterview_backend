@@ -1,8 +1,8 @@
 const connection = require('../config/database');
 
-exports.findTitleById = ({ feedbackId, userId }, callback) => {
+exports.findById = ({ feedbackId, userId }, callback) => {
   const sql = `
-    SELECT title, created_at
+    SELECT feedback_id AS id, title, content, memo, created_at, updated_at
     FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
@@ -13,16 +13,18 @@ exports.findTitleById = ({ feedbackId, userId }, callback) => {
 };
 
 
-exports.updateTitle = ({ feedbackId, title, userId }, callback) => {
+// 메모 수정
+exports.updateMemo = ({ feedbackId, memo, userId }, callback) => {
   const sql = `
     UPDATE feedback
-    SET title = ?, updated_at = NOW()
+    SET memo = ?, updated_at = NOW()
     WHERE feedback_id = ? AND userId = ?
   `;
-  connection.query(sql, [title, feedbackId, userId], (err, result) => {
+  connection.query(sql, [memo, feedbackId, userId], (err, result) => {
     if (err) return callback(err, null);
     callback(null, result);
   });
 };
+
 
 
