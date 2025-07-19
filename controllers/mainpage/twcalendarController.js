@@ -1,4 +1,4 @@
-const { todayTODO } = require('../../models/twcalendarModel');
+const { TwTODO } = require('../../models/twcalendarModel');
 
 
 const Twcalendar = (req, res) => {
