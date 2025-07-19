@@ -17,7 +17,7 @@ exports.getAllFeedback = (req, res) => {
       title: feedback.title,
       memo: feedback.memo,
       created_at: formatDate(feedback.created_at)
-      // ❌ updated_at은 포함하지 않음
+      
     }));
 
     res.status(200).json({
