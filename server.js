@@ -21,17 +21,7 @@ app.use('/notice', noticeRouter);
 app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 
-
-const calendarRouter = require('./routes/twcalendarRouter');
-app.use('/calendar', calendarRouter);
-
-
-
-
-
-
-
-const port =  3000;
+const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`서버 시작 ${port}`);
 });
