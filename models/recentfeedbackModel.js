@@ -8,7 +8,7 @@ const recentFeedback=(userId,callback)=>{
 
 
     const sql=
-    'select *from feedback where feedback_id = (SELECT max(feedback_id) FROM feedback) AND user_id=?;';
+    'SELECT * FROM feedback WHERE user_id = ? ORDER BY feedback_id DESC LIMIT 1;';
 
      db.query(sql,[userId],(err,result)=>{
           if(err){
