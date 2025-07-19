@@ -1,15 +1,27 @@
 const connection = require('../config/database');
 
-exports.findAllByUserId = ({ userId }, callback) => {
+exports.findTitleById = ({ feedbackId, userId }, callback) => {
   const sql = `
-    SELECT feedback_id AS id, title, memo, created_at, updated_at
+    SELECT title, created_at
     FROM feedback
-    WHERE userId = ?
-    ORDER BY feedback_id DESC
+    WHERE feedback_id = ? AND userId = ?
   `;
-  connection.query(sql, [userId], (err, rows) => {
+  connection.query(sql, [feedbackId, userId], (err, rows) => {
     if (err) return callback(err, null);
-    callback(null, rows);
+    callback(null, rows[0]);
+  });
+};
+
+
+exports.updateTitle = ({ feedbackId, title, userId }, callback) => {
+  const sql = `
+    UPDATE feedback
+    SET title = ?, updated_at = NOW()
+    WHERE feedback_id = ? AND userId = ?
+  `;
+  connection.query(sql, [title, feedbackId, userId], (err, result) => {
+    if (err) return callback(err, null);
+    callback(null, result);
   });
 };
 
