@@ -5,8 +5,8 @@ const db = require('../config/database');
 const getFeedCount = (id, callback)=>{
     const sql = `
         select count(*) as feedback_count
-        from feedbacks
-        where user_id = ?;
+        from feedback
+        where userId = ?;
     `;
     db.query(sql, [id], (err, result)=>{
         if(err){
@@ -21,10 +21,10 @@ const getFeedCount = (id, callback)=>{
 //피드백 내용(제목, 날짜)
 const getFeedContent = (id, callback)=>{
     const sql = `
-        select title, \`date\`
-        from feedbacks
-        where user_id = ?
-        order by \`date\` desc
+        select title, created_at
+        from feedback
+        where userId = ?
+        order by created_at desc
     `
     db.query(sql, [id], (err, results)=>{
         if(err){
@@ -70,7 +70,7 @@ function queryAsync(sql, params){
         await queryAsync('delete from interviews where users_id = ?', [user_id]);
         await queryAsync('delete from questions where users_id = ?', [user_id]);
         await queryAsync('delete from notice where users_id = ?', [user_id]);
-        await queryAsync('delete from feedbacks where user_id = ?', [user_id]);
+        await queryAsync('delete from feedback where userId = ?', [user_id]);
         await queryAsync('delete from calendar where users_id = ?', [user_id]);
         await queryAsync('delete from users where id = ?', [user_id]);
 
