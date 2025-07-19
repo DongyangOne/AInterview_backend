@@ -7,7 +7,7 @@ const TwTODO=(userId,callback)=>{
 
 
     const sql=
-    'SELECT *FROM calendar WHERE  DATE(time) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL WEEKDAY(CURRENT_DATE()) DAY) AND DATE_ADD(CURRENT_DATE(), INTERVAL (6 - WEEKDAY(CURRENT_DATE())) DAY) AND user_id = ?;'
+    'SELECT *FROM calendar WHERE  DATE(time) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL WEEKDAY(CURRENT_DATE()) DAY) AND DATE_ADD(CURRENT_DATE(), INTERVAL (6 - WEEKDAY(CURRENT_DATE())) DAY) AND users_id = ?;'
 
      db.query(sql,[userId],(err,result)=>{
           if(err){
