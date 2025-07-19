@@ -14,7 +14,7 @@ const Router = require('./routes/basicRouter');
 const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
-const feedbackRouter = require('./routes/feedback'); 
+const feedbackRouter = require('./routes/feedbackpinRouter'); 
 
 app.use('/example', Router);
 app.use('/notice', noticeRouter);
