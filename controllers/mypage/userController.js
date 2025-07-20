@@ -122,7 +122,6 @@ const setAppPush = (req, res)=>{
     
 }
 
-
 //비밀번호 일치 확인용 함수
 const passwordCheck = (req, res)=>{
     const password = req.body.password;
