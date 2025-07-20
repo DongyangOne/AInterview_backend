@@ -1,7 +1,5 @@
 const feedbackModel = require('../../models/deletefeedbackModel');
 
-
-
 exports.deleteFeedback = (req, res) => {
   const { userId, feedbackId } = req.params;
 

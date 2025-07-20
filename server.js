@@ -34,6 +34,7 @@ const sortfeedbackRouter = require('./routes/sortfeedbackRoute');
 const searchfeedbackRouter = require('./routes/searchfeedbackRoute');
 const mainfeedbackRouter = require('./routes/mainfeedbackRouter');
 const titlefeedbackRouter = require('./routes/titlefeedbackRouter');
+const detailfeedbackRouter = require('./routes/detailfeedbackRouter')
 
 const myPageRouter = require('./routes/myPageRouter');
 
@@ -47,7 +48,6 @@ app.use('/sign', signRouter);
 app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
-app.use('/feedback', feedbackmemoRouter);
 
 app.use('/question',questionRouter);
 app.use('/feedback', recentfeedbackRouter);
@@ -59,6 +59,8 @@ app.use('/feedback', feedbackpinRouter);
 app.use('/feedback', deletefeedbackRouter);
 app.use('/feedback', mainfeedbackRouter);
 app.use('/feedback', titlefeedbackRouter);
+app.use('/feedback', feedbackmemoRouter);
+app.use('/feedback', detailfeedbackRouter);
 
 app.use('/myPage', myPageRouter);
 

@@ -10,7 +10,3 @@ exports.deleteById = ({ feedbackId, userId }, callback) => {
     callback(null, result);
   });
 };
-
-
-
-
