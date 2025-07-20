@@ -25,6 +25,7 @@ const pwCheck = (id, pw, callback)=>{
     })
 }
 
+
 //비밀번호 변경
 const updatePw = (id, pw, callback)=>{
     const sql = `
@@ -42,6 +43,7 @@ const updatePw = (id, pw, callback)=>{
         }
     })
 }
+
 
 //닉네임 변경
 const updateName = (id, nickname, callback)=>{
