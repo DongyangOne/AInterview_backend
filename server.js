@@ -40,7 +40,6 @@ app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 app.use('/feedback', recentfeedbackRouter);
-app.use('/calendar', calendarRouter);
 
 app.use('/calendar', calendarRouter);
 
