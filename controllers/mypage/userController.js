@@ -1,4 +1,4 @@
-const { pwCheck, updatePw, updateName } = require('../../models/userModel');
+const { pwCheck, updatePw, updateName, getAppPush, updateAppPush} = require('../../models/userModel');
 
 //비밀번호 변경 함수
 const pwChange = (req, res) => {
@@ -53,12 +53,11 @@ const pwChange = (req, res) => {
             }
         })
     })
-
 }
 
 //닉네임 변경 함수
 const nicknameChange = (req, res)=>{
-    const newName = req.body.newName;
+    const newName = req.query.newName;
     const loginUser = req.session.user;
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
 
@@ -83,7 +82,47 @@ const nicknameChange = (req, res)=>{
 
 }
 
+//앱 푸시 설정 함수
+const setAppPush = (req, res)=>{
+    const loginUser = req.session.user;
+    let updateInfo;
+    if(!loginUser){
+        console.log('로그인 필요');
+        return res.status(401).json({success : false, message : '로그인 필요'});
+    }
+
+    const loginUserId = req.session.user.id;
+
+    getAppPush(loginUserId, (err, result)=>{
+        if(err){
+            console.log(err);
+            return res.status(500).json({success : false, message : 'db오류'});
+        }
+        else{
+            if(result[0].push_agreed === 'N') updateInfo = 'Y';
+            else updateInfo = 'N';
+
+            updateAppPush(loginUserId, updateInfo, (err, result)=>{
+                if(err){
+                    console.log(err);
+                    return res.status(500).json({success : false, message : 'db오류'});
+                }
+                else{
+                    console.log('알람 수신 전환 완료');
+                    getAppPush(loginUserId, (err, result)=>{
+                        if(err) return res.status(500).json({success : false, message : 'db오류'});
+                        else{
+                            return res.status(200).json({success : true, message : '알람 수신 정보 전환 완료', status : result[0].push_agreed});
+                        }
+                    })
+                }
+            })
+        }
+    })
+    
+}
 module.exports = {
     pwChange,
-    nicknameChange
+    nicknameChange,
+    setAppPush
 }

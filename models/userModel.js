@@ -25,7 +25,6 @@ const pwCheck = (id, pw, callback)=>{
     })
 }
 
-
 //비밀번호 변경
 const updatePw = (id, pw, callback)=>{
     const sql = `
@@ -43,7 +42,6 @@ const updatePw = (id, pw, callback)=>{
         }
     })
 }
-
 
 //닉네임 변경
 const updateName = (id, nickname, callback)=>{
@@ -64,12 +62,50 @@ const updateName = (id, nickname, callback)=>{
     })
 }
 
+//앱 푸시 데이터 불러오기
+const getAppPush = (id, callback)=>{
+    const sql = `
+        select push_agreed
+        from users
+        where id = ?;
+    `;
+    db.query(sql, [id], (err, result)=>{
+        if(err){
+            console.log('db오류');
+            return callback(err);
+        }
+        else{
+            console.log('사용자의 앱 푸시 데이터 불러오기 성공');
+            return callback(null, result);
+        }
+    })
+}
 
+//앱 푸시 정보 업데이트
+const updateAppPush = (id, appPush, callback)=>{
+    const sql = `
+        update users
+        set push_agreed = ?
+        where id = ?;
+    `;
+    db.query(sql, [appPush, id], (err, result)=>{
+        if(err){
+            console.log('db오류');
+            return callback(err);
+        }
+        else{
+            console.log('앱 푸시 업데이트 성공');
+            return callback(null, true);
+        }
+    })
+}
 
 
 
 module.exports = {
     pwCheck,
     updatePw,
-    updateName
+    updateName,
+    getAppPush,
+    updateAppPush
 }
