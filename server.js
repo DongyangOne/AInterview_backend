@@ -18,6 +18,8 @@ const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
 
+const feedbackmemoRouter = require('./routes/feedbackmemoRouter');
+
 const userRouter = require('./routes/userRouter');
 const deleteRouter = require('./routes/deleteRouter');
 
@@ -43,6 +45,7 @@ app.use('/sign', signRouter);
 app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
+app.use('/feedback', feedbackmemoRouter);
 
 app.use('/question',questionRouter);
 app.use('/feedback', recentfeedbackRouter);
