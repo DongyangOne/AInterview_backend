@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/feedbackModel');
+const mainfeedbackModel = require('../../models/mainfeedbackModel');
 
 const formatDate = (date) => {
   if (!date) return null;
@@ -7,7 +7,7 @@ const formatDate = (date) => {
 
 exports.getAllFeedback = (req, res) => {
   const { userId } = req.params;
-  feedbackModel.findAllByUserId({ userId }, (err, feedbackList) => {
+  mainfeedbackModel.findAllByUserId({ userId }, (err, feedbackList) => {
     if (err) {
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
