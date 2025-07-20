@@ -121,8 +121,44 @@ const setAppPush = (req, res)=>{
     })
     
 }
+
+//비밀번호 일치 확인용 함수
+const passwordCheck = (req, res)=>{
+    const password = req.body.password;
+    const loginUser = req.session.user;
+
+    if(!loginUser){
+        console.log('로그인 필요');
+        return res.status(401).json({success : false, message : '로그인 필요'});
+    }
+
+    const loginUserId = req.session.user.id;
+
+    if(!password){
+        return res.status(400).json({success : false, message : '비밀번호를 입력해주세요.'});
+    }
+    else{
+        pwCheck(loginUserId, password, (err, result)=>{
+            if(err){
+                switch(err.code){
+                    case 'DB_ERROR' :
+                        console.log(err.error);
+                        return res.status(500).json({success : false, message : err.message});
+                    case 'INVALID_PASSWORD' :
+                        return res.status(400).json({success : false, message : err.message});
+
+                }
+            }
+            else{
+                return res.status(200).json({success : true, message : '올바른 비밀번호'});
+            }
+        })
+    }
+}
+
 module.exports = {
     pwChange,
     nicknameChange,
-    setAppPush
+    setAppPush,
+    passwordCheck
 }
