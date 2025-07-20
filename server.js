@@ -56,7 +56,7 @@ app.use('/calendar', calendarRouter);
 app.use('/feedback', sortfeedbackRouter); 
 app.use('/feedback', searchfeedbackRouter); 
 app.use('/feedback', feedbackpinRouter);
-app.use('./feedback', deletefeedbackRouter);
+app.use('/feedback', deletefeedbackRouter);
 app.use('/feedback', mainfeedbackRouter);
 app.use('/feedback', titlefeedbackRouter);
 
