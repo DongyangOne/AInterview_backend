@@ -15,6 +15,7 @@ const Router = require('./routes/basicRouter');
 const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
+const feedbackpinRouter = require('./routes/feedbackpinRouter'); 
 const sortfeedbackRouter = require('./routes/sortfeedbackRoute');
 const searchfeedbackRouter = require('./routes/searchfeedbackRoute');  
 const myPageRouter = require('./routes/myPageRouter');
@@ -31,6 +32,7 @@ app.use('/feedback', searchfeedbackRouter);
 app.use('/myPage', myPageRouter);
 app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
+app.use('/feedback', feedbackpinRouter);
 
 const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
