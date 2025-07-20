@@ -10,14 +10,12 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-const noticeRouter = require('./routes/noticeRouter');
-const signRouter = require('./routes/signRouter');
-const logoutRouter = require('./routes/logoutRouter');
-const monthRouter = require('./routes/monthRouter');
+
 const Router = require('./routes/basicRouter');
 const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
+const monthRouter = require('./routes/monthRouter');
 const db = require('./config/database');
 
 app.use('/example', Router);
