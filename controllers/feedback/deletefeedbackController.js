@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/feedbackModel');
+const feedbackModel = require('../../models/deletefeedbackModel');
 
 const formatDate = (date) => {
   if (!date) return null;
