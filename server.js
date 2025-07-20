@@ -34,7 +34,7 @@ app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/feedback', feedbackpinRouter);
 
-const port = process.env.S_PORT || 3000;
+const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`서버 시작 ${port}`);
 });
