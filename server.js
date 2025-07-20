@@ -23,6 +23,8 @@ const feedbackmemoRouter = require('./routes/feedbackmemoRouter');
 const userRouter = require('./routes/userRouter');
 const deleteRouter = require('./routes/deleteRouter');
 
+const deletefeedbackRouter = require('./routes/deletefeedbackRouter');
+
 const recentfeedbackRouter=require('./routes/recentfeedbackRouter');
 const calendarRouter = require('./routes/twcalendarRouter');
 const questionRouter=require('./routes/questionRouter');
@@ -54,6 +56,7 @@ app.use('/calendar', calendarRouter);
 app.use('/feedback', sortfeedbackRouter); 
 app.use('/feedback', searchfeedbackRouter); 
 app.use('/feedback', feedbackpinRouter);
+app.use('/feedback', deletefeedbackRouter);
 app.use('/feedback', mainfeedbackRouter);
 app.use('/feedback', titlefeedbackRouter);
 
