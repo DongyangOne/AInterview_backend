@@ -1,9 +1,10 @@
-const { pwCheck, updatePw } = require('../../models/userModel');
+const { pwCheck, updatePw, updateName } = require('../../models/userModel');
 
+//비밀번호 변경 함수
 const pwChange = (req, res) => {
-    const pw = req.body.password;
-    const newPw = req.body.newPassword;
-    const newPwCheck = req.body.newPasswordCheck;
+    const pw = req.query.password;
+    const newPw = req.query.newPassword;
+    const newPwCheck = req.query.newPasswordCheck;
     const loginUser = req.session.user;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
     if (!loginUser) {
@@ -53,11 +54,36 @@ const pwChange = (req, res) => {
         })
     })
 
+}
 
+//닉네임 변경 함수
+const nicknameChange = (req, res)=>{
+    const newName = req.body.newName;
+    const loginUser = req.session.user;
+    const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
 
+    if(!loginUser){
+        console.log('로그인 필요');
+        return res.status(401).json({success : false, message : '로그인 필요'});
+    }
+
+    const loginUserId = req.session.user.id;
+
+    if(!newName) return res.status(400).json({success : false, message : '변경할 닉네임을 입력해주세요.'});
+    else if(!nicknameRegex.test(newName)) return res.status(400).json({success : false, message : '닉네임은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)'});
+
+    updateName(loginUserId, newName, (err, result)=>{
+        if(err){
+            return res.status(500).json({success : false, message : 'db오류'});
+        }
+        else{
+            return res.status(200).json({success : true, message : '닉네임 변경 완료'});
+        }
+    })
 
 }
 
 module.exports = {
-    pwChange
+    pwChange,
+    nicknameChange
 }
