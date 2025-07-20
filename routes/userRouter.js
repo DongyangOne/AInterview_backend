@@ -7,5 +7,4 @@ router.post('/changeName', nicknameChange);
 router.get('/setAppPush', setAppPush);
 router.post('/checkPw', passwordCheck);
 
-
 module.exports = router;
