@@ -18,11 +18,11 @@ const noticeRouter = require('./routes/noticeRouter');
 
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
-
-const monthRouter = require('./routes/monthRouter');
-
 const userRouter = require('./routes/userRouter');
 const deleteRouter = require('./routes/deleteRouter');
+
+const monthRouter = require('./routes/monthRouter');
+const dayRouter  = require('./routes/dayRouter');
 
 const recentfeedbackRouter=require('./routes/recentfeedbackRouter');
 const calendarRouter = require('./routes/twcalendarRouter');
@@ -51,11 +51,11 @@ app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 
 app.use('/calendar', monthRouter);
+app.use('/calendar', dayRouter);
 
 app.use('/question',questionRouter);
 app.use('/feedback', recentfeedbackRouter);
 app.use('/calendar', calendarRouter);
-
 
 app.use('/feedback', sortfeedbackRouter); 
 app.use('/feedback', searchfeedbackRouter); 
