@@ -29,9 +29,9 @@ const feedbackpinRouter = require('./routes/feedbackpinRouter');
 const sortfeedbackRouter = require('./routes/sortfeedbackRoute');
 const searchfeedbackRouter = require('./routes/searchfeedbackRoute');
 const mainfeedbackRouter = require('./routes/mainfeedbackRouter');
+const titlefeedbackRouter = require('./routes/titlefeedbackRouter');
 
 const myPageRouter = require('./routes/myPageRouter');
-
 
 const db = require('./config/database');
 
@@ -52,6 +52,7 @@ app.use('/feedback', sortfeedbackRouter);
 app.use('/feedback', searchfeedbackRouter); 
 app.use('/feedback', feedbackpinRouter);
 app.use('/feedback', mainfeedbackRouter);
+app.use('/feedback', titlefeedbackRouter);
 
 app.use('/myPage', myPageRouter);
 
