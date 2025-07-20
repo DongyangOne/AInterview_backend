@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const {pwChange, nicknameChange, setAppPush} = require('../controllers/mypage/userController');
 
 router.post('/changePw', pwChange);
