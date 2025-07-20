@@ -20,6 +20,7 @@ const logoutRouter = require('./routes/logoutRouter');
 const userRouter = require('./routes/userRouter');
 const deleteRouter = require('./routes/deleteRouter');
 
+const recentfeedbackRouter=require('./routes/recentfeedbackRouter');
 const calendarRouter = require('./routes/twcalendarRouter');
 
 const feedbackpinRouter = require('./routes/feedbackpinRouter'); 
@@ -27,7 +28,6 @@ const sortfeedbackRouter = require('./routes/sortfeedbackRoute');
 const searchfeedbackRouter = require('./routes/searchfeedbackRoute');
 
 const myPageRouter = require('./routes/myPageRouter');
-
 
 const db = require('./config/database');
 
@@ -39,6 +39,7 @@ app.use('/sign', signRouter);
 app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
+app.use('/feedback', recentfeedbackRouter);
 
 app.use('/calendar', calendarRouter);
 
