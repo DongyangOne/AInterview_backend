@@ -15,6 +15,7 @@ const noticeRouter = require('./routes/noticeRouter');
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
 const myPageRouter = require('./routes/myPageRouter');
+const userRouter = require('./routes/userRouter');
 const db = require('./config/database');
 
 app.use('/example', Router);
@@ -22,6 +23,7 @@ app.use('/notice', noticeRouter);
 app.use('/sign', signRouter);
 app.use('/logout', logoutRouter);
 app.use('/myPage', myPageRouter);
+app.use('/user', userRouter);
 
 const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
