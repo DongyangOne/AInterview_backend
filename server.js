@@ -12,18 +12,22 @@ app.use(session({
 }));
 
 const Router = require('./routes/basicRouter');
+
 const noticeRouter = require('./routes/noticeRouter');
+
 const signRouter = require('./routes/signRouter');
 const logoutRouter = require('./routes/logoutRouter');
+const userRouter = require('./routes/userRouter');
+const deleteRouter = require('./routes/deleteRouter');
 
 const calendarRouter = require('./routes/twcalendarRouter');
 
 const feedbackpinRouter = require('./routes/feedbackpinRouter'); 
 const sortfeedbackRouter = require('./routes/sortfeedbackRoute');
-const searchfeedbackRouter = require('./routes/searchfeedbackRoute');  
+const searchfeedbackRouter = require('./routes/searchfeedbackRoute');
+
 const myPageRouter = require('./routes/myPageRouter');
-const userRouter = require('./routes/userRouter');
-const deleteRouter = require('./routes/deleteRouter');
+
 
 const db = require('./config/database');
 
