@@ -1,6 +1,6 @@
 const db = require('../config/database');
 
-const getcreateCalendar = (userId, title, time, importance, memo, callback) => {
+const getcreateDate = (userId, title, time, importance, memo, callback) => {
     const sql = `insert into calendar (users_id, title, time, importance, memo)
     values (?, ?, ?, ?, ?)`;
 
@@ -11,5 +11,5 @@ const getcreateCalendar = (userId, title, time, importance, memo, callback) => {
 };
 
 module.exports = {
-    getcreateCalendar
+    getcreateDate
 };

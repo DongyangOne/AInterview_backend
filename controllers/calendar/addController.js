@@ -1,8 +1,8 @@
 //일정 추가
 
-const {getcreateCalendar} = require('../../models/dateaddModel')
+const {getcreateDate} = require('../../models/dateaddModel')
 
-const getCreate = (req, res) => {
+const getaddDate = (req, res) => {
     const userId = req.query.userId;
     const title = req.query.title;
     const time = req.query.time;
@@ -29,24 +29,15 @@ const getCreate = (req, res) => {
     }
 
 
-getcreateCalendar(userId, title, time, importance, memo, (err, result) => {
+getcreateDate(userId, title, time, importance, memo, (err, result) => {
     if (err){
-        switch (err.code){
-            case 'DB_ERROR' :
-                return res.status(500).json({success:false, message: '서버 오류 발생', details: err});
-            case 'INVALID_URL' :
-                return res.status(404).json({success:false, message:'url 입력 에러', details: err});
-             case 'UNAUTHORIZED':
-                return res.status(401).json({ success: false, message: '인증 정보 없음', details: err });
-            case 'FORBIDDEN':
-                return res.status(403).json({ success: false, message: '접근 권한 없음', details: err });
-        }
+        return res.status(500).json({success:false, message: '오류 발생', details: err});
+    }
 
     const importanceResult = importanceArr[importance]
 
         res.status(200).json({success: true, data: result, importanceResult});
-    }
 })
 };
 
-module.exports = {getCreate}
+module.exports = {getaddDate}

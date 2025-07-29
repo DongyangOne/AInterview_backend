@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getCreate } = require('../controllers/calendar/addController');
+const { getaddDate } = require('../controllers/calendar/addController');
 
-router.get('/add', getCreate);
+router.get('/add', getaddDate);
 
 module.exports = router;
