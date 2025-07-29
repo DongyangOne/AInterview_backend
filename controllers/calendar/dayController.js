@@ -14,17 +14,9 @@ const getSearchDay = (req, res) => {
     }
 
 getUserDay(userId, year, month, day, (err, result) => {
-    if (err){
-        switch (err.code){
-            case 'DB_ERROR' :
-                return res.status(500).json({success:false, message: '서버 오류 발생', details: err});
-            case 'INVALID_URL' :
-                return res.status(404).json({success:false, message:'url 입력 에러', details: err});
-             case 'UNAUTHORIZED':
-                return res.status(401).json({ success: false, message: '인증 정보 없음', details: err });
-            case 'FORBIDDEN':
-                return res.status(403).json({ success: false, message: '접근 권한 없음', details: err });
-        }
+     if (err){
+        return res.status(500).json({success:false, message: '오류 발생', details: err});
+    }
 
     if (result.length === 0){
         res.status(200).json({success: true, message:'일정이 없습니다.'});
@@ -32,7 +24,7 @@ getUserDay(userId, year, month, day, (err, result) => {
     else {
         res.status(200).json({success: true, data: result})
     }
-}  
+
 })
 };
 
