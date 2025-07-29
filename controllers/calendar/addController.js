@@ -1,10 +1,9 @@
 //일정 추가
 
-const {getCalendarAdd} = require('../../models/dateaddModel')
+const {getcreateCalendar} = require('../../models/dateaddModel')
 
-const getAdd = (req, res) => {
+const getCreate = (req, res) => {
     const userId = req.query.userId;
-    const year = Number(req.query.year);
     const title = req.query.title;
     const time = req.query.time;
     const importance = req.query.importance;
@@ -17,24 +16,8 @@ const getAdd = (req, res) => {
         N: 'X'
     };
 
-    if (!userId){
-        return res.status(400).json({success: false, message: '아이디가 존재하지 않습니다.'});
-    }
-
-     if (!year){
-        return res.status(400).json({success: false, message: '년도가 입력되지 않았습니다.'});
-    }
-
-    if (!title){
-        return res.status(400).json({success: false, message: '이름이 입력되지 않았습니다.'});
-    }
-
-    if (!time){
-        return res.status(400).json({success: false, message: '시간이 입력되지 않았습니다.'});
-    }
-
-    if (importance === null){
-        return res.status(400).json({success: false, message: '중요도를 선택해 주십시오.'});
+    if (!userId || !time || !title || !importance){
+        return res.status(400).json({success: false, message: '미입력 정보가 존재합니다.'});
     }
 
     if (title.length > 8){
@@ -46,15 +29,24 @@ const getAdd = (req, res) => {
     }
 
 
-getCalendarAdd(userId, year, title, time, importance, memo, (err, result) => {
+getcreateCalendar(userId, title, time, importance, memo, (err, result) => {
     if (err){
-        return res.status(500).json({success:false, message: '오류 발생', details: err});
-    }
+        switch (err.code){
+            case 'DB_ERROR' :
+                return res.status(500).json({success:false, message: '서버 오류 발생', details: err});
+            case 'INVALID_URL' :
+                return res.status(404).json({success:false, message:'url 입력 에러', details: err});
+             case 'UNAUTHORIZED':
+                return res.status(401).json({ success: false, message: '인증 정보 없음', details: err });
+            case 'FORBIDDEN':
+                return res.status(403).json({ success: false, message: '접근 권한 없음', details: err });
+        }
 
     const importanceResult = importanceArr[importance]
 
         res.status(200).json({success: true, data: result, importanceResult});
+    }
 })
 };
 
-module.exports = {getAdd}
+module.exports = {getCreate}
