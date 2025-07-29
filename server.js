@@ -22,7 +22,7 @@ const userRouter = require('./routes/userRouter');
 const deleteRouter = require('./routes/deleteRouter');
 
 const monthRouter = require('./routes/monthRouter');
-const dayRouter  = require('./routes/dayRouter');
+const searchdayRouter  = require('./routes/dayRouter');
 const dateaddRouter = require('./routes/dateaddRouter');
 const dateupdateRouter = require('./routes/dateupdateRouter');
 const datedeleteRouter = require('./routes/datedeleteRouter');
@@ -54,7 +54,7 @@ app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 
 app.use('/calendar', monthRouter);
-app.use('/calendar', dayRouter);
+app.use('/calendar', searchdayRouter);
 app.use('/calendar', dateaddRouter);
 app.use('/calendar', dateupdateRouter);
 app.use('/calendar', datedeleteRouter);
