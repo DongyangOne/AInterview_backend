@@ -9,14 +9,31 @@ const dbInfo = {
    database: process.env.db,
 };
 
-const connection = mysql.createConnection(dbInfo);
+let connection;
 
-connection.connect((err) => {
-    if (err){
-        console.error('mysql error: ', err);
-        return;
-    }
-    console.log("mysql 연결");
-});
+function handleDisconnect() {
+    connection = mysql.createConnection(dbInfo);
+
+    connection.connect(err => {
+        if (err) {
+            console.error('MySQL 연결 실패:', err);
+            setTimeout(handleDisconnect, 2000); 
+        } else {
+            console.log('MySQL 재연결 성공');
+        }
+    });
+
+    connection.on('error', err => {
+        console.error('MySQL 에러 발생:', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.fatal) {
+            console.log('연결 끊김 - 재연결 시도 중...');
+            handleDisconnect();
+        } else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
 
 module.exports = connection;
