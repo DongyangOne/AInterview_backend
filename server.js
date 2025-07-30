@@ -59,6 +59,7 @@ app.use('/calendar', searchmonthRouter);
 app.use('/calendar', dateaddRouter);
 app.use('/calendar', dateupdateRouter);
 app.use('/calendar', datedeleteRouter);
+app.use('/calendar', dateupdateRouter);
 
 app.use('/question',questionRouter);
 app.use('/feedback', recentfeedbackRouter);
