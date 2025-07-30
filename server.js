@@ -21,8 +21,8 @@ const logoutRouter = require('./routes/logoutRouter');
 const userRouter = require('./routes/userRouter');
 const deleteRouter = require('./routes/deleteRouter');
 
-const monthRouter = require('./routes/monthRouter');
 const searchdayRouter  = require('./routes/dayRouter');
+const searchmonthRouter = require('./routes/monthRouter');
 const dateaddRouter = require('./routes/dateaddRouter');
 const dateupdateRouter = require('./routes/dateupdateRouter');
 const datedeleteRouter = require('./routes/datedeleteRouter');
@@ -53,8 +53,9 @@ app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 
-app.use('/calendar', monthRouter);
+
 app.use('/calendar', searchdayRouter);
+app.use('/calendar', searchmonthRouter);
 app.use('/calendar', dateaddRouter);
 app.use('/calendar', dateupdateRouter);
 app.use('/calendar', datedeleteRouter);

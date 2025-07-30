@@ -3,21 +3,13 @@
 
 const {getUserMonth} = require('../../models/monthModel')
 
-const getMonth = (req, res) => {
+const getSearchmonth = (req, res) => {
     const userId = req.query.userId;
     const year = Number(req.query.year);
     const month = Number(req.query.month);
 
-    if (!userId){
-        return res.status(400).json({success: false, message: '아이디가 존재하지 않습니다.'});
-    }
-
-    if (!year){
-        return res.status(400).json({success: false, message: '년도가 입력되지 않았습니다.'});
-    }
-
-    if (!month){
-        return res.status(400).json({success: false, message: '월이 입력되지 않았습니다.'});
+    if (!userId || !month || !year ){
+        return res.status(400).json({success: false, message: '미입력 정보가 존재합니다.'});
     }
 
 getUserMonth(userId, year, month, (err, result) => {
@@ -39,4 +31,4 @@ getUserMonth(userId, year, month, (err, result) => {
 })
 };
 
-module.exports = {getMonth}
+module.exports = {getSearchmonth}

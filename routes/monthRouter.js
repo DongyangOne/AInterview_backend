@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getMonth } = require('../controllers/calendar/monthController');
+const {getSearchmonth } = require('../controllers/calendar/monthController');
 
-router.get('/month', getMonth);
+router.get('/month', getSearchmonth);
 
 module.exports = router;
