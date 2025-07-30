@@ -1,8 +1,8 @@
 //일정 추가
 
-const {getcreateDate} = require('../../models/dateaddModel')
+const {createDate} = require('../../models/dateaddModel')
 
-const getaddDate = (req, res) => {
+const addDate = (req, res) => {
     const userId = req.query.userId;
     const title = req.query.title;
     const time = req.query.time;
@@ -29,7 +29,7 @@ const getaddDate = (req, res) => {
     }
 
 
-getcreateDate(userId, title, time, importance, memo, (err, result) => {
+createDate(userId, title, time, importance, memo, (err, result) => {
     if (err){
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
@@ -40,4 +40,4 @@ getcreateDate(userId, title, time, importance, memo, (err, result) => {
 })
 };
 
-module.exports = {getaddDate}
+module.exports = {addDate}
