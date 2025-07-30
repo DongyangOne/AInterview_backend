@@ -41,8 +41,6 @@ const deletefeedbackRouter = require('./routes/allRouter');
 
 const myPageRouter = require('./routes/allRouter');
 
-
-
 app.use('/notice', noticeRouter);
 
 app.use('/sign', signRouter);
@@ -51,12 +49,7 @@ app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 
 
-app.use('/calendar', searchdayRouter);
-app.use('/calendar', searchmonthRouter);
-app.use('/calendar', dateaddRouter);
-app.use('/calendar', dateupdateRouter);
-app.use('/calendar', datedeleteRouter);
-app.use('/calendar', dateupdateRouter);
+app.use('/calendar', searchdayRouter, searchmonthRouter, dateaddRouter, dateupdateRouter, datedeleteRouter, dateupdateRouter);
 
 app.use('/question',questionRouter);
 app.use('/feedback', recentfeedbackRouter);
