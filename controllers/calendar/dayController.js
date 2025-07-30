@@ -14,7 +14,7 @@ const getSearchDay = (req, res) => {
     }
 
 getUserDay(userId, year, month, day, (err, result) => {
-     if (err){
+    if (err){
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
 
@@ -23,8 +23,7 @@ getUserDay(userId, year, month, day, (err, result) => {
     }
     else {
         res.status(200).json({success: true, data: result})
-    }
-
+}  
 })
 };
 
