@@ -1,4 +1,4 @@
-const {getCalendarUpdate} = require('../../models/dateupdateModel')
+const {getCalendarUpdate} = require('../../models/allModel')
 
 const getUpdate = (req, res) => {
     const userId = req.query.userId;

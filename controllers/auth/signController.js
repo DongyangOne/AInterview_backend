@@ -1,4 +1,4 @@
-const { loginCheck, addUser, userIdCheck } = require('../../models/signModel');
+const { loginCheck, addUser, userIdCheck } = require('../../models/allModel');
 
 //로그인 함수
 const signinProgress = (req, res) => {

@@ -1,4 +1,4 @@
-const { pwCheck, updatePw, updateName, getAppPush, updateAppPush} = require('../../models/userModel');
+const { pwCheck, updatePw, updateName, getAppPush, updateAppPush} = require('../../models/allModel');
 
 //비밀번호 변경 함수
 const pwChange = (req, res) => {

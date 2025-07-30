@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/detailfeedbackModel');
+const feedbackModel = require('../../models/allModel');
 
 const formatDate = (date) => {
   if (!date) return null;

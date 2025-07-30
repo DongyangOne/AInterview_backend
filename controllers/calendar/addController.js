@@ -1,6 +1,6 @@
 //일정 추가
 
-const {createDate} = require('../../models/dateaddModel')
+const {createDate} = require('../../models/allModel')
 
 const addDate = (req, res) => {
     const userId = req.query.userId;

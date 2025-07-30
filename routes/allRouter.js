@@ -18,7 +18,7 @@ router.get('/deleteUser', deleteUserProgress);
 const { getNotices } = require('../controllers/mainpage/noticeController');
 const { getTodayQuestion } = require('../controllers/mainpage/questionController');
 const { Twcalendar } = require('../controllers/mainpage/twcalendarController');
-const { getRecentFeedback } = require('../controllers/feedback/recentfeedbackController');
+const { getRecentFeedback } = require('../controllers/mainpage/recentfeedbackController');
 
 router.get('/', getNotices);
 router.get('/today', getTodayQuestion);  
@@ -64,8 +64,8 @@ router.get('/month', getSearchmonth);
 
 
 //register
-const {logoutProgress} = require('../controllers/register/logoutController');
-const {signinProgress, signupProgress, userIdCheckProgress} = require('../controllers/register/signController');
+const {logoutProgress} = require('../controllers/auth/logoutController');
+const {signinProgress, signupProgress, userIdCheckProgress} = require('../controllers/auth/signController');
 
 router.post('/login', signinProgress);
 router.post('/signup', signupProgress);

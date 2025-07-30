@@ -1,4 +1,4 @@
-const FeedbackModel = require('../../models/searchfeedbackModel');
+const FeedbackModel = require('../../models/allModel');
 
 exports.searchFeedbacks = (req, res) => {
   const { keyword } = req.query;

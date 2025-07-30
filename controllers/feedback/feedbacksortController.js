@@ -1,4 +1,4 @@
-const FeedbackModel = require('../../models/sortfeedbackModel');
+const FeedbackModel = require('../../models/allModel');
 
 exports.sortFeedbacks = (req, res) => {
   const { by } = req.query;

@@ -1,4 +1,4 @@
-const {getFeedCount, getFeedContent, deleteUser} = require('../../models/deleteModel');
+const {getFeedCount, getFeedContent, deleteUser} = require('../../models/allModel');
 
 //현재 사용자의 피드백 정보 조회 함수
 const feedInfoProgress = (req, res) =>{

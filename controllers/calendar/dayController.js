@@ -1,7 +1,7 @@
 //일정 상세 조회
 //3000/calendar/day?userId, year, month,day 입력
 
-const {getUserDay} = require('../../models/dayModel')
+const {getUserDay} = require('../../models/allModel')
 
 const getSearchDay = (req, res) => {
     const userId = req.query.userId;

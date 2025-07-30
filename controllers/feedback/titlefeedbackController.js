@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/titlefeedbackModel');
+const feedbackModel = require('../../models/allModel');
 
 //  기존 제목 불러오기
 exports.getFeedbackTitle = (req, res) => {
