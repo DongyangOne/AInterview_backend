@@ -48,22 +48,14 @@ app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 
+app.use('/calendar', searchdayRouter, searchmonthRouter, dateaddRouter, dateupdateRouter, datedeleteRouter, dateupdateRouter, calendarRouter);
 
-app.use('/calendar', searchdayRouter, searchmonthRouter, dateaddRouter, dateupdateRouter, datedeleteRouter, dateupdateRouter);
-
-app.use('/question',questionRouter);
+app.use('/question', questionRouter);
 app.use('/feedback', recentfeedbackRouter);
-app.use('/calendar', calendarRouter);
 
-app.use('/feedback', sortfeedbackRouter); 
-app.use('/feedback', searchfeedbackRouter); 
-app.use('/feedback', feedbackpinRouter);
-app.use('/feedback', deletefeedbackRouter);
-app.use('/feedback', mainfeedbackRouter);
-app.use('/feedback', titlefeedbackRouter);
-app.use('/feedback', feedbackmemoRouter);
-app.use('/feedback', detailfeedbackRouter);
-
+app.use('/feedback', sortfeedbackRouter, searchfeedbackRouter, feedbackpinRouter, deletefeedbackRouter, 
+  mainfeedbackRouter, titlefeedbackRouter, feedbackmemoRouter, detailfeedbackRouter); 
+  
 app.use('/myPage', myPageRouter);
 
 const port = process.env.s_port || 3000;
