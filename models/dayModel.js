@@ -16,14 +16,12 @@ const getUserDay = (userId, year, month, day, callback) => {
         when 'I' then '중요'
         when 'N' then 'X'
         end as importance, memo 
-    from calendar where users_id = ? and \`year\` = ? and MONTH(time) = ? and DAY(time) =?
+    from calendar where users_id = ? and YEAR(time) = ? and MONTH(time) = ? and DAY(time) =?
     order by created_at desc`;
 
     db.query(sql, [userId, year, month, day], (err, results) => {
         if (err) return callback(err);
         callback(null, results);
-    console.log(results);
-
     });
 };
 
