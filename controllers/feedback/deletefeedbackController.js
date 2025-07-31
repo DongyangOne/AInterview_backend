@@ -1,11 +1,11 @@
 const feedbackModel = require('../../models/deletefeedbackModel');
 
-
-
 exports.deleteFeedback = (req, res) => {
   const { userId, feedbackId } = req.params;
 
+
   feedbackModel.deleteById({ feedbackId, userId }, (err, result) => {
+    
     if (err) {
       return res.status(500).json({
         success: false,
@@ -17,7 +17,7 @@ exports.deleteFeedback = (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({
         success: false,
-        message: '삭제할 피드백을 찾을 수 없거나 삭제 권한이 없습니다.'
+        message: '해당 피드백을 찾을 수 없습니다.' 
       });
     }
 
@@ -27,5 +27,3 @@ exports.deleteFeedback = (req, res) => {
     });
   });
 };
-
-
