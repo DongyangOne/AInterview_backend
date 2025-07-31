@@ -13,6 +13,7 @@ const pwChange = (req, res) => {
     }
 
     const loginUserId = req.session.user.id;
+    const inputErrors = [];
     const errors = [];
 
 
@@ -22,24 +23,28 @@ const pwChange = (req, res) => {
                 case 'DB_ERROR':
                     return res.status(500).json({ success: false, message: err.message });
                 case 'INVALID_PASSWORD':
-                    if (!pw) errors.push('현재 비밀번호를 입력해주세요.');
+                    if (!pw) return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : ['현재 비밀번호를 입력해주세요.']});
                     else {
-                        errors.push('현재 비밀번호를 틀렸습니다. 다시 입력해주세요.');
+                        return res.status(401).json({success : false, message :'형식에 맞지 않는 값이 존재합니다.', error : ['현재 비밀번호를 틀렸습니다. 다시 입력해주세요.']});
                     }
             }
         }
 
 
 
-        if (!newPw) errors.push('새 비밀번호를 입력해주세요.');
+        if (!newPw) inputErrors.push('새 비밀번호를 입력해주세요.');
         else if (!passwordRegex.test(newPw)) errors.push('비밀번호는 8-16자의 영어대소문자, 숫자, 특수문자(!,@,#,$,%,^,&,*)만 가능합니다.');
 
-        if (!newPwCheck) errors.push('새 비밀번호 확인을 입력해주세요.');
+        if (!newPwCheck) inputErrors.push('새 비밀번호 확인을 입력해주세요.');
         else if (newPw !== newPwCheck) errors.push('새 비밀번호확인이 일치하지 않습니다.');
 
+        if(inputErrors.length > 0){
+            console.log('입력 값 검증 실패 : ', inputErrors);
+            return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : inputErrors});
+        }
         if (errors.length > 0) {
             console.log('입력 값 검증 실패 : ', errors);
-            return res.status(400).json({ success: false, messages: errors });
+            return res.status(400).json({ success: false, message : '형식에 맞지 않는 값이 존재합니다.', error : errors });
         }
 
 
@@ -68,7 +73,7 @@ const nicknameChange = (req, res)=>{
 
     const loginUserId = req.session.user.id;
 
-    if(!newName) return res.status(400).json({success : false, message : '변경할 닉네임을 입력해주세요.'});
+    if(!newName) return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : ['변경할 닉네임을 입력해주세요.']});
     else if(!nicknameRegex.test(newName)) return res.status(400).json({success : false, message : '닉네임은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)'});
 
     updateName(loginUserId, newName, (err, result)=>{
@@ -135,7 +140,7 @@ const passwordCheck = (req, res)=>{
     const loginUserId = req.session.user.id;
 
     if(!password){
-        return res.status(400).json({success : false, message : '비밀번호를 입력해주세요.'});
+        return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : ['비밀번호를 입력해주세요.']});
     }
     else{
         pwCheck(loginUserId, password, (err, result)=>{
@@ -145,8 +150,7 @@ const passwordCheck = (req, res)=>{
                         console.log(err.error);
                         return res.status(500).json({success : false, message : err.message});
                     case 'INVALID_PASSWORD' :
-                        return res.status(400).json({success : false, message : err.message});
-
+                        return res.status(401).json({success : false, message : '형식에 맞지 않는 값이 존재합니다.', error : ['비밀번호를 틀렸습니다. 다시 입력해주세요.']});
                 }
             }
             else{
