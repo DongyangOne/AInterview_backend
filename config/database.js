@@ -1,39 +1,28 @@
 require('dotenv').config();
 const mysql = require("mysql2");
 
-const dbInfo = {
-   host: process.env.db_host,      
-   port: process.env.db_port,
-   user: process.env.db_user,
-   password: process.env.db_pw,    
-   database: process.env.db,
-};
+const pool = mysql.createPool({
+  host: process.env.db_host,
+  port: process.env.db_port,
+  user: process.env.db_user,
+  password: process.env.db_pw,
+  database: process.env.db,
+  connectionLimit: 10
+});
 
-let connection;
 
-function handleDisconnect() {
-    connection = mysql.createConnection(dbInfo);
-
-    connection.connect(err => {
-        if (err) {
-            console.error('MySQL 연결 실패:', err);
-            setTimeout(handleDisconnect, 2000); 
-        } else {
-            console.log('MySQL 재연결 성공');
-        }
+  function query (sql, params, callback) {
+    pool.getConnection((err, conn) => {
+      if (err){
+        console.log('db 에러', err);
+        return callback(err);
+      } 
+      console.log('db 연결');
+      conn.query(sql, params, (err, results) => {
+        conn.release();
+        callback(err, results);
+      });
     });
+  }
 
-    connection.on('error', err => {
-        console.error('MySQL 에러 발생:', err);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.fatal) {
-            console.log('연결 끊김 - 재연결 시도 중...');
-            handleDisconnect();
-        } else {
-            throw err;
-        }
-    });
-}
-
-handleDisconnect();
-
-module.exports = connection;
+  module.exports = { query}
