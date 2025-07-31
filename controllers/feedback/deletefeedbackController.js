@@ -14,12 +14,6 @@ exports.deleteFeedback = (req, res) => {
       });
     }
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        success: false,
-        message: '해당 피드백을 찾을 수 없습니다.' 
-      });
-    }
 
     res.status(200).json({
       success: true,
