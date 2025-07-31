@@ -1,6 +1,6 @@
 const connection = require('../config/database');
 
-const findById = ({ feedbackId, userId }, callback) => {
+const detailfindById = ({ feedbackId, userId }, callback) => {
   const sql = `
     SELECT 
       feedback_id AS id, 
@@ -20,5 +20,5 @@ const findById = ({ feedbackId, userId }, callback) => {
 
 
 module.exports = {
-  findById
+  detailfindById
 };

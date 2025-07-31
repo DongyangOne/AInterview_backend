@@ -1,6 +1,6 @@
 const connection = require('../config/database');
 
-exports.deleteById = ({ feedbackId, userId }, callback) => {
+exports.deletefeedbackById = ({ feedbackId, userId }, callback) => {
   const sql = `
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
