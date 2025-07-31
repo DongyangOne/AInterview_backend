@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/feedbackModel');
+const mainfeedbackModel = require('../../models/mainfeedbackModel');
 
 const formatDate = (date) => {
   if (!date) return null;
@@ -7,15 +7,14 @@ const formatDate = (date) => {
 
 exports.getAllFeedback = (req, res) => {
   const { userId } = req.params;
-    if (!userId) {
+  if (!userId) {
     return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
-  feedbackModel.findAllByUserId({ userId }, (err, feedbackList) => {
+  mainfeedbackModel.findAllByUserId({ userId }, (err, feedbackList) => {
     if (err) {
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
-
-      if (!feedbackList || feedbackList.length === 0) {
+    if (!feedbackList || feedbackList.length === 0) {
       return res.status(404).json({ success: false, message: "url 오류 발생" });
     }
     const formattedList = feedbackList.map(feedback => ({
@@ -32,13 +31,3 @@ exports.getAllFeedback = (req, res) => {
     });
   });
 };
-
-
-
-
-
-
-
-
-
-
