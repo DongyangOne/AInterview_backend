@@ -7,7 +7,7 @@ exports.getFeedbackMemo = (req, res) => {
   feedbackModel.findMemoById({ feedbackId, userId }, (err, data) => {
     if (err) return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
    
- if (!data) return res.status(404).json({ success: false, message: 'url 오류' });
+ 
     res.status(200).json({ success: true, message: '기존 메모 조회 성공', data });
   });
 };
@@ -22,7 +22,7 @@ exports.updateFeedbackMemo = (req, res) => {
   feedbackModel.updateMemo({ feedbackId, memo, userId }, (err, result) => {
     if (err) return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
 
-    if (result.affectedRows === 0) return res.status(404).json({ success: false, message: '피드백을 찾을 수 없거나 수정 권한이 없습니다.' });
+    
     res.status(200).json({ success: true, message: '피드백 메모가 성공적으로 수정되었습니다.' });
   });
 };
