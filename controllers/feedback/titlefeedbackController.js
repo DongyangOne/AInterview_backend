@@ -8,7 +8,7 @@ exports.getFeedbackTitle = (req, res) => {
   feedbackModel.findTitleById({ feedbackId, userId }, (err, data) => {
 
     if (err) return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
-    if (!data) return res.status(404).json({ success: false, message: ' 해당 피드백을 찾을 수 없습니다.' });
+    
     res.status(200).json({ success: true, message: '기존 제목 조회 성공', data });
   });
 };
@@ -24,7 +24,7 @@ exports.updateFeedbackTitle = (req, res) => {
   feedbackModel.updateTitle({ feedbackId, title, userId }, (err, result) => {
     if (err) return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
 
-    if (result.affectedRows === 0) return res.status(404).json({ success: false, message: '피드백을 찾을 수 없거나 수정 권한이 없습니다.' });
+    
     res.status(200).json({ success: true, message: '피드백 제목이 성공적으로 수정되었습니다.' });
   });
 };
