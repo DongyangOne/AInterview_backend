@@ -13,32 +13,33 @@ app.use(session({
 
 const db = require('./config/database');
 
-const signRouter = require('./routes/auth/authRouter');
-const logoutRouter = require('./routes/auth/authRouter');
+const noticeRouter = require('./routes/allRouter');
 
-const searchdayRouter  = require('./routes/calendar/calendarRouter');
-const searchmonthRouter = require('./routes/calendar/calendarRouter');
-const dateaddRouter = require('./routes/calendar/calendarRouter');
-const dateupdateRouter = require('./routes/calendar/calendarRouter');
-const datedeleteRouter = require('./routes/calendar/calendarRouter');
+const signRouter = require('./routes/allRouter');
+const logoutRouter = require('./routes/allRouter');
+const userRouter = require('./routes/allRouter');
+const deleteRouter = require('./routes/allRouter');
 
-const recentfeedbackRouter=require('./routes/mainpage/mainpageRouter');
-const calendarRouter = require('./routes/mainpage/mainpageRouter');
-const questionRouter=require('./routes/mainpage/mainpageRouter');
-const noticeRouter = require('./routes/mainpage/mainpageRouter');
+const searchdayRouter  = require('./routes/allRouter');
+const searchmonthRouter = require('./routes/allRouter');
+const dateaddRouter = require('./routes/allRouter');
+const dateupdateRouter = require('./routes/allRouter');
+const datedeleteRouter = require('./routes/allRouter');
 
-const feedbackpinRouter = require('./routes/feedback/feedbackRouter'); 
-const sortfeedbackRouter = require('./routes/feedback/feedbackRouter');
-const searchfeedbackRouter = require('./routes/feedback/feedbackRouter');
-const mainfeedbackRouter = require('./routes/feedback/feedbackRouter');
-const titlefeedbackRouter = require('./routes/feedback/feedbackRouter');
-const detailfeedbackRouter = require('./routes/feedback/feedbackRouter');
-const feedbackmemoRouter = require('./routes/feedback/feedbackRouter');
-const deletefeedbackRouter = require('./routes/feedback/feedbackRouter');
+const recentfeedbackRouter=require('./routes/allRouter');
+const calendarRouter = require('./routes/allRouter');
+const questionRouter=require('./routes/allRouter');
 
-const myPageRouter = require('./routes/mypage/mypageRouter');
-const userRouter = require('./routes/mypage/mypageRouter');
-const deleteRouter = require('./routes/mypage/mypageRouter');
+const feedbackpinRouter = require('./routes/allRouter'); 
+const sortfeedbackRouter = require('./routes/allRouter');
+const searchfeedbackRouter = require('./routes/allRouter');
+const mainfeedbackRouter = require('./routes/allRouter');
+const titlefeedbackRouter = require('./routes/allRouter');
+const detailfeedbackRouter = require('./routes/allRouter');
+const feedbackmemoRouter = require('./routes/allRouter');
+const deletefeedbackRouter = require('./routes/allRouter');
+
+const myPageRouter = require('./routes/allRouter');
 
 app.use('/notice', noticeRouter);
 
