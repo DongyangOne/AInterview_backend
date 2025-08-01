@@ -8,7 +8,8 @@ const recentFeedback=(userId,callback)=>{
 
 
     const sql=
-    'SELECT * FROM feedback WHERE userId = ? ORDER BY feedback_id DESC LIMIT 1;';
+    `SELECT feedback_id, userId, title, content, created_at, datediff(date(now()), date(created_at)) as days_ago
+    FROM feedback WHERE userId = ? ORDER BY created_at DESC LIMIT 1`;
 
      db.query(sql,[userId],(err,result)=>{
           if(err){
