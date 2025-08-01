@@ -3,22 +3,15 @@ const FeedbackModel = require('../../models/feedback/feedbackModel');
 exports.sortFeedbacks = (req, res) => {
   const { by } = req.query;
 
-  if (!by) {
-    return res.status(400).json({
-      success: false,
-      message: "미입력 정보가 존재합니다 (by)"
-    });
-  }
-
   let orderBy;
-  if (by === 'alpha') {
-    orderBy = 'title ASC';
-  } else if (by === 'date') {
+  if (!by) {
     orderBy = 'created_at DESC';
+  } else if (by === 'alpha') {
+    orderBy = 'title ASC';
   } else {
     return res.status(400).json({
       success: false,
-      message: "정렬 기준이 올바르지 않습니다 (by: alpha | date)"
+      message: "정렬 기준이 올바르지 않습니다 (by: alpha)"
     });
   }
 
