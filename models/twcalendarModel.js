@@ -15,7 +15,7 @@ const TwTODO=(userId,callback)=>{
             return callback({code : 'feedback_error', message : '캘린더 오류', error : err});
         }
 
-        console.log(result)
+        console.log(result) 
 
         return callback(null,result);
 
