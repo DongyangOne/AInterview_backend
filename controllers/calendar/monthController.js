@@ -1,7 +1,7 @@
 //해당 달 조회 기능
 // 3000/calendar/month?userId, year, month 입력
 
-const {getUserMonth} = require('../../models/monthModel')
+const {getUserMonth} = require('../../models/calendar/calendarModel')
 
 const getSearchmonth = (req, res) => {
     const userId = req.query.userId;
