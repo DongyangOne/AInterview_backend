@@ -1,4 +1,4 @@
-const {myInfo} = require('../../models/myPageModel');
+const {myInfo} = require('../../models/mypage/mypageModel');
 
 const myInfoProgress = (req, res) =>{
     const loginUser = req.session.user;

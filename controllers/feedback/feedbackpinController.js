@@ -1,4 +1,4 @@
-const { pinFeedback, unpinFeedback } = require('../../models/feedbackpinModel');
+const {pinFeedback, unpinFeedback}  = require('../../models/feedback/feedbackModel');
 
 // 피드백 상단 고정
 const getPin = (req, res) => {
