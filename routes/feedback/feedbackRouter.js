@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const feedbackSortController = require('../../controllers/feedback/feedbacksortController');
-const titlefeedbackController = require('../../controllers/feedback/titlefeedbackController');
-const searchfeedbackController = require('../../controllers/feedback/feedbacksearchController'); 
-const mainfeedbackController = require('../../controllers/feedback/mainfeedbackController');
-const deletefeedbackController = require('../../controllers/feedback/deletefeedbackController');
-const detailfeedbackController = require('../../controllers/feedback/detailfeedbackController');
-const memofeedbackController = require('../../controllers/feedback/feedbackmemoController');
-const { getPin, getUnpin } = require('../../controllers/feedback/feedbackpinController');
+const feedbackSortController = require('../../controllers/feedback/feedbackController');
+const titlefeedbackController = require('../../controllers/feedback/feedbackController');
+const searchfeedbackController = require('../../controllers/feedback/feedbackController'); 
+const mainfeedbackController = require('../../controllers/feedback/feedbackController');
+const deletefeedbackController = require('../../controllers/feedback/feedbackController');
+const detailfeedbackController = require('../../controllers/feedback/feedbackController');
+const memofeedbackController = require('../../controllers/feedback/feedbackController');
+const { getPin, getUnpin } = require('../../controllers/feedback/feedbackController');
 
 router.get('/sort', feedbackSortController.sortFeedbacks);
 router.get('/search', searchfeedbackController.searchFeedbacks);
