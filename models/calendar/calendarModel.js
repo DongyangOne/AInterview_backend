@@ -50,7 +50,7 @@ const createDate = (userId, title, time, importance, memo, callback) => {
 };
 
 //backend-18 dateupdateModel
-const getCalendarUpdate = (userId, title, time, importance, memo, callback) => { //모든 컬럼을 한 번에 수정하지 않고 하나하나 컬럼을 수정할 수 있게 함
+const getCalendarUpdate = (calendar_id, userId, title, time, importance, memo, callback) => { //모든 컬럼을 한 번에 수정하지 않고 하나하나 컬럼을 수정할 수 있게 함
     let sql = `update calendar set `;
     const arr = [], values = [];
 
@@ -76,6 +76,7 @@ const getCalendarUpdate = (userId, title, time, importance, memo, callback) => {
 
     sql += arr.join(`, `) + ` where users_id = ? and calendar_id = ?`;
     values.push(userId);
+    values.push(calendar_id)
 
     db.query(sql, values, (err, results) => {
         if (err) return callback(err);
