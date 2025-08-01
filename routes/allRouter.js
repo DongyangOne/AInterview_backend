@@ -18,7 +18,7 @@ router.get('/deleteUser', deleteUserProgress);
 const { getNotices } = require('../controllers/mainpage/noticeController');
 const { getTodayQuestion } = require('../controllers/mainpage/questionController');
 const { Twcalendar } = require('../controllers/mainpage/twcalendarController');
-const { getRecentFeedback } = require('../controllers/feedback/recentfeedbackController');
+const { getRecentFeedback } = require('../controllers/mainpage/recentfeedbackController');
 
 router.get('/', getNotices);
 router.get('/today', getTodayQuestion);  

@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/feedbackmemoModel');
+const feedbackModel = require('../../models/feedback/feedbackModel');
 
 // 기존 메모 불러오기
 exports.getFeedbackMemo = (req, res) => {

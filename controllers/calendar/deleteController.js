@@ -1,4 +1,4 @@
-const {getCalendarDelete} = require('../../models/datedeleteModel')
+const {getCalendarDelete} = require('../../models/calendar/calendarModel')
 
 const getDelete = (req, res) => {
     const calendar_id = req.query.calendar_id;

@@ -1,4 +1,4 @@
-const feedbackModel = require('../../models/deletefeedbackModel');
+const feedbackModel = require('../../models/feedback/feedbackModel');
 
 exports.deleteFeedback = (req, res) => {
   const { userId, feedbackId } = req.params;
