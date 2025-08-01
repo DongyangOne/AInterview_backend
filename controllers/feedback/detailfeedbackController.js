@@ -8,14 +8,15 @@ const formatDate = (date) => {
 
 exports.getFeedbackDetail = (req, res) => {
   const { userId, feedbackId } = req.params;
+if (!userId || !feedbackId) {
+    return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
+  }
 
   feedbackModel.findById({ feedbackId, userId }, (err, feedback) => {
     if (err) {
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
-    if (!feedback) {
-      return res.status(404).json({ success: false, message: '피드백을 찾을 수 없습니다.' });
-    }
+  
 
     res.status(200).json({
       success: true,
