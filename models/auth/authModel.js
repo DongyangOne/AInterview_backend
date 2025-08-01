@@ -1,5 +1,6 @@
-const db = require('../config/database');
+const db = require('../../config/database');
 
+//backend-0
 const loginCheck = (userId, password, callback)=>{
     const sql = `
         select id, user_id, password
@@ -28,6 +29,7 @@ const loginCheck = (userId, password, callback)=>{
     })
 };
 
+//backend-1
 const addUser = (userId, userName, password, appPush, callback)=>{ //모든 조건 충족 시 실행하는 회원가입 함수
     const sql = `
         insert into users(user_id, nickname, password, service_agreed, push_agreed)
@@ -44,6 +46,7 @@ const addUser = (userId, userName, password, appPush, callback)=>{ //모든 조�
     })
 };
 
+//backend-1
 const userIdCheck = (userId, callback) =>{ //아이디 중복 확인
     const sql = `
         select user_id
