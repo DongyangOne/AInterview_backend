@@ -2,9 +2,9 @@ const { pwCheck, updatePw, updateName, getAppPush, updateAppPush} = require('../
 
 //비밀번호 변경 함수
 const pwChange = (req, res) => {
-    const pw = req.query.password;
-    const newPw = req.query.newPassword;
-    const newPwCheck = req.query.newPasswordCheck;
+    const pw = req.body.password;
+    const newPw = req.body.newPassword;
+    const newPwCheck = req.body.newPasswordCheck;
     const loginUser = req.session.user;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
     if (!loginUser) {
@@ -62,7 +62,7 @@ const pwChange = (req, res) => {
 
 //닉네임 변경 함수
 const nicknameChange = (req, res)=>{
-    const newName = req.query.newName;
+    const newName = req.body.newName;
     const loginUser = req.session.user;
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
 
