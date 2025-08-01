@@ -1,24 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const feedbackSortController = require('../../controllers/feedback/feedbackController');
-const titlefeedbackController = require('../../controllers/feedback/feedbackController');
-const searchfeedbackController = require('../../controllers/feedback/feedbackController'); 
-const mainfeedbackController = require('../../controllers/feedback/feedbackController');
-const deletefeedbackController = require('../../controllers/feedback/feedbackController');
-const detailfeedbackController = require('../../controllers/feedback/feedbackController');
-const memofeedbackController = require('../../controllers/feedback/feedbackController');
+const feedbackController = require('../../controllers/feedback/feedbackController');
 const { getPin, getUnpin } = require('../../controllers/feedback/feedbackController');
 
-router.get('/sort', feedbackSortController.sortFeedbacks);
-router.get('/search', searchfeedbackController.searchFeedbacks);
-router.get('/:userId', mainfeedbackController.getAllFeedback);
-router.get('/:userId/:feedbackId/title', titlefeedbackController.getFeedbackTitle);
-router.patch('/:userId/:feedbackId/title', titlefeedbackController.updateFeedbackTitle);
-router.delete('/:feedbackId/:userId', deletefeedbackController.deleteFeedback);
-router.get('/:userId/:feedbackId', detailfeedbackController.getFeedbackDetail);
-router.get('/:userId/:feedbackId/memo', memofeedbackController.getFeedbackMemo);
-router.patch('/:userId/:feedbackId/memo', memofeedbackController.updateFeedbackMemo);
+router.get('/sort', feedbackController.sortFeedbacks);
+router.get('/search', feedbackController.searchFeedbacks);
+router.get('/:userId', feedbackController.getAllFeedback);
+router.get('/:userId/:feedbackId/title', feedbackController.getFeedbackTitle);
+router.patch('/:userId/:feedbackId/title', feedbackController.updateFeedbackTitle);
+router.delete('/:feedbackId/:userId', feedbackController.deleteFeedback);
+router.get('/:userId/:feedbackId', feedbackController.getFeedbackDetail);
+router.get('/:userId/:feedbackId/memo', feedbackController.getFeedbackMemo);
+router.patch('/:userId/:feedbackId/memo', feedbackController.updateFeedbackMemo);
 router.patch('/pin/:feedback_id', getPin);
 router.patch('/unpin/:feedback_id', getUnpin);
 
