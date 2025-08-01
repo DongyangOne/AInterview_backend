@@ -7,11 +7,17 @@ const formatDate = (date) => {
 
 exports.getAllFeedback = (req, res) => {
   const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
+  }
+
   mainfeedbackModel.findAllByUserId({ userId }, (err, feedbackList) => {
     if (err) {
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
+   
     const formattedList = feedbackList.map(feedback => ({
       id: feedback.id,
       title: feedback.title,
@@ -26,13 +32,3 @@ exports.getAllFeedback = (req, res) => {
     });
   });
 };
-
-
-
-
-
-
-
-
-
-
