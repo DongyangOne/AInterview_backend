@@ -1,5 +1,6 @@
 const { loginCheck, addUser, userIdCheck } = require('../../models/auth/authModel');
 
+//backend-0
 //로그인 함수
 const signinProgress = (req, res) => {
     const loginUserId = req.body.loginUserId;
@@ -35,6 +36,20 @@ const signinProgress = (req, res) => {
     })
 }
 
+const logoutProgress = (req, res)=>{ //로그아웃 함수
+    //세션 삭제
+    req.session.destroy((err)=>{
+        if(err){
+            console.log('세션 삭제 중 오류 : ',err);
+            return res.status(500).json({success : false, message : '로그아웃 중 오류'});
+        }
+        res.clearCookie('connect.sid'); //세션 쿠키 삭제
+        console.log('로그아웃 완료');
+        return res.status(200).json({success : true, message : '로그아웃 성공'});
+    });
+}
+
+//backend-1
 //회원가입 함수
 const signupProgress = (req, res) => {
     const loginUserId = req.body.loginUserId;
@@ -89,7 +104,7 @@ const signupProgress = (req, res) => {
 
 
     
-
+//backend-1
     userIdCheck(loginUserId, (err, result) => {
         if (err) {
             switch (err.code) {
@@ -143,11 +158,10 @@ const userIdCheckProgress = (req, res) => {
     })
 }
 
-
-
-
 module.exports = {
     signinProgress,
+    logoutProgress,
     signupProgress,
     userIdCheckProgress
 }
+
