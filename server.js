@@ -11,27 +11,34 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-const Router = require('./routes/basicRouter');
-
-const noticeRouter = require('./routes/noticeRouter');
-
-const signRouter = require('./routes/signRouter');
-const logoutRouter = require('./routes/logoutRouter');
-const userRouter = require('./routes/userRouter');
-const deleteRouter = require('./routes/deleteRouter');
-
-const calendarRouter = require('./routes/twcalendarRouter');
-
-const feedbackpinRouter = require('./routes/feedbackpinRouter'); 
-const sortfeedbackRouter = require('./routes/sortfeedbackRoute');
-const searchfeedbackRouter = require('./routes/searchfeedbackRoute');
-
-const myPageRouter = require('./routes/myPageRouter');
-
-
 const db = require('./config/database');
 
-app.use('/example', Router);
+const signRouter = require('./routes/auth/authRouter');
+const logoutRouter = require('./routes/auth/authRouter');
+
+const searchdayRouter  = require('./routes/calendar/calendarRouter');
+const searchmonthRouter = require('./routes/calendar/calendarRouter');
+const dateaddRouter = require('./routes/calendar/calendarRouter');
+const dateupdateRouter = require('./routes/calendar/calendarRouter');
+const datedeleteRouter = require('./routes/calendar/calendarRouter');
+
+const recentfeedbackRouter=require('./routes/mainpage/mainpageRouter');
+const calendarRouter = require('./routes/mainpage/mainpageRouter');
+const questionRouter=require('./routes/mainpage/mainpageRouter');
+const noticeRouter = require('./routes/mainpage/mainpageRouter');
+
+const feedbackpinRouter = require('./routes/feedback/feedbackRouter'); 
+const sortfeedbackRouter = require('./routes/feedback/feedbackRouter');
+const searchfeedbackRouter = require('./routes/feedback/feedbackRouter');
+const mainfeedbackRouter = require('./routes/feedback/feedbackRouter');
+const titlefeedbackRouter = require('./routes/feedback/feedbackRouter');
+const detailfeedbackRouter = require('./routes/feedback/feedbackRouter');
+const feedbackmemoRouter = require('./routes/feedback/feedbackRouter');
+const deletefeedbackRouter = require('./routes/feedback/feedbackRouter');
+
+const myPageRouter = require('./routes/mypage/mypageRouter');
+const userRouter = require('./routes/mypage/mypageRouter');
+const deleteRouter = require('./routes/mypage/mypageRouter');
 
 app.use('/notice', noticeRouter);
 
@@ -40,15 +47,15 @@ app.use('/user', userRouter);
 app.use('/delete', deleteRouter);
 app.use('/logout', logoutRouter);
 
-app.use('/calendar', calendarRouter);
+app.use('/calendar', searchdayRouter, searchmonthRouter, dateaddRouter, dateupdateRouter, datedeleteRouter, dateupdateRouter, calendarRouter);
 
-app.use('/feedback', sortfeedbackRouter); 
-app.use('/feedback', searchfeedbackRouter); 
-app.use('/feedback', feedbackpinRouter);
+app.use('/question', questionRouter);
+app.use('/feedback', recentfeedbackRouter);
 
+app.use('/feedback', sortfeedbackRouter, searchfeedbackRouter, feedbackpinRouter, deletefeedbackRouter, 
+  mainfeedbackRouter, titlefeedbackRouter, feedbackmemoRouter, detailfeedbackRouter); 
+  
 app.use('/myPage', myPageRouter);
-
-
 
 const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
