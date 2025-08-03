@@ -16,7 +16,10 @@ const Twcalendar = (req, res) => {
             return res.status(502).json({ success: false, message: '서버 오류', error: err });
         }
 
-        return res.status(200).json({ success: true, data: result });
+        const today = new Date();
+        let todayInfo = today.getDate();
+
+        return res.status(200).json({ success: true, data: result, today: todayInfo });
     });
 };
 
