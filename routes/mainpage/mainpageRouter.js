@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getNotices, updatePushToken, readNotice, sendNotice } = require('../../controllers/mainpage/noticeController');
+const { getNotices, updatePushToken, readNotice, sendNotice } = require('../../controllers/mainpage/mainpageController');
 const { getTodayQuestion } = require('../../controllers/mainpage/mainpageController');
 const { Twcalendar } = require('../../controllers/mainpage/mainpageController');
 const { getRecentFeedback } = require('../../controllers/mainpage/mainpageController');
