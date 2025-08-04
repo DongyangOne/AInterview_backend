@@ -1,5 +1,5 @@
 //backend-2
-const { TwTODO, recentFeedback, todayQuestion } = require('../../models/mainpage/mainpageModel');
+const { TwTODO, recentFeedback, todayQuestion, getUserNotices, updateUserPushToken, insertNotice, markNoticeRead } = require('../../models/mainpage/mainpageModel');
 
 const Twcalendar = (req, res) => {
     const userId = req.query.userId;
@@ -55,8 +55,6 @@ const getTodayQuestion = (req, res) => {
 };
 
 //backend-5/6
-const { getUserNotices, updateUserPushToken, insertNotice, markNoticeRead } = require('../../models/noticeModel');
-
 const getNotices = (req, res) => {
     // 클라이언트에서 userId를 경로 파라미터로 받는 경우
     const userId = req.params.userId;
@@ -182,7 +180,10 @@ const sendNotice = (req, res) => {
 };
 
 module.exports = { 
-    Twcalendar, getRecentFeedback, getTodayQuestion,getNotices,
+    Twcalendar, 
+    getRecentFeedback, 
+    getTodayQuestion,
+    getNotices,
     updatePushToken,
     readNotice,
     sendNotice };
