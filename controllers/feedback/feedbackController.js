@@ -134,7 +134,7 @@ const searchFeedbacks2 = (req, res) => {
 };
 
 
- //backend-11
+//backend-11
 const sortFeedbacksController = (req, res) => {
   const { by } = req.query;
 
@@ -149,6 +149,7 @@ const sortFeedbacksController = (req, res) => {
       message: "정렬 기준이 올바르지 않습니다 (by: alpha)"
     });
   }
+
   sortFeedbacks(orderBy, (err, result) => {
     if (err) {
       console.error('피드백 정렬 오류:', err);
@@ -158,12 +159,14 @@ const sortFeedbacksController = (req, res) => {
         error: err.message
       });
     }
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
+      message: "모든 피드백 조회 성공",
       data: result
     });
   });
 };
+   
 
 
 //backend-12
@@ -259,7 +262,7 @@ module.exports= {
 getFeedbackMemo,
 updateFeedbackMemo,
 searchFeedbacks,
-sortFeedbacks,
+sortFeedbacks: sortFeedbacksController,
 getPin,
   getUnpin,
 deleteFeedback,
