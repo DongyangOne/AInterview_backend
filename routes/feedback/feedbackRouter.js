@@ -4,7 +4,7 @@ const router = express.Router();
 const feedbackController = require('../../controllers/feedback/feedbackController');
 const { getPin, getUnpin } = require('../../controllers/feedback/feedbackController');
 
-router.get('/sort', feedbackController.sortFeedbacks);
+router.get('/feedbacks/sort', feedbackController.sortFeedbacks);
 router.get('/search', feedbackController.searchFeedbacks);
 router.get('/:userId', feedbackController.getAllFeedback);
 router.get('/:userId/:feedbackId/title', feedbackController.getFeedbackTitle);

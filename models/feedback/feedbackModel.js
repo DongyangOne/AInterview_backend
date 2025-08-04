@@ -66,31 +66,24 @@ const searchFeedbacks = (keyword, callback) => {
 //backend-11
 const sortFeedbacks = (orderBy, callback) => {
   const sql = `SELECT feedback_id, userId, title, memo, pin, created_at FROM feedback ORDER BY pin DESC, ${orderBy}`;
-  db.query(sql, callback);
+  db.query(sql, [], callback);
 };
 
-//backend-12
+
+//backend-12 피드백 상단 고정/해제
 const pinFeedback = (feedback_id, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ?";
-  db.query(sql, [feedback_id], (err, result)=> {
-    if (err){
-      return callback(err);
-    }
-    else {
-      return callback(null, result);
-    }
+  db.query(sql, [feedback_id], (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
   });
 };
 
 const unpinFeedback = (feedback_id, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ?";
-  db.query(sql, [feedback_id], (err, result) =>{
-    if (err) {
-      return callback(err);
-    }
-    else {
-      return callback(null, result);
-    }
+  db.query(sql, [feedback_id], (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
   });
 };
 

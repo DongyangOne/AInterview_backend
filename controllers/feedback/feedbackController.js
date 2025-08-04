@@ -133,8 +133,9 @@ const searchFeedbacks2 = (req, res) => {
   });
 };
 
-//backend-11
-const sortFeedbacks2 = (req, res) => {
+
+ //backend-11
+const sortFeedbacksController = (req, res) => {
   const { by } = req.query;
 
   let orderBy;
@@ -148,7 +149,6 @@ const sortFeedbacks2 = (req, res) => {
       message: "정렬 기준이 올바르지 않습니다 (by: alpha)"
     });
   }
-
   sortFeedbacks(orderBy, (err, result) => {
     if (err) {
       console.error('피드백 정렬 오류:', err);
@@ -164,6 +164,7 @@ const sortFeedbacks2 = (req, res) => {
     });
   });
 };
+
 
 //backend-12
 // 피드백 상단 고정
