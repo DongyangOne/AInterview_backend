@@ -106,9 +106,16 @@ const updateFeedbackMemo = (req, res) => {
 
 
 //backend-10
-const searchFeedbacks2 = (req, res) => {
+const searchFeedbacksController = (req, res) => {
   const { keyword } = req.query;
+  let { userId } = req.params;
 
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      message: "userId가 필요합니다."
+    });
+  }
   if (!keyword) {
     return res.status(400).json({
       success: false,
@@ -116,7 +123,12 @@ const searchFeedbacks2 = (req, res) => {
     });
   }
 
-  searchFeedbacks(keyword, (err, results) => {
+  userId = Number(userId);
+  if (isNaN(userId)) {
+    return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
+  }
+
+  searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
       console.error('피드백 검색 오류:', err);
       return res.status(500).json({
@@ -125,7 +137,7 @@ const searchFeedbacks2 = (req, res) => {
         error: err.message
       });
     }
-    
+
     return res.status(200).json({
       success: true,
       data: results
@@ -134,8 +146,21 @@ const searchFeedbacks2 = (req, res) => {
 };
 
 //backend-11
-const sortFeedbacks2 = (req, res) => {
+const sortFeedbacksController = (req, res) => {
   const { by } = req.query;
+  let { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      message: "userId가 필요합니다."
+    });
+  }
+
+  userId = Number(userId);
+  if (isNaN(userId)) {
+    return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
+  }
 
   let orderBy;
   if (!by) {
@@ -149,7 +174,7 @@ const sortFeedbacks2 = (req, res) => {
     });
   }
 
-  sortFeedbacks(orderBy, (err, result) => {
+  sortFeedbacks(userId, orderBy, (err, result) => {
     if (err) {
       console.error('피드백 정렬 오류:', err);
       return res.status(500).json({
@@ -158,23 +183,30 @@ const sortFeedbacks2 = (req, res) => {
         error: err.message
       });
     }
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
+      message: "피드백 정렬 조회 성공",
       data: result
     });
   });
 };
 
-//backend-12
-// 피드백 상단 고정
-const getPin = (req, res) => {
-  const { feedback_id } = req.params;
 
-  if (!feedback_id) {
-    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedback_id)' });
+//backend-12
+const getPin = (req, res) => {
+  let { feedback_id, userId } = req.params;
+
+  if (!feedback_id || !userId) {
+    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
   }
 
-  pinFeedback(feedback_id, (err, result) => {
+  feedback_id = Number(feedback_id);
+  userId = Number(userId);
+  if (isNaN(feedback_id) || isNaN(userId)) {
+    return res.status(400).json({ success: false, message: 'feedback_id와 userId는 숫자여야 합니다.' });
+  }
+
+  pinFeedback(feedback_id, userId, (err, result) => {
     if (err) {
       return res.status(500).json({ success: false, message: '피드백 상단 고정 실패', error: err.message });
     }
@@ -184,20 +216,25 @@ const getPin = (req, res) => {
 
 // 피드백 상단 고정 해제
 const getUnpin = (req, res) => {
-  const { feedback_id } = req.params;
+  let { feedback_id, userId } = req.params;
 
-  if (!feedback_id) {
-    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedback_id)' });
+  if (!feedback_id || !userId) {
+    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
   }
 
-  unpinFeedback(feedback_id, (err, result) => {
+  feedback_id = Number(feedback_id);
+  userId = Number(userId);
+  if (isNaN(feedback_id) || isNaN(userId)) {
+    return res.status(400).json({ success: false, message: 'feedback_id와 userId는 숫자여야 합니다.' });
+  }
+
+  unpinFeedback(feedback_id, userId, (err, result) => {
     if (err) {
       return res.status(500).json({ success: false, message: '피드백 상단 고정 해제 실패', error: err.message });
     }
     res.status(200).json({ success: true, message: '피드백 상단 고정 해제 완료', data: result });
   });
 };
-
 
 //backend-13
 const deleteFeedback = (req, res) => {
@@ -257,10 +294,10 @@ module.exports= {
     updateFeedbackTitle,
 getFeedbackMemo,
 updateFeedbackMemo,
-searchFeedbacks,
-sortFeedbacks,
+searchFeedbacks: searchFeedbacksController,
+sortFeedbacks: sortFeedbacksController,
 getPin,
-  getUnpin,
+getUnpin,
 deleteFeedback,
 getFeedbackDetail,
 }
