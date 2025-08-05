@@ -1,16 +1,17 @@
-const { loginCheck, addUser, userIdCheck } = require('../../models/signModel');
+const { loginCheck, addUser, userIdCheck } = require('../../models/auth/authModel');
 
+//backend-0
 //로그인 함수
 const signinProgress = (req, res) => {
     const loginUserId = req.body.loginUserId;
     const password = req.body.password;
     if (!loginUserId) {
         console.log('아이디 미입력');
-        return res.status(400).json({ success: false, message: '아이디 미입력' });
+        return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
     if (!password) {
         console.log('비밀번호 미입력');
-        return res.status(400).json({ success: false, message: '비밀번호 미입력' });
+        return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
     loginCheck(loginUserId, password, (err, result) => {
         if (err) {
@@ -20,7 +21,7 @@ const signinProgress = (req, res) => {
                 case 'USER_NOT_FOUND':
                     return res.status(404).json({ success: false, message: err.message });
                 case 'INVALID_PASSWORD':
-                    return res.status(404).json({ success: false, message: err.message });
+                    return res.status(401).json({ success: false, message: err.message });
             }
         }
 
@@ -35,6 +36,20 @@ const signinProgress = (req, res) => {
     })
 }
 
+const logoutProgress = (req, res)=>{ //로그아웃 함수
+    //세션 삭제
+    req.session.destroy((err)=>{
+        if(err){
+            console.log('세션 삭제 중 오류 : ',err);
+            return res.status(500).json({success : false, message : '로그아웃 중 오류'});
+        }
+        res.clearCookie('connect.sid'); //세션 쿠키 삭제
+        console.log('로그아웃 완료');
+        return res.status(200).json({success : true, message : '로그아웃 성공'});
+    });
+}
+
+//backend-1
 //회원가입 함수
 const signupProgress = (req, res) => {
     const loginUserId = req.body.loginUserId;
@@ -51,45 +66,52 @@ const signupProgress = (req, res) => {
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
 
+    const inputErrors = [];
     const errors = [];
 
     //조건충족 검사
-    if (!loginUserId) errors.push('아이디를 입력해주세요.');
+    if (!loginUserId) inputErrors.push('아이디를 입력해주세요.');
     else if (!idRegex.test(loginUserId)) errors.push('아이디는 3-15자의 영어, 숫자만 가능합니다.');
 
-    if (!nickname) errors.push('닉네임을 입력해주세요.');
+    if (!nickname) inputErrors.push('닉네임을 입력해주세요.');
     else if (!nicknameRegex.test(nickname)) errors.push('닉네임은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)');
 
-    if (!password) errors.push('비밀번호를 입력해주세요.');
+    if (!password) inputErrors.push('비밀번호를 입력해주세요.');
     else if (!passwordRegex.test(password)) errors.push('비밀번호는 8-16자의 영어대소문자, 숫자, 특수문자(!,@,#,$,%,^,&,*)만 가능합니다.');
 
-    if (!passwordCheck) errors.push('비밀번호 확인을 입력해주세요.');
+    if (!passwordCheck) inputErrors.push('비밀번호 확인을 입력해주세요.');
     else if (password !== passwordCheck) errors.push('비밀번호가 일치하지 않습니다.');
+
+    //아이디 중복확인 여부 검사
+    if (!idCheck) {
+        inputErrors.push('아이디 중복확인이 필요합니다.');
+    }
+
 
     if(service === 'N'){
         errors.push('서비스 이용약관에 동의해 주세요.');
     }
 
+    if(inputErrors.length > 0){
+        console.log('입력 값 검증 실패 : ', inputErrors);
+        return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : inputErrors});
+    }
 
     if (errors.length > 0) {
         console.log('입력 값 검증 실패 : ', errors);
-        return res.status(400).json({ success: false, messages: errors });
+        return res.status(400).json({ success: false, messages: '형식에 맞지 않는 값이 존재합니다.', error : errors });
     }
 
 
-    //아이디 중복확인 여부 검사
-    if (!idCheck) {
-        console.log('아이디 중복확인 필요');
-        return res.status(400).json({ success: false, message: '아이디 중복확인을 해주세요.' });
-    }
-
+    
+//backend-1
     userIdCheck(loginUserId, (err, result) => {
         if (err) {
             switch (err.code) {
                 case 'DB_ERROR':
                     return res.status(500).json({ success: false, message: err.message });
                 case 'ID_DUPLICATE':
-                    return res.status(400).json({ success: false, message: err.message });
+                    return res.status(409).json({ success: false, message: err.message });
             }
         }
         else {
@@ -98,7 +120,7 @@ const signupProgress = (req, res) => {
                     return res.status(500).json({ success: false, meesage: 'db오류' });
                 }
                 else if (result === true) {
-                    return res.status(200).json({ success: true, message: '회원가입 완료' });
+                    return res.status(201).json({ success: true, message: '계정 생성 완료' });
                 }
             })
 
@@ -114,7 +136,7 @@ const userIdCheckProgress = (req, res) => {
 
     if(!loginUserId){
         console.log('아이디 미입력');
-        return res.status(400).json({success : false, message : '아이디를 입력해주세요.'});
+        return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.'});
     }
 
     if(!idRegex.test(loginUserId)){
@@ -127,7 +149,7 @@ const userIdCheckProgress = (req, res) => {
                 case 'DB_ERROR':
                     return res.status(500).json({ success: false, message: err.message });
                 case 'ID_DUPLICATE':
-                    return res.status(400).json({ success: false, message: err.message });
+                    return res.status(409).json({ success: false, message: err.message });
             }
         }
         else{
@@ -136,11 +158,10 @@ const userIdCheckProgress = (req, res) => {
     })
 }
 
-
-
-
 module.exports = {
     signinProgress,
+    logoutProgress,
     signupProgress,
     userIdCheckProgress
 }
+

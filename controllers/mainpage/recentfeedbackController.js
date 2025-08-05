@@ -1,5 +1,5 @@
 
-const { recentFeedback } = require('../../models/recentfeedbackModel');
+const { recentFeedback } = require('../../models/mainpage/mainpageModel');
 
 
 const getRecentFeedback = (req, res) => {
