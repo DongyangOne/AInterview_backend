@@ -10,10 +10,11 @@ router.get('/today', getTodayQuestion);
 router.get('/thisweek', Twcalendar);  
 router.get('/recent', getRecentFeedback); 
 router.post('/push-token', updatePushToken);
+router.post('/send', sendNotice);
 router.get('/:userId', getNotices);
 router.patch('/:userId/:noticeId/read', readNotice);
 router.patch('/:userId/read', readNotice);
-router.post('/send', sendNotice);
+
 
 
 module.exports = router;
