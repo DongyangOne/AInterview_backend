@@ -6,13 +6,15 @@ const { getTodayQuestion } = require('../../controllers/mainpage/mainpageControl
 const { Twcalendar } = require('../../controllers/mainpage/mainpageController');
 const { getRecentFeedback } = require('../../controllers/mainpage/mainpageController');
 
-router.post('/push-token', updatePushToken);
-router.get('/:userId', getNotices);
-router.patch('/:userId/:noticeId/read', readNotice);
-router.patch('/:userId/read', readNotice);
-router.post('/send', sendNotice);
 router.get('/today', getTodayQuestion);  
 router.get('/thisweek', Twcalendar);  
 router.get('/recent', getRecentFeedback); 
+router.post('/push-token', updatePushToken);
+router.post('/send', sendNotice);
+router.get('/:userId', getNotices);
+router.patch('/:userId/:noticeId/read', readNotice);
+router.patch('/:userId/read', readNotice);
+
+
 
 module.exports = router;
