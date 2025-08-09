@@ -10,9 +10,14 @@ const myInfoProgress = (req, res) =>{
         return res.status(401).json({success : false, message : '로그인 필요'});
     }
 
-    const loginUserId = req.session.user.id;
+    const userId = req.query.userId;
 
-    myInfo(loginUserId, (err, result)=>{
+    if(!userId){
+        console.log('미입력 정보 존재');
+        return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.'});
+    }
+
+    myInfo(userId, (err, result)=>{
         if(err){
             return res.status(500).json({success : false, message : 'db오류'});
         }else{
