@@ -4,7 +4,10 @@ const db = require('../../config/database');
 //일정 조회
 const TwTODO=(userId,callback)=>{
     const sql=
-    'SELECT calendar_id, title,time FROM calendar WHERE  DATE(time) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL WEEKDAY(CURRENT_DATE()) DAY) AND DATE_ADD(CURRENT_DATE(), INTERVAL (6 - WEEKDAY(CURRENT_DATE())) DAY) AND users_id = ?;'
+    `SELECT calendar_id, title,time FROM calendar WHERE
+    DATE(time) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL (WEEKDAY(CURRENT_DATE()) + 1) DAY) AND 
+    DATE_ADD(CURRENT_DATE(), INTERVAL (5 - WEEKDAY(CURRENT_DATE())) DAY) AND users_id = ?
+     order by created_at desc;`
      db.query(sql,[userId],(err,result)=>{
           if(err){
             console.log('오류 : ', err);
