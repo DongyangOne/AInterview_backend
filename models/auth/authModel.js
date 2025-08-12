@@ -3,7 +3,7 @@ const db = require('../../config/database');
 //backend-0
 const loginCheck = (userId, password, callback)=>{
     const sql = `
-        select id, user_id, password
+        select id, user_id, password, nickname
         from users
         where user_id = ?
     `;
