@@ -16,8 +16,8 @@ const findAllByUserId = ({ userId }, callback) => {
     ORDER BY created_at DESC
   `;
     logSQL('findAllByUserId', sql, [userId]); 
-  db.query(sql, [userId], (err, rows) => {
-
+  
+    db.query(sql, [userId], (err, rows) => {
     if (err) {
       logSQLErr('findAllByUserId', err);
       return callback(err, null);

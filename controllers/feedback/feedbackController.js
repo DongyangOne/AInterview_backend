@@ -32,15 +32,13 @@ const getAllFeedback = (req, res) => {
   const { userId } = req.params;
 
   if (!userId) {
-    logRes(req, 400, 'missing userId');
-
+    logRes(req, 400, '유저아이디를 입력하지 않았습니다');
     return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findAllByUserId({ userId }, (err, feedbackList) => {
-    if (err) {
-       logRes(req, 500, `findAllByUserId error: ${err.message}`);
-
+   if (err) {
+      logRes(req, 500, `findAllByUserId error: ${err.message}`);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
@@ -52,7 +50,7 @@ const getAllFeedback = (req, res) => {
     }));
 
 
-logRes(req, 200, `count=${formattedList.length}`);
+logRes(req, 200, `count=${formattedList.length} (userId=${userId})`);
     return res.status(200).json({
       success: true,
       message: '모든 피드백 조회 성공',
