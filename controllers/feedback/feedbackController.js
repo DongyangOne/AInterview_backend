@@ -236,12 +236,24 @@ const getUnpin = (req, res) => {
   });
 };
 
+const ts = () => new Date().toISOString();
+const safe = (v) => { try { return JSON.stringify(v); } catch { return '[unserializable]' } };
+const logReq = (req, note='') => {
+  console.log(`[${ts()}] REQ ${req.method} ${req.originalUrl} ${note} | params=${safe(req.params)} query=${safe(req.query)} body=${safe(req.body)}`);
+};
+const logRes = (req, status, note='') => {
+  console.log(`[${ts()}] RES ${req.method} ${req.originalUrl} -> ${status} ${note}`);
+};
+
 //backend-13
 const deleteFeedback = (req, res) => {
+logReq(req, 'deleteFeedback');
+
   const { userId, feedbackId } = req.params;
 
 deleteById({ feedbackId, userId }, (err, result) => {
     if (err) {
+      logRes(req, 500, `deleteById error: ${err.message}`);
       return res.status(500).json({
         success: false,
         message: '서버 오류',
@@ -249,7 +261,8 @@ deleteById({ feedbackId, userId }, (err, result) => {
       });
     }
 
-    res.status(200).json({
+    logRes(req, 200, `deleted (userId=${userId}, feedbackId=${feedbackId})`);
+    return res.status(200).json({
       success: true,
       message: '피드백이 성공적으로 삭제되었습니다.'
     });

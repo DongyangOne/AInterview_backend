@@ -96,7 +96,11 @@ const unpinFeedback = (feedback_id, userId, callback) => {
   });
 };
 
-
+const tsm = () => new Date().toISOString();
+const logSQL = (label, sql, params) =>
+  console.log(`[${tsm()}] SQL ${label}: ${sql.trim().replace(/\s+/g, ' ')} | params=${JSON.stringify(params ?? [])}`);
+const logSQLErr = (label, err) =>
+  console.error(`[${tsm()}] SQL ERROR ${label}: ${err.message}`);
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
@@ -104,8 +108,15 @@ const deleteById = ({ feedbackId, userId }, callback) => {
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+logSQL('deleteById', sql, [feedbackId, userId]);
+
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+    
+   if (err) {
+      logSQLErr('deleteById', err); // SQL 에러 로그
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
