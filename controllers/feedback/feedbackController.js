@@ -247,11 +247,11 @@ const logRes = (req, status, note='') => {
 
 //backend-13
 const deleteFeedback = (req, res) => {
-logReq(req, 'deleteFeedback');
+  logReq(req, 'deleteFeedback');
 
   const { userId, feedbackId } = req.params;
 
-deleteById({ feedbackId, userId }, (err, result) => {
+  deleteById({ feedbackId, userId }, (err, result) => {
     if (err) {
       logRes(req, 500, `deleteById error: ${err.message}`);
       return res.status(500).json({
@@ -261,8 +261,12 @@ deleteById({ feedbackId, userId }, (err, result) => {
       });
     }
 
+
     logRes(req, 200, `deleted (userId=${userId}, feedbackId=${feedbackId})`);
     return res.status(200).json({
+
+
+    
       success: true,
       message: '피드백이 성공적으로 삭제되었습니다.'
     });
