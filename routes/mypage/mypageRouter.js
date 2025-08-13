@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const {pwChange, nicknameChange, setAppPush, passwordCheck, appPushState} = require('../../controllers/mypage/myPageController');
-const {myInfoProgress} = require('../../controllers/mypage/myPageController');
-const {feedInfoProgress, deleteUserProgress} = require('../../controllers/mypage/myPageController');
+const {pwChange, nicknameChange, setAppPush, passwordCheck, appPushState} = require('../../controllers/mypage/mypageController');
+const {myInfoProgress} = require('../../controllers/mypage/mypageController');
+const {feedInfoProgress, deleteUserProgress} = require('../../controllers/mypage/mypageController');
 
 router.post('/changePw', pwChange);
 router.post('/changeName', nicknameChange);
