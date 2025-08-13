@@ -44,7 +44,8 @@ const getRecentFeedback = (req, res) => {
 //backend-4
 // 오늘의 질문 조회
 const getTodayQuestion = (req, res) => {
-
+    
+ console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
     todayQuestion( (err, result) => {
         if (err) {
             console.error('todayQuestion 오류:', err);
