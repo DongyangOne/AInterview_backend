@@ -151,6 +151,26 @@ const setAppPush = (req, res)=>{
     
 }
 
+//앱 푸시 현재 상태 가져오기
+const appPushState = (req, res)=>{
+    const loginUser = req.session.user;
+    let updateInfo;
+    if(!loginUser){
+        console.log('로그인 필요');
+        return res.status(401).json({success : false, message : '로그인 필요'});
+    }
+
+    const loginUserId = req.session.user.id;
+
+    getAppPush(loginUserId, (err, result)=>{
+        if(err) return res.status(500).json({success : false, message : 'db오류'});
+        else{
+            return res.status(200).json({success : true, message : '현재 알람 수신 상태', status : result[0].push_agreed});
+        }
+    })
+    
+}
+
 //backend-24
 //비밀번호 일치 확인용 함수
 const passwordCheck = (req, res)=>{
@@ -247,5 +267,6 @@ module.exports = {
     setAppPush,
     passwordCheck,
     feedInfoProgress,
-    deleteUserProgress
+    deleteUserProgress,
+    appPushState
 }
