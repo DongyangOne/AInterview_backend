@@ -2,17 +2,20 @@
 const { TwTODO, recentFeedback, todayQuestion, getUserNotices, updateUserPushToken, insertNotice, markNoticeRead } = 
 require('../../models/mainpage/mainpageModel');
 
+
 const Twcalendar = (req, res) => {
     const userId = req.query.userId;
 
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
     if (!userId) {
-        return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
+        console.error(`[${new Date().toISOString()}] [TwCalendar] missing userId`);
+        return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.', });
     }
 
     // 콜백 기반 응답
     TwTODO(userId, (err, result) => {
         if (err) {
-            console.error('DB 오류:', err);
+            console.error('[TwTODO]sql 오류:', err);
             return res.status(500).json({ success: false, message: '서버 오류', error: err });
         }
 
