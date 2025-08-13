@@ -110,6 +110,14 @@ const deleteById = ({ feedbackId, userId }, callback) => {
   });
 };
 
+const tsm = () => new Date().toISOString();
+const logSQL = (label, sql, params) =>
+  console.log(
+    `[${tsm()}] SQL ${label}: ${sql.trim().replace(/\s+/g, ' ')} | params=${JSON.stringify(params ?? [])}`
+  );
+const logSQLErr = (label, err) =>
+  console.error(`[${tsm()}] SQL ERROR ${label}: ${err.message}`);
+
 //backend-14
 const findById = ({ feedbackId, userId }, callback) => {
   const sql = `
@@ -125,9 +133,17 @@ const findById = ({ feedbackId, userId }, callback) => {
     FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+  logSQL('findById', sql, [feedbackId, userId]);
+
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
-    callback(null, rows[0]);
+
+  if (err) {
+      logSQLErr('findById', err);                 // ← SQL 에러 로그
+      return callback(err, null);
+    }
+    callback(null, rows[0] || null);
   });
 };
 

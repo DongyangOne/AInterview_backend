@@ -259,6 +259,16 @@ deleteById({ feedbackId, userId }, (err, result) => {
 //backend-14
 const feedbackModel = require('../../models/feedback/feedbackModel');
 
+const ts = () => new Date().toISOString();
+const safe = (v) => { try { return JSON.stringify(v); } catch { return '[unserializable]' } };
+const logReq = (req, note='') => {
+  console.log(`[${ts()}] REQ ${req.method} ${req.originalUrl} ${note} | params=${safe(req.params)} query=${safe(req.query)} body=${safe(req.body)}`);
+};
+const logRes = (req, status, note='') => {
+  console.log(`[${ts()}] RES ${req.method} ${req.originalUrl} -> ${status} ${note}`);
+};
+
+
 const formatDate2 = (date) => {
   if (!date) return null;
   return new Date(date).toISOString().split('T')[0];
@@ -266,20 +276,28 @@ const formatDate2 = (date) => {
 
 
 const getFeedbackDetail = (req, res) => {
+ logReq(req, 'getFeedbackDetail');
+
   const { userId, feedbackId } = req.params;
-if (!userId || !feedbackId) {
+
+ if (!userId || !feedbackId) {
+    logRes(req, 400, 'userId나 feedbackId를 잘못 입력하였습니다');
     return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findById({ feedbackId, userId }, (err, feedback) => {
     if (err) {
+      logRes(req, 500, `findById error: ${err.message}`);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
     if (!feedback) {
+      logRes(req, 404, `not found (userId=${userId}, feedbackId=${feedbackId})`);
       return res.status(404).json({ success: false, message: '해당 피드백을 찾을 수 없습니다.' });
     }
 
+
+    logRes(req, 200, `ok (userId=${userId}, feedbackId=${feedbackId})`);
     res.status(200).json({
       success: true,
       message: '피드백 상세 조회 성공',
