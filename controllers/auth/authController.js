@@ -3,24 +3,32 @@ const { loginCheck, addUser, userIdCheck } = require('../../models/auth/authMode
 //backend-0
 //로그인 함수
 const signinProgress = (req, res) => {
+    const requestTime = new Date().toLocaleString('ko-KR', {timeZone : 'Asia/Seoul'});
+    const{method, originalUrl} = req;
+
     const loginUserId = req.body.loginUserId;
     const password = req.body.password;
     if (!loginUserId) {
         console.log('아이디 미입력');
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
     if (!password) {
         console.log('비밀번호 미입력');
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
     loginCheck(loginUserId, password, (err, result) => {
         if (err) {
             switch (err.code) { //각종 에러 처리
                 case 'DB_ERROR':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
                     return res.status(500).json({ success: false, message: err.message });
                 case 'USER_NOT_FOUND':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${404}`);
                     return res.status(404).json({ success: false, message: err.message });
                 case 'INVALID_PASSWORD':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
                     return res.status(401).json({ success: false, message: err.message });
             }
         }
@@ -31,20 +39,24 @@ const signinProgress = (req, res) => {
             userId: result[0].user_id
         }
         console.log('세션 등록 완료');
-
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
         res.status(200).json({ success: true, loginUserId: result[0].user_id, userId : result[0].id, nickname: result[0].nickname, message: '로그인 상태' });
     })
 }
 
 const logoutProgress = (req, res)=>{ //로그아웃 함수
+    const requestTime = new Date().toLocaleString('ko-KR', {timeZone : 'Asia/Seoul'});
+    const{method, originalUrl} = req;
     //세션 삭제
     req.session.destroy((err)=>{
         if(err){
             console.log('세션 삭제 중 오류 : ',err);
+            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
             return res.status(500).json({success : false, message : '로그아웃 중 오류'});
         }
         res.clearCookie('connect.sid'); //세션 쿠키 삭제
         console.log('로그아웃 완료');
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
         return res.status(200).json({success : true, message : '로그아웃 성공'});
     });
 }
@@ -52,6 +64,9 @@ const logoutProgress = (req, res)=>{ //로그아웃 함수
 //backend-1
 //회원가입 함수
 const signupProgress = (req, res) => {
+    const requestTime = new Date().toLocaleString('ko-KR', {timeZone : 'Asia/Seoul'});
+    const{method, originalUrl} = req;
+
     const loginUserId = req.body.loginUserId;
     const nickname = req.body.nickname;
     const password = req.body.password;
@@ -94,11 +109,13 @@ const signupProgress = (req, res) => {
 
     if(inputErrors.length > 0){
         console.log('입력 값 검증 실패 : ', inputErrors);
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
         return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : inputErrors});
     }
 
     if (errors.length > 0) {
         console.log('입력 값 검증 실패 : ', errors);
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
         return res.status(400).json({ success: false, messages: '형식에 맞지 않는 값이 존재합니다.', error : errors });
     }
 
@@ -109,17 +126,21 @@ const signupProgress = (req, res) => {
         if (err) {
             switch (err.code) {
                 case 'DB_ERROR':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
                     return res.status(500).json({ success: false, message: err.message });
                 case 'ID_DUPLICATE':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${409}`);
                     return res.status(409).json({ success: false, message: err.message });
             }
         }
         else {
             addUser(loginUserId, nickname, password, appPush, (err, result) => {
                 if (err) {
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
                     return res.status(500).json({ success: false, meesage: 'db오류' });
                 }
                 else if (result === true) {
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${201}`);
                     return res.status(201).json({ success: true, message: '계정 생성 완료' });
                 }
             })
@@ -131,28 +152,36 @@ const signupProgress = (req, res) => {
 
 //중복확인 함수
 const userIdCheckProgress = (req, res) => {
+    const requestTime = new Date().toLocaleString('ko-KR', {timeZone : 'Asia/Seoul'});
+    const{method, originalUrl} = req;
+
     const loginUserId = req.body.loginUserId;
     const idRegex = /^[A-Za-z0-9]{3,15}$/;
 
     if(!loginUserId){
         console.log('아이디 미입력');
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
         return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.'});
     }
 
     if(!idRegex.test(loginUserId)){
         console.log('아이디 조건 미충족');
+        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
         return res.status(400).json({success : false, message : '아이디는 3-15자의 영어, 숫자만 가능합니다.'});
     }
     userIdCheck(loginUserId, (err, result)=>{
         if(err){
             switch (err.code) {
                 case 'DB_ERROR':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
                     return res.status(500).json({ success: false, message: err.message });
                 case 'ID_DUPLICATE':
+                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${409}`);
                     return res.status(409).json({ success: false, message: err.message });
             }
         }
         else{
+            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
             return res.status(200).json({success : true, message : '사용가능한 아이디'});
         }
     })
