@@ -1,5 +1,12 @@
 const db = require('../../config/database');
 
+const tsm = () => new Date().toISOString();
+const logSQL = (label, sql, params) =>
+  console.log(`[${tsm()}] SQL ${label}: ${sql.trim().replace(/\s+/g,' ')} | params=${JSON.stringify(params ?? [])}`);
+const logSQLErr = (label, err) =>
+  console.error(`[${tsm()}] SQL ERROR ${label}: ${err.message}`);
+
+
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
   const sql = `
@@ -8,8 +15,13 @@ const findAllByUserId = ({ userId }, callback) => {
     WHERE userId = ?
     ORDER BY created_at DESC
   `;
+    logSQL('findAllByUserId', sql, [userId]); 
   db.query(sql, [userId], (err, rows) => {
-    if (err) return callback(err, null);
+
+    if (err) {
+      logSQLErr('findAllByUserId', err);
+      return callback(err, null);
+    }
     callback(null, rows);
   });
 };

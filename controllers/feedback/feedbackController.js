@@ -10,6 +10,15 @@ const {findAllByUserId,
     deleteById,
     findById} = require('../../models/feedback/feedbackModel');
 
+const ts = () => new Date().toISOString();
+const safe = (v) => { try { return JSON.stringify(v); } catch { return '[unserializable]' } };
+const logReq = (req, note='') => {
+  console.log(`[${ts()}] REQ ${req.method} ${req.originalUrl} ${note} | params=${safe(req.params)} query=${safe(req.query)} body=${safe(req.body)}`);
+};
+const logRes = (req, status, note='') => {
+  console.log(`[${ts()}] RES ${req.method} ${req.originalUrl} -> ${status} ${note}`);
+};
+
 //backend-7
 const formatDate = (date) => {
   if (!date) return null;
@@ -17,14 +26,21 @@ const formatDate = (date) => {
 };
 
 const getAllFeedback = (req, res) => {
+
+ logReq(req, 'getAllFeedback');
+  
   const { userId } = req.params;
 
   if (!userId) {
+    logRes(req, 400, 'missing userId');
+
     return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findAllByUserId({ userId }, (err, feedbackList) => {
     if (err) {
+       logRes(req, 500, `findAllByUserId error: ${err.message}`);
+
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
@@ -35,7 +51,9 @@ const getAllFeedback = (req, res) => {
       created_at: formatDate(feedback.created_at)
     }));
 
-    res.status(200).json({
+
+logRes(req, 200, `count=${formattedList.length}`);
+    return res.status(200).json({
       success: true,
       message: '모든 피드백 조회 성공',
       data: formattedList
