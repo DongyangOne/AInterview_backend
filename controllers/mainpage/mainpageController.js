@@ -1,5 +1,5 @@
 //backend-2
-const { TwTODO, recentFeedback, todayQuestion } = require('../../models/mainpage/mainpageModel');
+const { TwTODO, recentFeedback, todayQuestion} = require('../../models/mainpage/mainpageModel');
 
 const Twcalendar = (req, res) => {
     const userId = req.query.userId;
@@ -54,9 +54,10 @@ const getTodayQuestion = (req, res) => {
     });
 };
 
+
 module.exports = { 
     Twcalendar, 
     getRecentFeedback, 
     getTodayQuestion
 };
-    
+
