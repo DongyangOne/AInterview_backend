@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 
+
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
   const sql = `
@@ -8,8 +9,10 @@ const findAllByUserId = ({ userId }, callback) => {
     WHERE userId = ?
     ORDER BY created_at DESC
   `;
-  db.query(sql, [userId], (err, rows) => {
-    if (err) return callback(err, null);
+    
+  
+    db.query(sql, [userId], (err, rows) => {
+     if (err) return callback(err, null);
     callback(null, rows);
   });
 };
