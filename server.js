@@ -25,7 +25,8 @@ const datedeleteRouter = require('./routes/calendar/calendarRouter');
 const recentfeedbackRouter=require('./routes/mainpage/mainpageRouter');
 const calendarRouter = require('./routes/mainpage/mainpageRouter');
 const questionRouter=require('./routes/mainpage/mainpageRouter');
-const noticeRouter = require('./routes/mainpage/mainpageRouter');
+
+const noticeRouter = require('./routes/mainpage/noticeRouter');
 
 const feedbackpinRouter = require('./routes/feedback/feedbackRouter'); 
 const sortfeedbackRouter = require('./routes/feedback/feedbackRouter');
