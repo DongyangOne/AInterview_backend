@@ -1,11 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { addDate } = require('../../controllers/calendar/calendarController');
-const { getDelete } = require('../../controllers/calendar/calendarController');
-const { getUpdate } = require('../../controllers/calendar/calendarController');
-const { getSearchDay } = require('../../controllers/calendar/calendarController');
-const { getSearchmonth } = require('../../controllers/calendar/calendarController');
+const { addDate, getDelete, getUpdate, getSearchDay, getSearchmonth } = require('../../controllers/calendar/calendarController');
 
 router.get('/add', addDate);
 router.get('/delete', getDelete);
