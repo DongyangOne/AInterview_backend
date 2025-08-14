@@ -13,7 +13,7 @@ router.delete('/:feedbackId/:userId', feedbackController.deleteFeedback);
 router.get('/:userId/:feedbackId', feedbackController.getFeedbackDetail);
 router.get('/:userId/:feedbackId/memo', feedbackController.getFeedbackMemo);
 router.patch('/:userId/:feedbackId/memo', feedbackController.updateFeedbackMemo);
-router.patch('/pin/:feedback_id/:userId', feedbackController.getPin);
-router.patch('/unpin/:feedback_id/:userId', feedbackController.getUnpin);
+router.patch('/pin/:feedbackId/:userId', feedbackController.getPin);
+router.patch('/unpin/:feedbackId/:userId', feedbackController.getUnpin);
 
 module.exports = router;
