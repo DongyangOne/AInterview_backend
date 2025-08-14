@@ -12,9 +12,7 @@ const {findAllByUserId,
 
 const formatTimestamp = () => {
   const now = new Date();
-  const date = `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}`;
-  const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-  return `${date}. ${time}`;
+  return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}. ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
 };
 
 const logSimple = (label, status) => {
@@ -30,16 +28,11 @@ const formatDate = (date) => {
 };
 
 const getAllFeedback = (req, res) => {
-
- 
-  
   const { userId } = req.params;
 
   if (!userId) {
-
-    logSimple('피드백 리스트 조회', 400);
-
-    return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
+logSimple('피드백 리스트 조회', 400);
+return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findAllByUserId({ userId }, (err, feedbackList) => {
