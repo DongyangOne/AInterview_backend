@@ -61,31 +61,24 @@ logSimple('피드백 리스트 조회', 200);
   });
 };
 
-const ts = () => new Date().toISOString();
-const safe = (v) => { try { return JSON.stringify(v); } catch { return '[unserializable]'; } };
-const logReq = (req, note='') => {
-  console.log(`[${ts()}] REQ ${req.method} ${req.originalUrl} ${note} | params=${safe(req.params)} query=${safe(req.query)} body=${safe(req.body)}`);
-};
-const logRes = (req, status, note='') => {
-  console.log(`[${ts()}] RES ${req.method} ${req.originalUrl} -> ${status} ${note}`);
-};
+
 
 //backend-8
 //  기존 제목 불러오기
 const getFeedbackTitle = (req, res) => {
- logReq(req, 'getFeedbackTitle');
+ 
 
 
   const { userId, feedbackId } = req.params;
 
 findTitleById({ feedbackId, userId }, (err, data) => {
     if (err) {
-      logRes(req, 500, `findTitleById error: ${err.message}`);
+      logSimple('피드백 제목 조회', 500);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
 
-    logRes(req, 200, `ok (userId=${userId}, feedbackId=${feedbackId})`);
+    logSimple('피드백 제목 조회', 200);
     res.status(200).json({ success: true, message: '기존 제목 조회 성공', data });
   });
 };
@@ -96,27 +89,28 @@ findTitleById({ feedbackId, userId }, (err, data) => {
 // 8번: 제목 수정 
 const updateFeedbackTitle = (req, res) => {
 
-   logReq(req, 'updateFeedbackTitle');
+   
   const { userId, feedbackId } = req.params;
   const { title } = req.body;
 
   if (!title)  {
-    logRes(req, 400, '제목을 입력하지 않았습니다');
+    logSimple('피드백 제목 수정', 400);
 
    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다(title)' });
   }
+
   if (title.length > 20)  {
-    logRes(req, 400, '제목의 길이가 너무 깁니다');
+    logSimple('피드백 제목 수정', 400);
     return res.status(400).json({ success: false, message: '제목은 20자 이하로 입력해주세요.' });
   }
 
   updateTitle({ feedbackId, title, userId }, (err, result) => {
     if (err) {
-       logRes(req, 500, `updateTitle error: ${err.message}`);
+       logSimple('피드백 제목 수정', 500);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
-    logRes(req, 200, `updated (userId=${userId}, feedbackId=${feedbackId})`);
+    logSimple('피드백 제목 수정', 200);
     res.status(200).json({ success: true, message: '피드백 제목이 성공적으로 수정되었습니다.' });
   });
 };

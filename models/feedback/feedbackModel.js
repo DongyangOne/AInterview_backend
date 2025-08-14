@@ -17,22 +17,17 @@ const findAllByUserId = ({ userId }, callback) => {
   });
 };
 
-const tsm = () => new Date().toISOString();
-const logSQL = (label, sql, params) =>
-  console.log(`[${tsm()}] SQL ${label}: ${sql.trim().replace(/\s+/g,' ')} | params=${JSON.stringify(params ?? [])}`);
-const logSQLErr = (label, err) =>
-  console.error(`[${tsm()}] SQL ERROR ${label}: ${err.message}`);
 
 //backend-8
 // 제목조회
 const findTitleById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT title FROM feedback WHERE feedback_id = ? AND userId = ?";
   
-   logSQL('findTitleById', sql, [feedbackId, userId]);
+   
   
   db.query(sql, [feedbackId, userId], (err, rows) => {
  if (err) {
-      logSQLErr('findTitleById', err);
+      
       return callback(err, null);
     }
     callback(null, rows[0]);
@@ -43,11 +38,11 @@ const findTitleById = ({ feedbackId, userId }, callback) => {
 const updateTitle = ({ feedbackId, title, userId }, callback) => {
   const sql = "UPDATE feedback SET title = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
   
-   logSQL('updateTitle', sql, [title, feedbackId, userId]);
+   
   
   db.query(sql, [title, feedbackId, userId], (err, result) => {
    if (err) {
-      logSQLErr('updateTitle', err);
+     
       return callback(err, null);
     }
     callback(null, result);
