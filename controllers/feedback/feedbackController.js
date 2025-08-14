@@ -21,22 +21,31 @@ const logSimple = (label, status) => {
   console.log(`${formatTimestamp()} ${label} ${status} 응답`);
 };
 
-//backend-7
+
+//backend-7 피드백 리스트 조회
+
 const formatDate = (date) => {
   if (!date) return null;
   return new Date(date).toISOString().split('T')[0];
 };
 
 const getAllFeedback = (req, res) => {
+
+ 
+  
   const { userId } = req.params;
 
   if (!userId) {
-      logSimple('피드백 리스트 조회', 400);
+
+    logSimple('피드백 리스트 조회', 400);
+
     return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findAllByUserId({ userId }, (err, feedbackList) => {
-    if (err) {
+
+   if (err) {
+
       logSimple('피드백 리스트 조회', 500);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
@@ -48,8 +57,10 @@ const getAllFeedback = (req, res) => {
       created_at: formatDate(feedback.created_at)
     }));
 
-    logSimple('피드백 리스트 조회', 200);
-    res.status(200).json({
+
+logSimple('피드백 리스트 조회', 200);
+    return res.status(200).json({
+
       success: true,
       message: '모든 피드백 조회 성공',
       data: formattedList
