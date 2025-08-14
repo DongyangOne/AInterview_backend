@@ -36,21 +36,16 @@ const updateTitle = ({ feedbackId, title, userId }, callback) => {
   });
 };
 
-const tsm = () => new Date().toISOString();
-const logSQL = (label, sql, params) =>
-  console.log(`[${tsm()}] SQL ${label}: ${sql.trim().replace(/\s+/g,' ')} | params=${JSON.stringify(params ?? [])}`);
-const logSQLErr = (label, err) =>
-  console.error(`[${tsm()}] SQL ERROR ${label}: ${err.message}`);
 
 //backend-9 memofeedbackModel
 //메모 조회
 const findMemoById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT memo FROM feedback WHERE feedback_id = ? AND userId = ?";
-  logSQL('findMemoById', sql, [feedbackId, userId]);
+  
   
   db.query(sql, [feedbackId, userId], (err, rows) => {
    if (err) {
-      logSQLErr('findMemoById', err);
+      
       return callback(err, null);
     }
     callback(null, rows[0]);
@@ -63,11 +58,11 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
     return callback(new Error('메모는 50자 이하로 입력해주세요.'), null);
   }
   const sql = "UPDATE feedback SET memo = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
-  logSQL('updateMemo', sql, [memo, feedbackId, userId]);
+  
   
   db.query(sql, [memo, feedbackId, userId], (err, result) => {
   if (err) {
-      logSQLErr('updateMemo', err);
+      
       return callback(err, null);
     }
     callback(null, result);
