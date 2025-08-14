@@ -49,12 +49,18 @@ const updateTitle = ({ feedbackId, title, userId }, callback) => {
   });
 };
 
+
 //backend-9 memofeedbackModel
 //메모 조회
 const findMemoById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT memo FROM feedback WHERE feedback_id = ? AND userId = ?";
+  
+  
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, rows[0]);
   });
 };
@@ -65,11 +71,16 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
     return callback(new Error('메모는 50자 이하로 입력해주세요.'), null);
   }
   const sql = "UPDATE feedback SET memo = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
+  
+  
   db.query(sql, [memo, feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+  if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
-};
+}
 
 //backend-10
 const searchFeedbacks = (userId, keyword, callback) => {
