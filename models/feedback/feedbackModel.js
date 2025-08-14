@@ -124,15 +124,21 @@ const unpinFeedback = (feedback_id, userId, callback) => {
 };
 
 
-
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
   const sql = `
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+    
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };

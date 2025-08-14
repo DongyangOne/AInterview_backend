@@ -297,12 +297,15 @@ const getUnpin = (req, res) => {
   });
 };
 
+
+
 //backend-13
 const deleteFeedback = (req, res) => {
-  const { userId, feedbackId } = req.params;
+ const { userId, feedbackId } = req.params;
 
-deleteById({ feedbackId, userId }, (err, result) => {
+  deleteById({ feedbackId, userId }, (err, result) => {
     if (err) {
+      logSimple('피드백 삭제', 500);
       return res.status(500).json({
         success: false,
         message: '서버 오류',
@@ -310,8 +313,9 @@ deleteById({ feedbackId, userId }, (err, result) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
+    logSimple('피드백 삭제', 200);
+    return res.status(200).json({
+success: true,
       message: '피드백이 성공적으로 삭제되었습니다.'
     });
   });
