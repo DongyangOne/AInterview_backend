@@ -320,6 +320,7 @@ deleteById({ feedbackId, userId }, (err, result) => {
 //backend-14
 const feedbackModel = require('../../models/feedback/feedbackModel');
 
+
 const formatDate2 = (date) => {
   if (!date) return null;
   return new Date(date).toISOString().split('T')[0];
@@ -327,20 +328,26 @@ const formatDate2 = (date) => {
 
 
 const getFeedbackDetail = (req, res) => {
-  const { userId, feedbackId } = req.params;
-if (!userId || !feedbackId) {
+ const { userId, feedbackId } = req.params;
+
+ if (!userId || !feedbackId) {
+    logSimple('피드백 상세 조회', 400);
     return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findById({ feedbackId, userId }, (err, feedback) => {
     if (err) {
+      logSimple('피드백 상세 조회', 500);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
     if (!feedback) {
+      logSimple('피드백 상세 조회', 404);
       return res.status(404).json({ success: false, message: '해당 피드백을 찾을 수 없습니다.' });
     }
 
+
+    logSimple('피드백 상세 조회', 200);
     res.status(200).json({
       success: true,
       message: '피드백 상세 조회 성공',

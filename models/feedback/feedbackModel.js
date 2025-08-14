@@ -137,6 +137,7 @@ const deleteById = ({ feedbackId, userId }, callback) => {
   });
 };
 
+
 //backend-14
 const findById = ({ feedbackId, userId }, callback) => {
   const sql = `
@@ -152,9 +153,17 @@ const findById = ({ feedbackId, userId }, callback) => {
     FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+  
+
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
-    callback(null, rows[0]);
+
+  if (err) {
+              
+      return callback(err, null);
+    }
+    callback(null, rows[0] || null);
   });
 };
 
