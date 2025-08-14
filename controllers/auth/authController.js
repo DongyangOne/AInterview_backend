@@ -32,7 +32,7 @@ const signinProgress = (req, res) => {
         }
         console.log('세션 등록 완료');
 
-        res.status(200).json({ success: true, data: result[0].user_id, message: '로그인 상태' });
+        res.status(200).json({ success: true, loginUserId: result[0].user_id, userId : result[0].id, nickname: result[0].nickname, message: '로그인 상태' });
     })
 }
 

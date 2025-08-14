@@ -1,12 +1,11 @@
+//backend-2
 const { TwTODO, recentFeedback, todayQuestion } = require('../../models/mainpage/mainpageModel');
-
 
 const Twcalendar = (req, res) => {
     const userId = req.query.userId;
 
-
     if (!userId) {
-        return res.status(400).json({ success: false, message: 'user_id가 필요합니다.' });
+        return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
 
     // 콜백 기반 응답
@@ -23,12 +22,12 @@ const Twcalendar = (req, res) => {
     });
 }
 
-
+//backend-3
 const getRecentFeedback = (req, res) => {
     const userId = req.query.userId;
 
     if (!userId) {
-        return res.status(400).json({ success: false, message: 'user_id가 필요합니다.' });
+        return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
 
     recentFeedback(userId, (err, result) => {
@@ -41,6 +40,7 @@ const getRecentFeedback = (req, res) => {
     });
 };
 
+//backend-4
 // 오늘의 질문 조회
 const getTodayQuestion = (req, res) => {
 
@@ -55,5 +55,8 @@ const getTodayQuestion = (req, res) => {
 };
 
 module.exports = { 
-    Twcalendar, getRecentFeedback, getTodayQuestion };
-
+    Twcalendar, 
+    getRecentFeedback, 
+    getTodayQuestion
+};
+    
