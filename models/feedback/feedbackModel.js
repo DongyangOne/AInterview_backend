@@ -17,12 +17,19 @@ const findAllByUserId = ({ userId }, callback) => {
   });
 };
 
+
 //backend-8
 // 제목조회
 const findTitleById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT title FROM feedback WHERE feedback_id = ? AND userId = ?";
+  
+   
+  
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
+ if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, rows[0]);
   });
 };
@@ -30,8 +37,14 @@ const findTitleById = ({ feedbackId, userId }, callback) => {
 // 8번: 제목 수정
 const updateTitle = ({ feedbackId, title, userId }, callback) => {
   const sql = "UPDATE feedback SET title = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
+  
+   
+  
   db.query(sql, [title, feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+   if (err) {
+     
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
