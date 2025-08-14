@@ -70,10 +70,10 @@ const signupProgress = (req, res) => {
     const loginUserId = req.body.loginUserId;
     const nickname = req.body.nickname;
     const password = req.body.password;
-    const passwordCheck = req.body.passwordCheck;
+//    const passwordCheck = req.body.passwordCheck;
     let service = req.body.service === 'Y' ? 'Y' : 'N'; //서비스 동의 추가
     let appPush = req.body.appPush === 'Y' ? 'Y' : 'N';
-    const idCheck = req.body.idCheck;
+//    const idCheck = req.body.idCheck;
     //사용자 아이디 중복확인 여부 : 해당 여부는 프론트에서 중복확인 검사를 햇을 경우에 true로 넘겨줘야 함. 기본 값 fasle로 안햇을 경우는 false로 넘기기
     //->주의할 점 : 사용자가 중복확인 후 다른 아이디로 바꿔서 썼을 때는 다시 false로 돌려줘야 된다.
     //아래는 정규표현식 정의(아이디 조건 등)
@@ -94,13 +94,13 @@ const signupProgress = (req, res) => {
     if (!password) inputErrors.push('비밀번호를 입력해주세요.');
     else if (!passwordRegex.test(password)) errors.push('비밀번호는 8-16자의 영어대소문자, 숫자, 특수문자(!,@,#,$,%,^,&,*)만 가능합니다.');
 
-    if (!passwordCheck) inputErrors.push('비밀번호 확인을 입력해주세요.');
-    else if (password !== passwordCheck) errors.push('비밀번호가 일치하지 않습니다.');
+//    if (!passwordCheck) inputErrors.push('비밀번호 확인을 입력해주세요.');
+//    else if (password !== passwordCheck) errors.push('비밀번호가 일치하지 않습니다.');
 
     //아이디 중복확인 여부 검사
-    if (!idCheck) {
-        inputErrors.push('아이디 중복확인이 필요합니다.');
-    }
+//    if (!idCheck) {
+//        inputErrors.push('아이디 중복확인이 필요합니다.');
+//    }
 
 
     if(service === 'N'){
@@ -122,7 +122,7 @@ const signupProgress = (req, res) => {
 
     
 //backend-1
-    userIdCheck(loginUserId, (err, result) => {
+  userIdCheck(loginUserId, (err, result) => {
         if (err) {
             switch (err.code) {
                 case 'DB_ERROR':
