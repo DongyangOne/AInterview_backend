@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { getNotices, readNotice } = require('../../controllers/mainpage/noticeController');
+const { getNotices, readNotice, updatePushToken, sendNotice } = require('../../controllers/mainpage/noticeController');
 
 router.get('/:userId', getNotices);
 router.patch('/:userId/:noticeId/read', readNotice);
 router.patch('/:userId/read', readNotice);
+router.post('/push-token', updatePushToken);
+router.post('/send', sendNotice);
 
 module.exports = router;
