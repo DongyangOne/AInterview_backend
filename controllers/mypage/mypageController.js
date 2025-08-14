@@ -3,33 +3,40 @@ const { myInfo, pwCheck, updatePw, updateName, getAppPush, updateAppPush, getFee
 //backend-20
 //사용자 정보 조회
 const myInfoProgress = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const loginUser = req.session.user;
 
     //세션 존재 유무 확인
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 사용자정보조회 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
     const userId = req.query.userId;
 
     if (!userId) {
-        console.log('미입력 정보 존재');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+        //console.log('미입력 정보 존재');
+        console.log(`${requestTime} 사용자정보조회 ${400} 응답`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
 
     myInfo(userId, (err, result) => {
         if (err) {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+            console.log(`${requestTime} 사용자정보조회 ${500} 응답`);
             return res.status(500).json({ success: false, message: 'db오류' });
         } else {
-            console.log('사용자 정보 불러오기 성공');
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+            //console.log('사용자 정보 불러오기 성공');
+            console.log(`${requestTime} 사용자정보조회 ${200} 응답`);
             return res.status(200).json({ success: true, message: '사용자 정보 불러오기 성공', userId: result[0].user_id, nickname: result[0].nickname, profile: result[0].image_url });
         }
     })
@@ -38,8 +45,15 @@ const myInfoProgress = (req, res) => {
 //backend-21
 //비밀번호 변경 함수
 const pwChange = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const pw = req.body.password;
     const newPw = req.body.newPassword;
@@ -47,8 +61,8 @@ const pwChange = (req, res) => {
     const loginUser = req.session.user;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 비밀번호변경 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
@@ -61,15 +75,15 @@ const pwChange = (req, res) => {
         if (err) {
             switch (err.code) {
                 case 'DB_ERROR':
-                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+                    console.log(`${requestTime} 비밀번호변경 ${500} 응답`);
                     return res.status(500).json({ success: false, message: err.message });
                 case 'INVALID_PASSWORD':
                     if (!pw) {
-                        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+                        console.log(`${requestTime} 비밀번호변경 ${400} 응답`);
                         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.', error: ['현재 비밀번호를 입력해주세요.'] });
                     }
                     else {
-                        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+                        console.log(`${requestTime} 비밀번호변경 ${401} 응답`);
                         return res.status(401).json({ success: false, message: '형식에 맞지 않는 값이 존재합니다.', error: ['현재 비밀번호를 틀렸습니다. 다시 입력해주세요.'] });
                     }
             }
@@ -82,22 +96,22 @@ const pwChange = (req, res) => {
         else if (newPw !== newPwCheck) errors.push('새 비밀번호확인이 일치하지 않습니다.');
 
         if (inputErrors.length > 0) {
-            console.log('입력 값 검증 실패 : ', inputErrors);
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+            //console.log('입력 값 검증 실패 : ', inputErrors);
+            console.log(`${requestTime} 비밀번호변경 ${400} 응답`);
             return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.', error: inputErrors });
         }
         if (errors.length > 0) {
-            console.log('입력 값 검증 실패 : ', errors);
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+            //console.log('입력 값 검증 실패 : ', errors);
+            console.log(`${requestTime} 비밀번호변경 ${400} 응답`);
             return res.status(400).json({ success: false, message: '형식에 맞지 않는 값이 존재합니다.', error: errors });
         }
 
         updatePw(loginUserId, newPw, (err, result) => {
             if (err) {
-                console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+                console.log(`${requestTime} 비밀번호변경 ${500} 응답`);
                 return res.status(500).json({ success: false, message: 'db오류' });
             } else {
-                console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+                console.log(`${requestTime} 비밀번호변경 ${200} 응답`);
                 return res.status(200).json({ success: true, message: '비밀번호 변경 완료' });
             }
         })
@@ -107,37 +121,44 @@ const pwChange = (req, res) => {
 //backend-22
 //닉네임 변경 함수
 const nicknameChange = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const newName = req.body.newName;
     const loginUser = req.session.user;
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
 
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 닉네임변경 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
     const loginUserId = req.session.user.id;
 
     if (!newName) {
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+        console.log(`${requestTime} 닉네임변경 ${400} 응답`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.', error: ['변경할 닉네임을 입력해주세요.'] });
     }
     else if (!nicknameRegex.test(newName)) {
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+        console.log(`${requestTime} 닉네임변경 ${400} 응답`);
         return res.status(400).json({ success: false, message: '닉네임은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)' });
     }
 
     updateName(loginUserId, newName, (err, result) => {
         if (err) {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+            console.log(`${requestTime} 닉네임변경 ${500} 응답`);
             return res.status(500).json({ success: false, message: 'db오류' });
         }
         else {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+            console.log(`${requestTime} 닉네임변경 ${200} 응답`);
             return res.status(200).json({ success: true, message: '닉네임 변경 완료' });
         }
     })
@@ -146,14 +167,21 @@ const nicknameChange = (req, res) => {
 //backend-23
 //앱 푸시 설정 함수
 const setAppPush = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const loginUser = req.session.user;
     let updateInfo;
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 앱 푸시 전환 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
@@ -161,8 +189,8 @@ const setAppPush = (req, res) => {
 
     getAppPush(loginUserId, (err, result) => {
         if (err) {
-            console.log(err);
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+            //console.log(err);
+            console.log(`${requestTime} 앱 푸시 전환 ${500} 응답`);
             return res.status(500).json({ success: false, message: 'db오류' });
         }
         else {
@@ -171,19 +199,19 @@ const setAppPush = (req, res) => {
 
             updateAppPush(loginUserId, updateInfo, (err, result) => {
                 if (err) {
-                    console.log(err);
-                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+                    //console.log(err);
+                    console.log(`${requestTime} 앱 푸시 전환 ${500} 응답`);
                     return res.status(500).json({ success: false, message: 'db오류' });
                 }
                 else {
                     console.log('알람 수신 전환 완료');
                     getAppPush(loginUserId, (err, result) => {
                         if (err) {
-                            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+                            console.log(`${requestTime} 앱 푸시 전환 ${500} 응답`);
                             return res.status(500).json({ success: false, message: 'db오류' });
                         }
                         else {
-                            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+                            console.log(`${requestTime} 앱 푸시 전환 ${200} 응답`);
                             return res.status(200).json({ success: true, message: '알람 수신 정보 전환 완료', status: result[0].push_agreed });
                         }
                     })
@@ -196,13 +224,20 @@ const setAppPush = (req, res) => {
 
 //앱 푸시 현재 상태 가져오기
 const appPushState = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const loginUser = req.session.user;
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 앱 푸시 상태 가져오기 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
@@ -210,11 +245,11 @@ const appPushState = (req, res) => {
 
     getAppPush(loginUserId, (err, result) => {
         if (err) {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+            console.log(`${requestTime} 앱 푸시 상태 가져오기 ${500} 응답`);
             return res.status(500).json({ success: false, message: 'db오류' });
         }
         else {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+            console.log(`${requestTime} 앱 푸시 상태 가져오기 ${200} 응답`);
             return res.status(200).json({ success: true, message: '현재 알람 수신 상태', status: result[0].push_agreed });
         }
     })
@@ -224,22 +259,29 @@ const appPushState = (req, res) => {
 //backend-24
 //비밀번호 일치 확인용 함수
 const passwordCheck = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const password = req.body.password;
     const loginUser = req.session.user;
 
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 비밀번호 일치 확인 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
     const loginUserId = req.session.user.id;
 
     if (!password) {
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${400}`);
+        console.log(`${requestTime} 비밀번호 일치 확인 ${400} 응답`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.', error: ['비밀번호를 입력해주세요.'] });
     }
     else {
@@ -247,16 +289,16 @@ const passwordCheck = (req, res) => {
             if (err) {
                 switch (err.code) {
                     case 'DB_ERROR':
-                        console.log(err.error);
-                        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+                        //console.log(err.error);
+                        console.log(`${requestTime} 비밀번호 일치 확인 ${500} 응답`);
                         return res.status(500).json({ success: false, message: err.message });
                     case 'INVALID_PASSWORD':
-                        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+                        console.log(`${requestTime} 비밀번호 일치 확인 ${401} 응답`);
                         return res.status(401).json({ success: false, message: '형식에 맞지 않는 값이 존재합니다.', error: ['비밀번호를 틀렸습니다. 다시 입력해주세요.'] });
                 }
             }
             else {
-                console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+                console.log(`${requestTime} 비밀번호 일치 확인 ${200} 응답`);
                 return res.status(200).json({ success: true, message: '올바른 비밀번호' });
             }
         })
@@ -266,37 +308,44 @@ const passwordCheck = (req, res) => {
 //backend-25
 //현재 사용자의 피드백 정보 조회 함수
 const feedInfoProgress = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const loginUser = req.session.user;
     let feedCount = 0;
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 탈퇴 시 피드백 정보 조회 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
     const loginUserId = req.session.user.id;
 
     getFeedCount(loginUserId, (err, result) => {
         if (err) {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+            console.log(`${requestTime} 탈퇴 시 피드백 정보 조회 ${500} 응답`);
             return res.status(500).json({ success: false, message: '피드백 정보 조회 중 오류' });
         }
         else {
             console.log('총 개수 조회 완료');
             feedCount = result[0].feedback_count;
             if (feedCount === 0) {
-                console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+                console.log(`${requestTime} 탈퇴 시 피드백 정보 조회 ${200} 응답`);
                 return res.status(200).json({ success: true, count: 0, list: [] });
             }
             getFeedContent(loginUserId, (err, results) => {
                 if (err) {
-                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+                    console.log(`${requestTime} 탈퇴 시 피드백 정보 조회 ${500} 응답`);
                     return res.status(500).json({ success: false, message: 'db오류' });
                 }
                 else {
-                    console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+                    console.log(`${requestTime} 탈퇴 시 피드백 정보 조회 ${200} 응답`);
                     return res.status(200).json({ success: true, count: feedCount, list: results });
                 }
             })
@@ -306,14 +355,21 @@ const feedInfoProgress = (req, res) => {
 
 //탈퇴 함수
 const deleteUserProgress = (req, res) => {
-    const requestTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-    const { method, originalUrl } = req;
+    const now = new Date();
+    const requestTime =
+        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
+        now.toLocaleTimeString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
     const loginUser = req.session.user;
 
     if (!loginUser) {
-        console.log('로그인 필요');
-        console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${401}`);
+        //console.log('로그인 필요');
+        console.log(`${requestTime} 사용자 탈퇴 ${401} 응답`);
         return res.status(401).json({ success: false, message: '로그인 필요' });
     }
 
@@ -321,11 +377,11 @@ const deleteUserProgress = (req, res) => {
 
     deleteUser(loginUserId, (err, result) => {
         if (err) {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${500}`);
+            console.log(`${requestTime} 사용자 탈퇴 ${500} 응답`);
             return res.status(500).json({ success: false, message: '탈퇴 중 오류' });
         }
         else {
-            console.log(`[${requestTime}] ${method} ${originalUrl} -> 응답 ${200}`);
+            console.log(`${requestTime} 사용자 탈퇴 ${200} 응답`);
             return res.status(200).json({ success: true, message: '탈퇴 완료' });
         }
     })
