@@ -55,44 +55,47 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
   });
 };
 
-//backend-10 
-// 피드백 검색 
-const searchFeedbacks = (keyword, callback) => {
-   const sql = `SELECT feedback_id, userId, COUNT(feedback_id) as \`조회된 피드백\`,
-  title, memo, pin, created_at FROM feedback WHERE title LIKE ? ORDER BY created_at DESC`;
-  db.query(sql, [`%${keyword}%`], callback);
+//backend-10
+const searchFeedbacks = (userId, keyword, callback) => {
+  const sql = `
+    SELECT feedback_id, userId, title, memo, pin, created_at
+    FROM feedback
+    WHERE userId = ? AND (title LIKE ? OR memo LIKE ?)
+    ORDER BY created_at DESC
+  `;
+  db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], callback);
 };
 
 //backend-11
-const sortFeedbacks = (orderBy, callback) => {
-  const sql = `SELECT feedback_id, userId, title, memo, pin, created_at FROM feedback ORDER BY pin DESC, ${orderBy}`;
-  db.query(sql, callback);
+const sortFeedbacks = (userId, orderBy, callback) => {
+  const sql = `
+    SELECT feedback_id, userId, title, memo, pin, created_at
+    FROM feedback
+    WHERE userId = ?
+    ORDER BY pin DESC, ${orderBy}
+  `;
+  db.query(sql, [userId], callback);
 };
 
 //backend-12
-const pinFeedback = (feedback_id, callback) => {
-  const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ?";
-  db.query(sql, [feedback_id], (err, result)=> {
-    if (err){
-      return callback(err);
-    }
-    else {
-      return callback(null, result);
-    }
+// 피드백 상단 고정
+const pinFeedback = (feedback_id, userId, callback) => {
+  const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
+  db.query(sql, [feedback_id, userId], (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
   });
 };
 
-const unpinFeedback = (feedback_id, callback) => {
-  const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ?";
-  db.query(sql, [feedback_id], (err, result) =>{
-    if (err) {
-      return callback(err);
-    }
-    else {
-      return callback(null, result);
-    }
+// 피드백 상단 고정 해제
+const unpinFeedback = (feedback_id, userId, callback) => {
+  const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
+  db.query(sql, [feedback_id, userId], (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
   });
 };
+
 
 
 //backend-13
@@ -114,7 +117,9 @@ const findById = ({ feedbackId, userId }, callback) => {
       feedback_id AS id, 
       userId, 
       title, 
-      content, 
+      good,
+      bad,
+      feedback, 
       memo, 
       created_at
     FROM feedback
