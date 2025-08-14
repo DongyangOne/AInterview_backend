@@ -19,7 +19,7 @@ const calendarRouter  = require('./routes/calendar/calendarRouter');
 
 const mainpageRouter = require('./routes/mainpage/mainpageRouter');
 
-const noticeRouter = require('./routes/mainpage/noticeRouter');
+const noticeRouter = require('./routes/notice/noticeRouter');
 
 const feedbackRouter = require('./routes/feedback/feedbackRouter'); 
 

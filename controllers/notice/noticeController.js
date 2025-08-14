@@ -1,4 +1,4 @@
-const { getUserNotices, markNoticeRead } = require('../../models/mainpage/noticeModel');
+const { getUserNotices, markNoticeRead } = require('../../models/notice/noticeModel');
 const now = new Date().toISOString()
 
 const getNotices = (req, res) => {
