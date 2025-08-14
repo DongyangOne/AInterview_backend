@@ -10,7 +10,18 @@ const {findAllByUserId,
     deleteById,
     findById} = require('../../models/feedback/feedbackModel');
 
-//backend-7
+const formatTimestamp = () => {
+  const now = new Date();
+  return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}. ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+};
+
+const logSimple = (label, status) => {
+  console.log(`${formatTimestamp()} ${label} ${status} 응답`);
+};
+
+
+//backend-7 피드백 리스트 조회
+
 const formatDate = (date) => {
   if (!date) return null;
   return new Date(date).toISOString().split('T')[0];
@@ -20,11 +31,15 @@ const getAllFeedback = (req, res) => {
   const { userId } = req.params;
 
   if (!userId) {
-    return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
+logSimple('피드백 리스트 조회', 400);
+return res.status(400).json({ success: false, message: "미입력 정보가 존재합니다." });
   }
 
   findAllByUserId({ userId }, (err, feedbackList) => {
-    if (err) {
+
+   if (err) {
+
+      logSimple('피드백 리스트 조회', 500);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
     }
 
@@ -35,7 +50,10 @@ const getAllFeedback = (req, res) => {
       created_at: formatDate(feedback.created_at)
     }));
 
-    res.status(200).json({
+
+logSimple('피드백 리스트 조회', 200);
+    return res.status(200).json({
+
       success: true,
       message: '모든 피드백 조회 성공',
       data: formattedList
@@ -112,14 +130,14 @@ const searchFeedbacksController = (req, res) => {
   let { userId } = req.params;
 
   if (!userId) {
-    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "userId가 필요합니다." });
+    logSimple('피드백 검색', 400);
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
     });
   }
   if (!keyword) {
-    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "미입력 정보가 존재합니다 (keyword)" });
+    logSimple('피드백 검색', 400);
     return res.status(400).json({
       success: false,
       message: "미입력 정보가 존재합니다 (keyword)"
@@ -128,13 +146,13 @@ const searchFeedbacksController = (req, res) => {
 
   userId = Number(userId);
   if (isNaN(userId)) {
-    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "userId는 숫자여야 합니다." });
+    logSimple('피드백 검색', 400);
     return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
   searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
-      logError({ location: 'searchFeedbacksController', req, statusCode: 500, message: '피드백 검색 오류', error: err.message });
+      logSimple('피드백 검색', 500);
       return res.status(500).json({
         success: false,
         message: "서버 오류",
@@ -142,12 +160,14 @@ const searchFeedbacksController = (req, res) => {
       });
     }
 
+    logSimple('피드백 검색', 200);
     res.status(200).json({
       success: true,
       data: results
     });
   });
 };
+
 
 //backend-11
 const sortFeedbacksController = (req, res) => {

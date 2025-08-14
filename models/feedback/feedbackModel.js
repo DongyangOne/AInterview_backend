@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 
+
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
   const sql = `
@@ -8,8 +9,10 @@ const findAllByUserId = ({ userId }, callback) => {
     WHERE userId = ?
     ORDER BY created_at DESC
   `;
-  db.query(sql, [userId], (err, rows) => {
-    if (err) return callback(err, null);
+    
+  
+    db.query(sql, [userId], (err, rows) => {
+     if (err) return callback(err, null);
     callback(null, rows);
   });
 };
@@ -64,10 +67,7 @@ const searchFeedbacks = (userId, keyword, callback) => {
     ORDER BY created_at DESC
   `;
   db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
-    if (err) {
-      logModelError({ location: 'searchFeedbacks', params: { userId, keyword }, message: 'DB 피드백 검색 오류', error: err.message });
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, results);
   });
 };
