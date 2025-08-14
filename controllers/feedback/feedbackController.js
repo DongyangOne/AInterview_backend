@@ -105,18 +105,21 @@ const updateFeedbackMemo = (req, res) => {
 };
 
 
+
 //backend-10
 const searchFeedbacksController = (req, res) => {
   const { keyword } = req.query;
   let { userId } = req.params;
 
   if (!userId) {
+    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "userId가 필요합니다." });
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
     });
   }
   if (!keyword) {
+    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "미입력 정보가 존재합니다 (keyword)" });
     return res.status(400).json({
       success: false,
       message: "미입력 정보가 존재합니다 (keyword)"
@@ -125,12 +128,13 @@ const searchFeedbacksController = (req, res) => {
 
   userId = Number(userId);
   if (isNaN(userId)) {
+    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "userId는 숫자여야 합니다." });
     return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
   searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
-      console.error('피드백 검색 오류:', err);
+      logError({ location: 'searchFeedbacksController', req, statusCode: 500, message: '피드백 검색 오류', error: err.message });
       return res.status(500).json({
         success: false,
         message: "서버 오류",
@@ -138,7 +142,7 @@ const searchFeedbacksController = (req, res) => {
       });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       data: results
     });
@@ -151,6 +155,7 @@ const sortFeedbacksController = (req, res) => {
   let { userId } = req.params;
 
   if (!userId) {
+    logError({ location: 'sortFeedbacksController', req, statusCode: 400, message: "userId가 필요합니다." });
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
@@ -159,6 +164,7 @@ const sortFeedbacksController = (req, res) => {
 
   userId = Number(userId);
   if (isNaN(userId)) {
+    logError({ location: 'sortFeedbacksController', req, statusCode: 400, message: "userId는 숫자여야 합니다." });
     return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
@@ -168,6 +174,7 @@ const sortFeedbacksController = (req, res) => {
   } else if (by === 'alpha') {
     orderBy = 'title ASC';
   } else {
+    logError({ location: 'sortFeedbacksController', req, statusCode: 400, message: "정렬 기준이 올바르지 않습니다 (by: alpha)" });
     return res.status(400).json({
       success: false,
       message: "정렬 기준이 올바르지 않습니다 (by: alpha)"
@@ -176,7 +183,7 @@ const sortFeedbacksController = (req, res) => {
 
   sortFeedbacks(userId, orderBy, (err, result) => {
     if (err) {
-      console.error('피드백 정렬 오류:', err);
+      logError({ location: 'sortFeedbacksController', req, statusCode: 500, message: '피드백 정렬 오류', error: err.message });
       return res.status(500).json({
         success: false,
         message: "서버 오류",
@@ -197,17 +204,20 @@ const getPin = (req, res) => {
   let { feedback_id, userId } = req.params;
 
   if (!feedback_id || !userId) {
+    logError({ location: 'getPin', req, statusCode: 400, message: '미입력 정보가 존재합니다.' });
     return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
   }
 
   feedback_id = Number(feedback_id);
   userId = Number(userId);
   if (isNaN(feedback_id) || isNaN(userId)) {
+    logError({ location: 'getPin', req, statusCode: 400, message: 'feedback_id와 userId는 숫자여야 합니다.' });
     return res.status(400).json({ success: false, message: 'feedback_id와 userId는 숫자여야 합니다.' });
   }
 
   pinFeedback(feedback_id, userId, (err, result) => {
     if (err) {
+      logError({ location: 'getPin', req, statusCode: 500, message: '피드백 상단 고정 실패', error: err.message });
       return res.status(500).json({ success: false, message: '피드백 상단 고정 실패', error: err.message });
     }
     res.status(200).json({ success: true, message: '피드백 상단 고정 완료', data: result });
@@ -219,22 +229,26 @@ const getUnpin = (req, res) => {
   let { feedback_id, userId } = req.params;
 
   if (!feedback_id || !userId) {
+    logError({ location: 'getUnpin', req, statusCode: 400, message: '미입력 정보가 존재합니다.' });
     return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
   }
 
   feedback_id = Number(feedback_id);
   userId = Number(userId);
   if (isNaN(feedback_id) || isNaN(userId)) {
+    logError({ location: 'getUnpin', req, statusCode: 400, message: 'feedback_id와 userId는 숫자여야 합니다.' });
     return res.status(400).json({ success: false, message: 'feedback_id와 userId는 숫자여야 합니다.' });
   }
 
   unpinFeedback(feedback_id, userId, (err, result) => {
     if (err) {
+      logError({ location: 'getUnpin', req, statusCode: 500, message: '피드백 상단 고정 해제 실패', error: err.message });
       return res.status(500).json({ success: false, message: '피드백 상단 고정 해제 실패', error: err.message });
     }
     res.status(200).json({ success: true, message: '피드백 상단 고정 해제 완료', data: result });
   });
 };
+
 
 //backend-13
 const deleteFeedback = (req, res) => {
