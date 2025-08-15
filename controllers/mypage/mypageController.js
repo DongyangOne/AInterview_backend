@@ -2,19 +2,10 @@ const {myInfo, pwCheck, updatePw, updateName, getAppPush, updateAppPush, getFeed
 
 //backend-20
 const myInfoProgress = (req, res) =>{
-    const loginUser = req.session.user;
-
-    //세션 존재 유무 확인
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
-    }
-
     const userId = req.query.userId;
 
     if(!userId){
-        console.log('미입력 정보 존재');
-        return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.'});
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
     }
 
     myInfo(userId, (err, result)=>{
@@ -33,19 +24,18 @@ const pwChange = (req, res) => {
     const pw = req.body.password;
     const newPw = req.body.newPassword;
     const newPwCheck = req.body.newPasswordCheck;
-    const loginUser = req.session.user;
     const passwordRegex = /^[A-Za-z0-9!@#$%^&*]{8,16}$/;
-    if (!loginUser) {
-        console.log('로그인 필요');
-        return res.status(401).json({ success: false, message: '로그인 필요' });
-    }
+    
 
-    const loginUserId = req.session.user.id;
+    const userId = req.body.userId;
     const inputErrors = [];
     const errors = [];
 
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
+    }
 
-    pwCheck(loginUserId, pw, (err, result) => {
+    pwCheck(userId, pw, (err, result) => {
         if (err) {
             switch (err.code) {
                 case 'DB_ERROR':
@@ -73,7 +63,7 @@ const pwChange = (req, res) => {
             return res.status(400).json({ success: false, message : '형식에 맞지 않는 값이 존재합니다.', error : errors });
         }
 
-        updatePw(loginUserId, newPw, (err, result) => {
+        updatePw(userId, newPw, (err, result) => {
             if (err) {
                 return res.status(500).json({ success: false, message: 'db오류' });
             } else {
@@ -87,20 +77,20 @@ const pwChange = (req, res) => {
 //닉네임 변경 함수
 const nicknameChange = (req, res)=>{
     const newName = req.body.newName;
-    const loginUser = req.session.user;
     const nicknameRegex = /^[가-힣A-Za-z0-9]{2,8}$/;
 
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
-    }
+    
 
-    const loginUserId = req.session.user.id;
+    const userId = req.body.userId;
+
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
+    }
 
     if(!newName) return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : ['변경할 닉네임을 입력해주세요.']});
     else if(!nicknameRegex.test(newName)) return res.status(400).json({success : false, message : '닉네임은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)'});
 
-    updateName(loginUserId, newName, (err, result)=>{
+    updateName(userId, newName, (err, result)=>{
         if(err){
             return res.status(500).json({success : false, message : 'db오류'});
         }
@@ -113,16 +103,15 @@ const nicknameChange = (req, res)=>{
 //backend-23
 //앱 푸시 설정 함수
 const setAppPush = (req, res)=>{
-    const loginUser = req.session.user;
     let updateInfo;
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
+
+
+    const userId = req.query.userId;
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
     }
 
-    const loginUserId = req.session.user.id;
-
-    getAppPush(loginUserId, (err, result)=>{
+    getAppPush(userId, (err, result)=>{
         if(err){
             console.log(err);
             return res.status(500).json({success : false, message : 'db오류'});
@@ -131,14 +120,14 @@ const setAppPush = (req, res)=>{
             if(result[0].push_agreed === 'N') updateInfo = 'Y';
             else updateInfo = 'N';
 
-            updateAppPush(loginUserId, updateInfo, (err, result)=>{
+            updateAppPush(userId, updateInfo, (err, result)=>{
                 if(err){
                     console.log(err);
                     return res.status(500).json({success : false, message : 'db오류'});
                 }
                 else{
                     console.log('알람 수신 전환 완료');
-                    getAppPush(loginUserId, (err, result)=>{
+                    getAppPush(userId, (err, result)=>{
                         if(err) return res.status(500).json({success : false, message : 'db오류'});
                         else{
                             return res.status(200).json({success : true, message : '알람 수신 정보 전환 완료', status : result[0].push_agreed});
@@ -153,16 +142,12 @@ const setAppPush = (req, res)=>{
 
 //앱 푸시 현재 상태 가져오기
 const appPushState = (req, res)=>{
-    const loginUser = req.session.user;
-    let updateInfo;
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
+    const userId = req.query.userId;
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
     }
 
-    const loginUserId = req.session.user.id;
-
-    getAppPush(loginUserId, (err, result)=>{
+    getAppPush(userId, (err, result)=>{
         if(err) return res.status(500).json({success : false, message : 'db오류'});
         else{
             return res.status(200).json({success : true, message : '현재 알람 수신 상태', status : result[0].push_agreed});
@@ -175,20 +160,17 @@ const appPushState = (req, res)=>{
 //비밀번호 일치 확인용 함수
 const passwordCheck = (req, res)=>{
     const password = req.body.password;
-    const loginUser = req.session.user;
-
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
+    const userId = req.body.userId;
+    
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
     }
-
-    const loginUserId = req.session.user.id;
 
     if(!password){
         return res.status(400).json({success : false, message : '미입력 정보가 존재합니다.', error : ['비밀번호를 입력해주세요.']});
     }
     else{
-        pwCheck(loginUserId, password, (err, result)=>{
+        pwCheck(userId, password, (err, result)=>{
             if(err){
                 switch(err.code){
                     case 'DB_ERROR' :
@@ -208,15 +190,15 @@ const passwordCheck = (req, res)=>{
 //backend-25
 //현재 사용자의 피드백 정보 조회 함수
 const feedInfoProgress = (req, res) =>{
-    const loginUser = req.session.user;
     let feedCount = 0; 
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
-    }
-    const loginUserId = req.session.user.id;
+    const userId = req.query.userId;
 
-    getFeedCount(loginUserId, (err, result)=>{
+
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
+    }
+
+    getFeedCount(userId, (err, result)=>{
         if(err){
             return res.status(500).json({success : false, message : '피드백 정보 조회 중 오류'});
         }
@@ -226,7 +208,7 @@ const feedInfoProgress = (req, res) =>{
             if(feedCount === 0){
                 return res.status(200).json({success : true, count : 0, list :[]});
             }
-            getFeedContent(loginUserId, (err, results)=>{
+            getFeedContent(userId, (err, results)=>{
                 if(err){
                     return res.status(500).json({success : false, message : 'db오류'});
                 }
@@ -240,16 +222,13 @@ const feedInfoProgress = (req, res) =>{
 
 //탈퇴 함수
 const deleteUserProgress = (req, res)=>{
-    const loginUser = req.session.user;
-    
-    if(!loginUser){
-        console.log('로그인 필요');
-        return res.status(401).json({success : false, message : '로그인 필요'});
+    const userId = req.query.userId;
+
+    if(!userId){
+        return res.status(401).json({success : false, message : '미입력 정보가 존재합니다.', error : ['사용자 식별번호 필요']});
     }
-
-    const loginUserId = req.session.user.id;
-
-    deleteUser(loginUserId, (err, result)=>{
+    
+    deleteUser(userId, (err, result)=>{
         if(err){
             return res.status(500).json({success : false, message : '탈퇴 중 오류'});
         }
