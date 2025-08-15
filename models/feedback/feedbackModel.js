@@ -145,8 +145,15 @@ const deleteById = ({ feedbackId, userId }, callback) => {
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+    
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
