@@ -261,24 +261,16 @@ const sortFeedbacksController = (req, res) => {
 
 
 //backend-12
+// 피드백 상단 고정
 const getPin = (req, res) => {
-  let { feedbackId, userId } = req.params;
+  const { feedbackId, userId } = req.params;
 
   if (!feedbackId || !userId) {
-    logError({ location: 'getPin', req, statusCode: 400, message: '미입력 정보가 존재합니다.' });
-    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
-  }
-
-  feedbackId = Number(feedbackId);
-  userId = Number(userId);
-  if (isNaN(feedbackId) || isNaN(userId)) {
-    logError({ location: 'getPin', req, statusCode: 400, message: 'feedbackId와 userId는 숫자여야 합니다.' });
-    return res.status(400).json({ success: false, message: 'feedbackId와 userId는 숫자여야 합니다.' });
+    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedbackId, userId)' });
   }
 
   pinFeedback(feedbackId, userId, (err, result) => {
     if (err) {
-      logError({ location: 'getPin', req, statusCode: 500, message: '피드백 상단 고정 실패', error: err.message });
       return res.status(500).json({ success: false, message: '피드백 상단 고정 실패', error: err.message });
     }
     res.status(200).json({ success: true, message: '피드백 상단 고정 완료', data: result });
@@ -287,29 +279,19 @@ const getPin = (req, res) => {
 
 // 피드백 상단 고정 해제
 const getUnpin = (req, res) => {
-  let { feedbackId, userId } = req.params;
+  const { feedbackId, userId } = req.params;
 
   if (!feedbackId || !userId) {
-    logError({ location: 'getUnpin', req, statusCode: 400, message: '미입력 정보가 존재합니다.' });
-    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
-  }
-
-  feedbackId = Number(feedbackId);
-  userId = Number(userId);
-  if (isNaN(feedbackId) || isNaN(userId)) {
-    logError({ location: 'getUnpin', req, statusCode: 400, message: 'feedbackId와 userId는 숫자여야 합니다.' });
-    return res.status(400).json({ success: false, message: 'feedbackId와 userId는 숫자여야 합니다.' });
+    return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedbackId, userId)' });
   }
 
   unpinFeedback(feedbackId, userId, (err, result) => {
     if (err) {
-      logError({ location: 'getUnpin', req, statusCode: 500, message: '피드백 상단 고정 해제 실패', error: err.message });
       return res.status(500).json({ success: false, message: '피드백 상단 고정 해제 실패', error: err.message });
     }
     res.status(200).json({ success: true, message: '피드백 상단 고정 해제 완료', data: result });
   });
 };
-
 
 //backend-13
 const deleteFeedback = (req, res) => {
