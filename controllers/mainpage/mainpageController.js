@@ -27,18 +27,20 @@ const Twcalendar = (req, res) => {
 const getRecentFeedback = (req, res) => {
     const userId = req.query.userId;
 
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+    
     if (!userId) {
-        console.error(`[${new Date().toISOString()}] [getRecentFeedback] missing userId`);
+        console.log(`[${new Date().toISOString()}]getrecentFeedBack 400응답`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
     }
 
     recentFeedback(userId, (err, result) => {
         if (err) {
+            console.log(`[${new Date().toISOString()}]getrecentFeedBack 500응답`);
             console.error('[recentFeedback] sql오류:', err);
+            
             return res.status(500).json({ success: false, message: '피드백 조회 실패', error: err });
         }
-
+console.log(`[${new Date().toISOString()}]getrecentFeedBack 200응답`);
         return res.status(200).json({ success: true, data: result });
     });
 };
