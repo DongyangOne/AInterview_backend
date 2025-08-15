@@ -102,6 +102,9 @@ const getUpdate = (req, res) => {
     const importance = req.query.importance;
     const memo = req.query.memo;
 
+    const today = new Date();
+    const datetime = today.toLocaleString();
+
     const importanceText = ['S', 'I', 'N'];
     const importanceArr ={
         S: '매우 중요',
@@ -110,21 +113,24 @@ const getUpdate = (req, res) => {
     };
 
     if (title.length > 8){
+        console.log(datetime, `캘린더 일정 수정 400, 제목 글자수 초과`);
         return res.status(400).json({success: false, message: '8자 미만으로 입력해 주십시오.'})
     }
 
     if(importance !== 'S' && importance !== 'I' && importance !== 'N'){
-        return res.status(400).json({success: false, message: '중요도에는 s, i, n만 입력 가능합니다.'})
+        console.log(datetime, `캘린더 일정 수정 400, 중요도 입력 에러`);
+        return res.status(400).json({success: false, message: '중요도에는 S, I, N만 입력 가능합니다.'})
     }
 
 
 getCalendarUpdate(userId, calendar_id, title, time, importance, memo, (err, result) => {
     if (err){
+        console.log(datetime, `캘린더 일정 수정 500, 서버 에러`);
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
 
     const importanceResult = importanceArr[importance]
-
+        console.log(datetime, `캘린더 일정 수정 200`);
         res.status(200).json({success: true, data: result, importanceResult});
 })
 };
