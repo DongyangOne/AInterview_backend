@@ -78,19 +78,19 @@ const addDate = (req, res) => {
     }
 
     if (title.length > 8){
-        console.log(datetime, `캘린더 일정 추가 400`);
+        console.log(datetime, `캘린더 일정 추가 400, 제목 글자수 초과`);
         return res.status(400).json({success: false, message: '8자 미만으로 입력해 주십시오.'})
     }
 
     if(importance !== 'S' && importance !== 'I' && importance !== 'N'){
-        console.log(datetime, `캘린더 일정 추가 400`);
+        console.log(datetime, `캘린더 일정 추가 400, 중요도 입력 에러`);
         return res.status(400).json({success: false, message: '중요도에는 S, I, N만 입력 가능합니다.'})
     }
 
 
 createDate(userId, title, time, importance, memo, (err, result) => {
     if (err){
-        console.log(datetime, `캘린더 일정 추가 500`);
+        console.log(datetime, `캘린더 일정 추가 500, 서버 에러`);
         return res.status(500).json({success:false, message: '서버 오류 발생', details: err});
     }
 
