@@ -170,32 +170,23 @@ const updateFeedbackMemo = (req, res) => {
 //backend-10
 const searchFeedbacksController = (req, res) => {
   const { keyword } = req.query;
-  let { userId } = req.params;
+  const { userId } = req.params;
 
   if (!userId) {
-    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "userId가 필요합니다." });
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
     });
   }
   if (!keyword) {
-    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "미입력 정보가 존재합니다 (keyword)" });
     return res.status(400).json({
       success: false,
       message: "미입력 정보가 존재합니다 (keyword)"
     });
   }
 
-  userId = Number(userId);
-  if (isNaN(userId)) {
-    logError({ location: 'searchFeedbacksController', req, statusCode: 400, message: "userId는 숫자여야 합니다." });
-    return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
-  }
-
   searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
-      logError({ location: 'searchFeedbacksController', req, statusCode: 500, message: '피드백 검색 오류', error: err.message });
       return res.status(500).json({
         success: false,
         message: "서버 오류",
@@ -203,7 +194,7 @@ const searchFeedbacksController = (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: results
     });
@@ -213,20 +204,13 @@ const searchFeedbacksController = (req, res) => {
 //backend-11
 const sortFeedbacksController = (req, res) => {
   const { by } = req.query;
-  let { userId } = req.params;
+  const { userId } = req.params;
 
   if (!userId) {
-    logError({ location: 'sortFeedbacksController', req, statusCode: 400, message: "userId가 필요합니다." });
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
     });
-  }
-
-  userId = Number(userId);
-  if (isNaN(userId)) {
-    logError({ location: 'sortFeedbacksController', req, statusCode: 400, message: "userId는 숫자여야 합니다." });
-    return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
   let orderBy;
@@ -235,7 +219,6 @@ const sortFeedbacksController = (req, res) => {
   } else if (by === 'alpha') {
     orderBy = 'title ASC';
   } else {
-    logError({ location: 'sortFeedbacksController', req, statusCode: 400, message: "정렬 기준이 올바르지 않습니다 (by: alpha)" });
     return res.status(400).json({
       success: false,
       message: "정렬 기준이 올바르지 않습니다 (by: alpha)"
@@ -244,7 +227,6 @@ const sortFeedbacksController = (req, res) => {
 
   sortFeedbacks(userId, orderBy, (err, result) => {
     if (err) {
-      logError({ location: 'sortFeedbacksController', req, statusCode: 500, message: '피드백 정렬 오류', error: err.message });
       return res.status(500).json({
         success: false,
         message: "서버 오류",
@@ -258,7 +240,6 @@ const sortFeedbacksController = (req, res) => {
     });
   });
 };
-
 
 //backend-12
 // 피드백 상단 고정
