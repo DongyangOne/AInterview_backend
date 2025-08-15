@@ -10,7 +10,8 @@ const TwTODO=(userId,callback)=>{
      order by created_at desc;`
      db.query(sql,[userId],(err,result)=>{
           if(err){
-            console.log(`[${new Date().toISOString()}] [TwTodo] sql_error`, err);
+            console.log('twtodo오류 : ', err);
+
             return callback(err);
         }
         console.log(result)
