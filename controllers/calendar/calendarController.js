@@ -6,16 +6,20 @@ const getSearchmonth = (req, res) => {
     const year = Number(req.query.year);
     const month = Number(req.query.month);
 
+    const today = new Date();
+    const datetime = today.toLocaleString();
+
     if (!userId || !month || !year ){
+        console.log(datetime, `캘린더 month 조회 400`);
         return res.status(400).json({success: false, message: '미입력 정보가 존재합니다.'});
     }
 
 getUserMonth(userId, year, month, (err, result) => {
     if (err){
+        console.log(datetime, `캘린더 month 조회 500`);
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
 
-    const today = new Date();
     const todayYear = today.getFullYear();
     const todayMonth = today.getMonth() + 1;
     const todayDate = today.getDate();
@@ -25,6 +29,7 @@ getUserMonth(userId, year, month, (err, result) => {
         todayInfo = todayDate;
     }
 
+    console.log(datetime, `캘린더 month 조회 200 캘린더 month 조회 성공`);
     res.status(200).json({success: true, today: todayInfo, data: result})
 })
 };
