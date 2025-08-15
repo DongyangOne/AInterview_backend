@@ -133,15 +133,20 @@ getCalendarUpdate(userId, calendar_id, title, time, importance, memo, (err, resu
 const getDelete = (req, res) => {
     const calendar_id = req.query.calendar_id;
 
+    const today = new Date();
+    const datetime = today.toLocaleString();
+
     if (!calendar_id){
+        console.log(datetime, `캘린더 삭제 400`);
         return res.status(400).json({success: false, message: '미입력 정보가 존재합니다.'});
    }
 
     getCalendarDelete(calendar_id, (err, result) => {
      if (err){
+        console.log(datetime, `캘린더 삭제 500`);
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
-
+        console.log(datetime, `캘린더 삭제 200`);
         res.status(200).json({success: true, message: '삭제되었습니다.'});
 })
 };
