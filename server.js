@@ -1,16 +1,8 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
 const app = express();
 
 app.use(express.json());
-app.use(session({
-  secret: 'yourSecretKey', 
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
-
 const db = require('./config/database');
 
 const authRouter = require('./routes/auth/authRouter');
