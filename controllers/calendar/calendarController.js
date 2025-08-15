@@ -36,19 +36,26 @@ const getSearchDay = (req, res) => {
     const month = Number(req.query.month);
     const day = Number(req.query.day);
 
+    const today = new Date();
+    const datetime = today.toLocaleString();
+
     if (!userId || !year || !month || !day){
+        console.log(datetime, `캘린더 day 조회 400`);
         return res.status(400).json({success: false, message: '미입력 정보가 존재합니다.'});
     }
 
 getUserDay(userId, year, month, day, (err, result) => {
     if (err){
+        console.log(datetime, `캘린더 day 조회 500`);
         return res.status(500).json({success:false, message: '오류 발생', details: err});
     }
 
     if (result.length === 0){
+        console.log(datetime, `캘린더 day 조회 200`);
         res.status(200).json({success: true, message:'일정이 없습니다.'});
     }
     else {
+        console.log(datetime, `캘린더 day 조회 200`);
         res.status(200).json({success: true, data: result})
 }  
 })
