@@ -114,13 +114,12 @@ const sortFeedbacks = (userId, orderBy, callback) => {
   });
 };
 
+
 //backend-12
 const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, result);
   });
 };
@@ -128,12 +127,11 @@ const pinFeedback = (feedbackId, userId, callback) => {
 const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, result);
   });
 };
+
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
@@ -162,9 +160,13 @@ const findById = ({ feedbackId, userId }, callback) => {
       feedback_id AS id, 
       userId, 
       title, 
+<<<<<<< HEAD
+      content, 
+=======
       good,
       bad,
       feedback,
+>>>>>>> 59759aae07b89bd363c382e51b8b5bd46c5db098
       memo, 
       created_at
     FROM feedback
