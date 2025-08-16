@@ -160,9 +160,6 @@ const findById = ({ feedbackId, userId }, callback) => {
       feedback_id AS id, 
       userId, 
       title, 
-<<<<<<< HEAD
-      content, 
-=======
       good,
       bad,
       feedback,
