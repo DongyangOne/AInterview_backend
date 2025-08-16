@@ -92,7 +92,6 @@ const searchFeedbacks = (userId, keyword, callback) => {
   `;
   db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
     if (err) {
-      logModelError({ location: 'searchFeedbacks', params: { userId, keyword }, message: 'DB 피드백 검색 오류', error: err.message });
       return callback(err);
     }
     callback(null, results);
@@ -109,7 +108,6 @@ const sortFeedbacks = (userId, orderBy, callback) => {
   `;
   db.query(sql, [userId], (err, results) => {
     if (err) {
-      logModelError({ location: 'sortFeedbacks', params: { userId, orderBy }, message: 'DB 피드백 정렬 오류', error: err.message });
       return callback(err);
     }
     callback(null, results);
@@ -120,10 +118,7 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) {
-      logModelError({ location: 'pinFeedback', params: { feedbackId, userId }, message: 'DB 피드백 상단 고정 오류', error: err.message });
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, result);
   });
 };
@@ -131,13 +126,11 @@ const pinFeedback = (feedbackId, userId, callback) => {
 const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) {
-      logModelError({ location: 'unpinFeedback', params: { feedbackId, userId }, message: 'DB 피드백 상단 고정 해제 오류', error: err.message });
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, result);
   });
 };
+
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
@@ -166,7 +159,13 @@ const findById = ({ feedbackId, userId }, callback) => {
       feedback_id AS id, 
       userId, 
       title, 
+<<<<<<< HEAD
       content, 
+=======
+      good,
+      bad,
+      feedback,
+>>>>>>> 59759aae07b89bd363c382e51b8b5bd46c5db098
       memo, 
       created_at
     FROM feedback
