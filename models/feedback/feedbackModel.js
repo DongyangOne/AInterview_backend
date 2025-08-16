@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 
+
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
   const sql = `
@@ -8,18 +9,27 @@ const findAllByUserId = ({ userId }, callback) => {
     WHERE userId = ?
     ORDER BY created_at DESC
   `;
-  db.query(sql, [userId], (err, rows) => {
-    if (err) return callback(err, null);
+    
+  
+    db.query(sql, [userId], (err, rows) => {
+     if (err) return callback(err, null);
     callback(null, rows);
   });
 };
+
 
 //backend-8
 // 제목조회
 const findTitleById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT title FROM feedback WHERE feedback_id = ? AND userId = ?";
+  
+   
+  
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
+ if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, rows[0]);
   });
 };
@@ -27,18 +37,30 @@ const findTitleById = ({ feedbackId, userId }, callback) => {
 // 8번: 제목 수정
 const updateTitle = ({ feedbackId, title, userId }, callback) => {
   const sql = "UPDATE feedback SET title = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
+  
+   
+  
   db.query(sql, [title, feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+   if (err) {
+     
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
+
 
 //backend-9 memofeedbackModel
 //메모 조회
 const findMemoById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT memo FROM feedback WHERE feedback_id = ? AND userId = ?";
+  
+  
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, rows[0]);
   });
 };
@@ -49,11 +71,16 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
     return callback(new Error('메모는 50자 이하로 입력해주세요.'), null);
   }
   const sql = "UPDATE feedback SET memo = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
+  
+  
   db.query(sql, [memo, feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+  if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
-};
+}
 
 //backend-10
 const searchFeedbacks = (userId, keyword, callback) => {
@@ -63,7 +90,12 @@ const searchFeedbacks = (userId, keyword, callback) => {
     WHERE userId = ? AND (title LIKE ? OR memo LIKE ?)
     ORDER BY created_at DESC
   `;
-  db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], callback);
+  db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, results);
+  });
 };
 
 //backend-11
@@ -74,29 +106,34 @@ const sortFeedbacks = (userId, orderBy, callback) => {
     WHERE userId = ?
     ORDER BY pin DESC, ${orderBy}
   `;
-  db.query(sql, [userId], callback);
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, results);
+  });
 };
 
 //backend-12
-// 피드백 상단 고정
-const pinFeedback = (feedback_id, userId, callback) => {
+const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
-    if (err) return callback(err);
+  db.query(sql, [feedbackId, userId], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
     callback(null, result);
   });
 };
 
-// 피드백 상단 고정 해제
-const unpinFeedback = (feedback_id, userId, callback) => {
+const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
-    if (err) return callback(err);
+  db.query(sql, [feedbackId, userId], (err, result) => {
+    if (err) {
+      return callback(err);
+    }
     callback(null, result);
   });
 };
-
-
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
@@ -104,11 +141,19 @@ const deleteById = ({ feedbackId, userId }, callback) => {
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+    
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
+
 
 //backend-14
 const findById = ({ feedbackId, userId }, callback) => {
@@ -119,15 +164,23 @@ const findById = ({ feedbackId, userId }, callback) => {
       title, 
       good,
       bad,
-      feedback, 
+      feedback,
       memo, 
       created_at
     FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+  
+
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
-    callback(null, rows[0]);
+
+  if (err) {
+              
+      return callback(err, null);
+    }
+    callback(null, rows[0] || null);
   });
 };
 
