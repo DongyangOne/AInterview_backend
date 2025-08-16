@@ -16,7 +16,7 @@ console.log(`[${new Date().toISOString()}] twcalendar 사용 400 응답`);
     // 콜백 기반 응답
     TwTODO(userId, (err, result) => {
         if (err) {
-            console.error('[TwTODO]sql 오류:', err);
+            console.error('[TwTODO]오류:', err);
             console.log(`[${new Date().toISOString()}] twcalendar 사용 500 응답`);
             console.error('DB 오류:', err);
             
