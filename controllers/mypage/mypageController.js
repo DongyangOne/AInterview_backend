@@ -189,7 +189,7 @@ const setAppPush = (req, res) => {
 
                 }
                 else {
-                    console.log('알람 수신 전환 완료');
+                    //console.log('알람 수신 전환 완료');
                     getAppPush(userId, (err, result) => {
                         if (err) {
                             console.log(`${requestTime} 앱 푸시 전환 ${500} 응답`);
@@ -314,7 +314,7 @@ const feedInfoProgress = (req, res) => {
 
         }
         else {
-            console.log('총 개수 조회 완료');
+            //console.log('총 개수 조회 완료');
             feedCount = result[0].feedback_count;
             if (feedCount === 0) {
                 console.log(`${requestTime} 탈퇴 시 피드백 정보 조회 ${200} 응답`);
