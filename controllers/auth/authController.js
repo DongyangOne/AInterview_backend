@@ -39,41 +39,13 @@ const signinProgress = (req, res) => {
                     return res.status(401).json({ success: false, message: err.message });
             }
         }
-
-        //세션 등록
-        req.session.user = {
-            id: result[0].id,
-            userId: result[0].user_id
-        }
-        //console.log('세션 등록 완료');
         console.log(`${requestTime} 로그인 ${200} 응답`);
-        res.status(200).json({ success: true, loginUserId: result[0].user_id, userId: result[0].id, nickname: result[0].nickname, message: '로그인 상태' });
+        return res.status(200).json({ success: true, loginUserId: result[0].user_id, userId : result[0].id, nickname: result[0].nickname, message: '로그인 상태' });
     })
 }
 
-const logoutProgress = (req, res) => { //로그아웃 함수
-    const now = new Date();
-    const requestTime =
-        now.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' ' +
-        now.toLocaleTimeString('ko-KR', {
-            timeZone: 'Asia/Seoul',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-    //세션 삭제
-    req.session.destroy((err) => {
-        if (err) {
-            //console.log('세션 삭제 중 오류 : ',err);
-            console.log(`${requestTime} 로그아웃 ${500} 응답`);
-            return res.status(500).json({ success: false, message: '로그아웃 중 오류' });
-        }
-        res.clearCookie('connect.sid'); //세션 쿠키 삭제
-        //console.log('로그아웃 완료');
-        console.log(`${requestTime} 로그아웃 ${200} 응답`);
-        return res.status(200).json({ success: true, message: '로그아웃 성공' });
-    });
-}
+
+
 
 //backend-1
 //회원가입 함수
@@ -216,7 +188,6 @@ const userIdCheckProgress = (req, res) => {
 
 module.exports = {
     signinProgress,
-    logoutProgress,
     signupProgress,
     userIdCheckProgress
 }
