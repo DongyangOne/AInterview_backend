@@ -168,24 +168,19 @@ const updateFeedbackMemo = (req, res) => {
 
 
 //backend-10
-const getTimestamp = () => {
-  const now = new Date();
-  return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}. ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-};
-
 const searchFeedbacksController = (req, res) => {
   const { keyword } = req.query;
   const { userId } = req.params;
 
   if (!userId) {
-    console.log(`${getTimestamp()} 피드백 리스트 검색 400 응답`);
+    console.log(`${formatTimestamp()} 피드백 리스트 검색 400 응답`);
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
     });
   }
   if (!keyword) {
-    console.log(`${getTimestamp()} 피드백 리스트 검색 400 응답`);
+    console.log(`${formatTimestamp()} 피드백 리스트 검색 400 응답`);
     return res.status(400).json({
       success: false,
       message: "미입력 정보가 존재합니다 (keyword)"
@@ -193,12 +188,13 @@ const searchFeedbacksController = (req, res) => {
   }
 
   if (isNaN(Number(userId))) {
+    console.log(`${formatTimestamp()} 피드백 리스트 검색 400 응답`);
     return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
   searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
-      console.log(`${getTimestamp()} 피드백 리스트 검색 500 응답`);
+      console.log(`${formatTimestamp()} 피드백 리스트 검색 500 응답`);
       return res.status(500).json({
         success: false,
         message: "서버 오류",
@@ -206,7 +202,7 @@ const searchFeedbacksController = (req, res) => {
       });
     }
 
-    console.log(`${getTimestamp()} 피드백 리스트 검색 200 응답`);
+    console.log(`${formatTimestamp()} 피드백 리스트 검색 200 응답`);
     res.status(200).json({
       success: true,
       data: results
@@ -226,7 +222,7 @@ const sortFeedbacksController = (req, res) => {
   const { userId } = req.params;
 
   if (!userId) {
-    console.log(`${getTimestamp()} 피드백 리스트 정렬 400 응답`);
+    console.log(`${formatTimestamp()} 피드백 리스트 정렬 400 응답`);
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
