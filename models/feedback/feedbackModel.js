@@ -85,23 +85,18 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
 //backend-10
 const searchFeedbacks = (userId, keyword, callback) => {
   const sql = `
-    SELECT feedback_id, userId, title, memo, pin, created_at, good, bad, feedback, content
+    SELECT feedback_id, userId, title, memo, pin, created_at
     FROM feedback
-    WHERE userId = ? AND (
-      title LIKE ? OR memo LIKE ? OR good LIKE ? OR bad LIKE ? OR feedback LIKE ? OR content LIKE ?
-    )
+    WHERE userId = ? AND (title LIKE ? OR memo LIKE ?)
     ORDER BY created_at DESC
   `;
-  db.query(
-    sql,
-    [userId, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`],
-    (err, results) => {
-      if (err) {
-        return callback(err);
-      }
-      callback(null, results);
+  db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
+    if (err) {
+      logModelError({ location: 'searchFeedbacks', params: { userId, keyword }, message: 'DB 피드백 검색 오류', error: err.message });
+      return callback(err);
     }
-  );
+    callback(null, results);
+  });
 };
 
 //backend-11
@@ -122,23 +117,39 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 };
 
 //backend-12
-const pinFeedback = (feedbackId, userId, callback) => {
+const pinFeedback = (feedback_id, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedbackId, userId], (err, result) => {
+  db.query(sql, [feedback_id, userId], (err, result) => {
     if (err) {
-      return callback(err);
+      logModelError({ location: 'pinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 오류', error: err.message });
     }
-    callback(null, result);
+    const pinFeedback = (feedbackId, userId, callback) => {
+      const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
+      db.query(sql, [feedbackId, userId], (err, result) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, result);
+      });
+    };
   });
 };
 
-const unpinFeedback = (feedbackId, userId, callback) => {
+const unpinFeedback = (feedback_id, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedbackId, userId], (err, result) => {
+  db.query(sql, [feedback_id, userId], (err, result) => {
     if (err) {
-      return callback(err);
+      logModelError({ location: 'unpinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 해제 오류', error: err.message });
     }
-    callback(null, result);
+    const unpinFeedback = (feedbackId, userId, callback) => {
+      const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
+      db.query(sql, [feedbackId, userId], (err, result) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, result);
+      });
+    };
   });
 };
 
