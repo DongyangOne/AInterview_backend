@@ -224,8 +224,7 @@ const sortFeedbacksController = (req, res) => {
     });
   }
 
-  const numericUserId = Number(userId);
-  if (isNaN(numericUserId)) {
+  if (isNaN(Number(userId))) {
     console.log(`${getTimestamp()} 피드백 리스트 정렬 400 응답`);
     return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
@@ -243,7 +242,7 @@ const sortFeedbacksController = (req, res) => {
     });
   }
 
-  sortFeedbacks(numericUserId, orderBy, (err, result) => {
+  sortFeedbacks(userId, orderBy, (err, result) => {
     if (err) {
       console.log(`${getTimestamp()} 피드백 리스트 정렬 500 응답`);
       return res.status(500).json({
