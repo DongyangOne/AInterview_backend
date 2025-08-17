@@ -185,12 +185,11 @@ const searchFeedbacksController = (req, res) => {
     });
   }
 
-  const numericUserId = Number(userId);
-  if (isNaN(numericUserId)) {
+  if (isNaN(Number(userId))) {
     return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
-  searchFeedbacks(numericUserId, keyword, (err, results) => {
+  searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
       return res.status(500).json({
         success: false,
