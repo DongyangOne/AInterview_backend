@@ -5,10 +5,12 @@ require('../../models/mainpage/mainpageModel');
 
 const Twcalendar = (req, res) => {
     const userId = req.query.userId;
+const date = new Date();
+const koreaTime = date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 
     if (!userId) {
 
-console.log(`[${new Date().toISOString()}] twcalendar 사용 400 응답`);
+console.log(`[${koreaTime}] twcalendar 사용 400 응답`);
         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.' });
 
     }
