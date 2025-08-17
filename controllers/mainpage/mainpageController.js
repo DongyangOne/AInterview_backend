@@ -44,16 +44,18 @@ const getRecentFeedback = (req, res) => {
 //backend-4
 // 오늘의 질문 조회
 const getTodayQuestion = (req, res) => {
-    
+    const date = new Date();
+const koreaTime = date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+
  
     todayQuestion( (err, result) => {
         if (err) {
             console.error('todayQuestion 오류:', err);
-            console.log(`[${new Date().toISOString()}] getTodayQuestion 500응답`);
+            console.log(`[${koreaTime}] getTodayQuestion 500응답`);
             return res.status(500).json({ success: false, message: '질문 조회 실패', error: err });
         }
 
-        console.log(`[${new Date().toISOString()}] getTodayQuestion 200응답`);
+        console.log(`[${koreaTime}] getTodayQuestion 200응답`);
         return res.status(200).json({ success: true, data: result });
     });
 };
