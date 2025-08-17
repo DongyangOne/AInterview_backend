@@ -161,7 +161,7 @@ const findById = ({ feedbackId, userId }, callback) => {
       title, 
       good,
       bad,
-      feedback,
+      content,
       memo, 
       created_at
     FROM feedback
