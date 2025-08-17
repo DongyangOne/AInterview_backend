@@ -163,7 +163,6 @@ const findById = ({ feedbackId, userId }, callback) => {
       good,
       bad,
       feedback,
->>>>>>> 59759aae07b89bd363c382e51b8b5bd46c5db098
       memo, 
       created_at
     FROM feedback
