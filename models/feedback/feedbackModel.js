@@ -92,7 +92,6 @@ const searchFeedbacks = (userId, keyword, callback) => {
   `;
   db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
     if (err) {
-      logModelError({ location: 'searchFeedbacks', params: { userId, keyword }, message: 'DB 피드백 검색 오류', error: err.message });
       return callback(err);
     }
     callback(null, results);
@@ -114,22 +113,20 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 };
 
 //backend-12
-const pinFeedback = (feedback_id, userId, callback) => {
+const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) {
-      logModelError({ location: 'pinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 오류', error: err.message });
       return callback(err);
     }
     callback(null, result);
   });
 };
 
-const unpinFeedback = (feedback_id, userId, callback) => {
+const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) {
-      logModelError({ location: 'unpinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 해제 오류', error: err.message });
       return callback(err);
     }
     callback(null, result);
@@ -142,8 +139,15 @@ const deleteById = ({ feedbackId, userId }, callback) => {
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+    
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
@@ -158,7 +162,7 @@ const findById = ({ feedbackId, userId }, callback) => {
       title, 
       good,
       bad,
-      feedback, 
+      feedback,
       memo, 
       created_at
     FROM feedback
