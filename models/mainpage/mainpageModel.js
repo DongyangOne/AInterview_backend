@@ -26,7 +26,7 @@ const recentFeedback=(userId,callback)=>{
     FROM feedback WHERE userId = ? ORDER BY created_at DESC LIMIT 1`;
      db.query(sql,[userId],(err,result)=>{
           if(err){
-            console.log('recentFeedback sql오류 : ', err);
+            console.log('recentFeedback오류 : ', err);
             return callback(err);
         }
         console.log(result)
