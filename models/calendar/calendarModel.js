@@ -1,6 +1,18 @@
 const db = require('../../config/database');
 
-//backend-15 daymodel
+//backend-15 monthmodel
+const getUserMonth = (userId, year, month, callback) => {
+    const sql = `select date_format(time, '%Y') as 년도, date_format(time, '%m') as 월, calendar_id, date_format(time, '%d') as 일, title
+    from calendar where users_id = ? and YEAR(time) = ? and MONTH(time) = ?
+    order by created_at desc`;
+
+    db.query(sql, [userId, year, month], (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+    });
+};
+
+//backend-16 dayModel
 const getUserDay = (userId, year, month, day, callback) => {
     const sql = `select calendar_id, title, DATE_FORMAT(time, '%Y-%m-%d') AS 날짜,
     date_format(time, '%k:%i') as 시간,
@@ -21,18 +33,6 @@ const getUserDay = (userId, year, month, day, callback) => {
     order by created_at desc`;
 
     db.query(sql, [userId, year, month, day], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results);
-    });
-};
-
-//backend-16 monthModel
-const getUserMonth = (userId, year, month, callback) => {
-    const sql = `select date_format(time, '%Y') as 년도, date_format(time, '%m') as 월, calendar_id, date_format(time, '%d') as 일, title
-    from calendar where users_id = ? and YEAR(time) = ? and MONTH(time) = ?
-    order by created_at desc`;
-
-    db.query(sql, [userId, year, month], (err, results) => {
         if (err) return callback(err);
         callback(null, results);
     });

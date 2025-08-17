@@ -17,12 +17,19 @@ const findAllByUserId = ({ userId }, callback) => {
   });
 };
 
+
 //backend-8
 // 제목조회
 const findTitleById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT title FROM feedback WHERE feedback_id = ? AND userId = ?";
+  
+   
+  
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
+ if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, rows[0]);
   });
 };
@@ -30,18 +37,30 @@ const findTitleById = ({ feedbackId, userId }, callback) => {
 // 8번: 제목 수정
 const updateTitle = ({ feedbackId, title, userId }, callback) => {
   const sql = "UPDATE feedback SET title = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
+  
+   
+  
   db.query(sql, [title, feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+   if (err) {
+     
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
+
 
 //backend-9 memofeedbackModel
 //메모 조회
 const findMemoById = ({ feedbackId, userId }, callback) => {
   const sql = "SELECT memo FROM feedback WHERE feedback_id = ? AND userId = ?";
+  
+  
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, rows[0]);
   });
 };
@@ -52,11 +71,16 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
     return callback(new Error('메모는 50자 이하로 입력해주세요.'), null);
   }
   const sql = "UPDATE feedback SET memo = ?, updated_at = NOW() WHERE feedback_id = ? AND userId = ?";
+  
+  
   db.query(sql, [memo, feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+  if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
-};
+}
 
 //backend-10
 const searchFeedbacks = (userId, keyword, callback) => {
@@ -67,7 +91,9 @@ const searchFeedbacks = (userId, keyword, callback) => {
     ORDER BY created_at DESC
   `;
   db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
-    if (err) return callback(err);
+    if (err) {
+      return callback(err);
+    }
     callback(null, results);
   });
 };
@@ -90,22 +116,21 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 };
 
 //backend-12
-const pinFeedback = (feedback_id, userId, callback) => {
+const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) {
-      logModelError({ location: 'pinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 오류', error: err.message });
       return callback(err);
     }
     callback(null, result);
   });
 };
 
-const unpinFeedback = (feedback_id, userId, callback) => {
+
+const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) {
-      logModelError({ location: 'unpinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 해제 오류', error: err.message });
       return callback(err);
     }
     callback(null, result);
@@ -118,11 +143,19 @@ const deleteById = ({ feedbackId, userId }, callback) => {
     DELETE FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err, null);
+    
+   if (err) {
+      
+      return callback(err, null);
+    }
     callback(null, result);
   });
 };
+
 
 //backend-14
 const findById = ({ feedbackId, userId }, callback) => {
@@ -131,15 +164,25 @@ const findById = ({ feedbackId, userId }, callback) => {
       feedback_id AS id, 
       userId, 
       title, 
-      content, 
+      good,
+      bad,
+      feedback,
       memo, 
       created_at
     FROM feedback
     WHERE feedback_id = ? AND userId = ?
   `;
+
+
+  
+
   db.query(sql, [feedbackId, userId], (err, rows) => {
-    if (err) return callback(err, null);
-    callback(null, rows[0]);
+
+  if (err) {
+              
+      return callback(err, null);
+    }
+    callback(null, rows[0] || null);
   });
 };
 

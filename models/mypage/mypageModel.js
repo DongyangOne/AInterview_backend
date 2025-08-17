@@ -9,7 +9,7 @@ const myInfo = (id, callback) => {    //id : 유저식별번호
     `;
     db.query(sql, [id], (err, result) => {
         if (err) {
-            console.log('db오류 : ', err);
+            //console.log('db오류 : ', err);
             return callback({ code: 'DB_ERROR', message: 'db오류', error: err });
         }else{
             callback(null, result);
@@ -27,15 +27,15 @@ const pwCheck = (id, pw, callback)=>{
     `;
     db.query(sql, [id], (err, result)=>{
         if(err){
-            console.log('db오류');
+            //console.log('db오류');
             return callback({ code: 'DB_ERROR', message: 'db오류', error: err });
         }else{
             if(result[0].password !== pw){
-                console.log('잘못된 비밀번호');
+                //console.log('잘못된 비밀번호');
                 return callback({code : 'INVALID_PASSWORD', message : '잘못된 비밀번호'});
             }
             else{
-                console.log('올바른 비밀번호');
+                //console.log('올바른 비밀번호');
                 callback(null, true);
             }
         }
@@ -51,10 +51,10 @@ const updatePw = (id, pw, callback)=>{
     `;
     db.query(sql, [pw, id], (err, result)=>{
         if(err){
-            console.log('db오류');
+            //console.log('db오류');
             return callback({ code: 'DB_ERROR', message: 'db오류', error: err });
         }else{
-            console.log('비밀번호 변경 완료');
+            //console.log('비밀번호 변경 완료');
             callback(null, true);
         }
     })
@@ -70,11 +70,11 @@ const updateName = (id, nickname, callback)=>{
     `;
     db.query(sql, [nickname, id], (err, result)=>{
         if(err){
-            console.log('db오류');
+            //console.log('db오류');
             return callback(err);
         }
         else{
-            console.log('닉네임 변경 완료');
+            //console.log('닉네임 변경 완료');
             callback(null, true);
         }
     })
@@ -90,11 +90,11 @@ const getAppPush = (id, callback)=>{
     `;
     db.query(sql, [id], (err, result)=>{
         if(err){
-            console.log('db오류');
+            //console.log('db오류');
             return callback(err);
         }
         else{
-            console.log('사용자의 앱 푸시 데이터 불러오기 성공');
+            //console.log('사용자의 앱 푸시 데이터 불러오기 성공');
             return callback(null, result);
         }
     })
@@ -110,11 +110,11 @@ const updateAppPush = (id, appPush, callback)=>{
     `;
     db.query(sql, [appPush, id], (err, result)=>{
         if(err){
-            console.log('db오류');
+            //console.log('db오류');
             return callback(err);
         }
         else{
-            console.log('앱 푸시 업데이트 성공');
+            //console.log('앱 푸시 업데이트 성공');
             return callback(null, true);
         }
     })
@@ -195,10 +195,10 @@ function queryAsync(sql, params){
         await queryAsync('delete from calendar where users_id = ?', [user_id]);
         await queryAsync('delete from users where id = ?', [user_id]);
 
-        console.log('회원탈퇴 완료');
+        //console.log('회원탈퇴 완료');
         callback(null, true);
     }catch(err){
-        console.log('에러 : ', err);
+        //console.log('에러 : ', err);
         callback(err);
     }
 }
