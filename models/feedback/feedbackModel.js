@@ -85,17 +85,23 @@ const updateMemo = ({ feedbackId, memo, userId }, callback) => {
 //backend-10
 const searchFeedbacks = (userId, keyword, callback) => {
   const sql = `
-    SELECT feedback_id, userId, title, memo, pin, created_at
+    SELECT feedback_id, userId, title, memo, pin, created_at, good, bad, feedback, content
     FROM feedback
-    WHERE userId = ? AND (title LIKE ? OR memo LIKE ?)
+    WHERE userId = ? AND (
+      title LIKE ? OR memo LIKE ? OR good LIKE ? OR bad LIKE ? OR feedback LIKE ? OR content LIKE ?
+    )
     ORDER BY created_at DESC
   `;
-  db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
-    if (err) {
-      return callback(err);
+  db.query(
+    sql,
+    [userId, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`],
+    (err, results) => {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, results);
     }
-    callback(null, results);
-  });
+  );
 };
 
 //backend-11
@@ -125,7 +131,6 @@ const pinFeedback = (feedbackId, userId, callback) => {
     callback(null, result);
   });
 };
-
 
 const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
@@ -164,6 +169,7 @@ const findById = ({ feedbackId, userId }, callback) => {
       feedback_id AS id, 
       userId, 
       title, 
+      content, 
       good,
       bad,
       feedback,
