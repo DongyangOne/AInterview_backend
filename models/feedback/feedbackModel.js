@@ -108,9 +108,7 @@ const sortFeedbacks = (userId, orderBy, callback) => {
     ORDER BY pin DESC, ${orderBy}
   `;
   db.query(sql, [userId], (err, results) => {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, results);
   });
 };
