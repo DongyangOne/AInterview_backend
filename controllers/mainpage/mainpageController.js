@@ -18,7 +18,7 @@ console.log(`[${koreaTime}] twcalendar 사용 400 응답`);
     TwTODO(userId, (err, result) => {
         if (err) {
             console.error('[TwTODO]오류:', err);
-            console.log(`[${new Date().toISOString()}] twcalendar 사용 500 응답`);
+            console.log(`[${koreaTime}] twcalendar 사용 500 응답`);
             console.error('DB 오류:', err);
             
             return res.status(500).json({ success: false, message: '서버 오류', error: err });
@@ -26,7 +26,7 @@ console.log(`[${koreaTime}] twcalendar 사용 400 응답`);
 
         const today = new Date();
         let todayInfo = today.getDate();
-console.log(`[${new Date().toISOString()}] twcalendar 사용 200 응답`);
+console.log(`[${koreaTime}] twcalendar 사용 200 응답`);
         return res.status(200).json({ success: true, data: result, today: todayInfo });
     });
 }
