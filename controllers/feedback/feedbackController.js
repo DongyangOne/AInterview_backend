@@ -269,35 +269,42 @@ const sortFeedbacksController = (req, res) => {
   });
 };
 
+
 //backend-12
-// 피드백 상단 고정
+//피드백 상단 고정
 const getPin = (req, res) => {
   const { feedbackId, userId } = req.params;
 
   if (!feedbackId || !userId) {
+    console.log(`${formatTimestamp()} 피드백 상단 고정 400 응답`);
     return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedbackId, userId)' });
   }
 
   pinFeedback(feedbackId, userId, (err, result) => {
     if (err) {
+      console.log(`${formatTimestamp()} 피드백 상단 고정 500 응답`);
       return res.status(500).json({ success: false, message: '피드백 상단 고정 실패', error: err.message });
     }
+    console.log(`${formatTimestamp()} 피드백 상단 고정 200 응답`);
     res.status(200).json({ success: true, message: '피드백 상단 고정 완료', data: result });
   });
 };
 
-// 피드백 상단 고정 해제
+//피드백 상단 고정 해제
 const getUnpin = (req, res) => {
   const { feedbackId, userId } = req.params;
 
   if (!feedbackId || !userId) {
+    console.log(`${formatTimestamp()} 피드백 상단 고정 해제 400 응답`);
     return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedbackId, userId)' });
   }
 
   unpinFeedback(feedbackId, userId, (err, result) => {
     if (err) {
+      console.log(`${formatTimestamp()} 피드백 상단 고정 해제 500 응답`);
       return res.status(500).json({ success: false, message: '피드백 상단 고정 해제 실패', error: err.message });
     }
+    console.log(`${formatTimestamp()} 피드백 상단 고정 해제 200 응답`);
     res.status(200).json({ success: true, message: '피드백 상단 고정 해제 완료', data: result });
   });
 };
