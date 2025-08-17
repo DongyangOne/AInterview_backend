@@ -92,6 +92,7 @@ const searchFeedbacks = (userId, keyword, callback) => {
   `;
   db.query(sql, [userId, `%${keyword}%`, `%${keyword}%`], (err, results) => {
     if (err) {
+      logModelError({ location: 'searchFeedbacks', params: { userId, keyword }, message: 'DB 피드백 검색 오류', error: err.message });
       return callback(err);
     }
     callback(null, results);
@@ -111,6 +112,7 @@ const sortFeedbacks = (userId, orderBy, callback) => {
     callback(null, results);
   });
 };
+
 
 //backend-12
 const pinFeedback = (feedbackId, userId, callback) => {
@@ -132,6 +134,7 @@ const unpinFeedback = (feedbackId, userId, callback) => {
     callback(null, result);
   });
 };
+
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
