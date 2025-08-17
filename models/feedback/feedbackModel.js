@@ -108,9 +108,7 @@ const sortFeedbacks = (userId, orderBy, callback) => {
     ORDER BY pin DESC, ${orderBy}
   `;
   db.query(sql, [userId], (err, results) => {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, results);
   });
 };
@@ -120,9 +118,7 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, result);
   });
 };
@@ -130,9 +126,7 @@ const pinFeedback = (feedbackId, userId, callback) => {
 const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, result);
   });
 };

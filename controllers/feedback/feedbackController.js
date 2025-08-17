@@ -192,6 +192,10 @@ const searchFeedbacksController = (req, res) => {
     });
   }
 
+  if (isNaN(Number(userId))) {
+    return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
+  }
+
   searchFeedbacks(userId, keyword, (err, results) => {
     if (err) {
       console.log(`${getTimestamp()} 피드백 리스트 검색 500 응답`);
@@ -212,15 +216,26 @@ const searchFeedbacksController = (req, res) => {
 
 
 //backend-11
+const getTimestamp = () => {
+  const now = new Date();
+  return `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}. ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+};
+
 const sortFeedbacksController = (req, res) => {
   const { by } = req.query;
   const { userId } = req.params;
 
   if (!userId) {
+    console.log(`${getTimestamp()} 피드백 리스트 정렬 400 응답`);
     return res.status(400).json({
       success: false,
       message: "userId가 필요합니다."
     });
+  }
+
+  if (isNaN(Number(userId))) {
+    console.log(`${getTimestamp()} 피드백 리스트 정렬 400 응답`);
+    return res.status(400).json({ success: false, message: "userId는 숫자여야 합니다." });
   }
 
   let orderBy;
@@ -229,6 +244,7 @@ const sortFeedbacksController = (req, res) => {
   } else if (by === 'alpha') {
     orderBy = 'title ASC';
   } else {
+    console.log(`${getTimestamp()} 피드백 리스트 정렬 400 응답`);
     return res.status(400).json({
       success: false,
       message: "정렬 기준이 올바르지 않습니다 (by: alpha)"
@@ -237,12 +253,14 @@ const sortFeedbacksController = (req, res) => {
 
   sortFeedbacks(userId, orderBy, (err, result) => {
     if (err) {
+      console.log(`${getTimestamp()} 피드백 리스트 정렬 500 응답`);
       return res.status(500).json({
         success: false,
         message: "서버 오류",
         error: err.message
       });
     }
+    console.log(`${getTimestamp()} 피드백 리스트 정렬 200 응답`);
     res.status(200).json({
       success: true,
       message: "피드백 정렬 조회 성공",
@@ -251,35 +269,42 @@ const sortFeedbacksController = (req, res) => {
   });
 };
 
+
 //backend-12
-// 피드백 상단 고정
+//피드백 상단 고정
 const getPin = (req, res) => {
   const { feedbackId, userId } = req.params;
 
   if (!feedbackId || !userId) {
+    console.log(`${formatTimestamp()} 피드백 상단 고정 400 응답`);
     return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedbackId, userId)' });
   }
 
   pinFeedback(feedbackId, userId, (err, result) => {
     if (err) {
+      console.log(`${formatTimestamp()} 피드백 상단 고정 500 응답`);
       return res.status(500).json({ success: false, message: '피드백 상단 고정 실패', error: err.message });
     }
+    console.log(`${formatTimestamp()} 피드백 상단 고정 200 응답`);
     res.status(200).json({ success: true, message: '피드백 상단 고정 완료', data: result });
   });
 };
 
-// 피드백 상단 고정 해제
+//피드백 상단 고정 해제
 const getUnpin = (req, res) => {
   const { feedbackId, userId } = req.params;
 
   if (!feedbackId || !userId) {
+    console.log(`${formatTimestamp()} 피드백 상단 고정 해제 400 응답`);
     return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다 (feedbackId, userId)' });
   }
 
   unpinFeedback(feedbackId, userId, (err, result) => {
     if (err) {
+      console.log(`${formatTimestamp()} 피드백 상단 고정 해제 500 응답`);
       return res.status(500).json({ success: false, message: '피드백 상단 고정 해제 실패', error: err.message });
     }
+    console.log(`${formatTimestamp()} 피드백 상단 고정 해제 200 응답`);
     res.status(200).json({ success: true, message: '피드백 상단 고정 해제 완료', data: result });
   });
 };
