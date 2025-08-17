@@ -109,49 +109,34 @@ const sortFeedbacks = (userId, orderBy, callback) => {
   `;
   db.query(sql, [userId], (err, results) => {
     if (err) {
-      logModelError({ location: 'sortFeedbacks', params: { userId, orderBy }, message: 'DB 피드백 정렬 오류', error: err.message });
       return callback(err);
     }
     callback(null, results);
   });
 };
 
+
 //backend-12
-const pinFeedback = (feedback_id, userId, callback) => {
+const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) {
-      logModelError({ location: 'pinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 오류', error: err.message });
+      return callback(err);
     }
-    const pinFeedback = (feedbackId, userId, callback) => {
-      const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-      db.query(sql, [feedbackId, userId], (err, result) => {
-        if (err) {
-          return callback(err);
-        }
-        callback(null, result);
-      });
-    };
+    callback(null, result);
   });
 };
 
-const unpinFeedback = (feedback_id, userId, callback) => {
+const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) {
-      logModelError({ location: 'unpinFeedback', params: { feedback_id, userId }, message: 'DB 피드백 상단 고정 해제 오류', error: err.message });
+      return callback(err);
     }
-    const unpinFeedback = (feedbackId, userId, callback) => {
-      const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-      db.query(sql, [feedbackId, userId], (err, result) => {
-        if (err) {
-          return callback(err);
-        }
-        callback(null, result);
-      });
-    };
+    callback(null, result);
   });
 };
+
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
