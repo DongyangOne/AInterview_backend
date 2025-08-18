@@ -119,7 +119,13 @@ const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) return callback(err);
-    callback(null, result);
+    //callback(null, result);
+
+    const selectSql = "SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?";
+    db.query(selectSql, [feedbackId, userId], (err, rows) => {
+      if (err) return callback(err);
+      callback(null, rows[0]);
+    });
   });
 };
 
@@ -127,7 +133,13 @@ const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) return callback(err);
-    callback(null, result);
+    //callback(null, result);
+
+    const selectSql = "SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?";
+    db.query(selectSql, [feedbackId, userId], (err, rows) => {
+      if (err) return callback(err);
+      callback(null, rows[0]);
+    });
   });
 };
 
