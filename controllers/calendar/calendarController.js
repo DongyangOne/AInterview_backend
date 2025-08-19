@@ -153,7 +153,7 @@ const getUpdate = (req, res) => {
             return res.status(500).json({ success: false, message: '오류 발생', details: err });
         }
 
-        const importanceResult = result ? importanceArr[result.importance] : null;
+        const importanceResult = importanceArr[importance];
         console.log(datetime, `캘린더 일정 수정 200`);
         return res.status(200).json({ success: true, data: result, importanceResult });
     });
