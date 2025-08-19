@@ -1,18 +1,6 @@
 const db = require('../../config/database');
 
-//backend-15 monthmodel
-const getUserMonth = (userId, year, month, callback) => {
-    const sql = `select date_format(time, '%Y') as 년도, date_format(time, '%m') as 월, calendar_id, date_format(time, '%d') as 일, title
-    from calendar where users_id = ? and YEAR(time) = ? and MONTH(time) = ?
-    order by created_at desc`;
-
-    db.query(sql, [userId, year, month], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results);
-    });
-};
-
-//backend-16 dayModel
+//backend-15 daymodel
 const getUserDay = (userId, year, month, day, callback) => {
     const sql = `select calendar_id, title, DATE_FORMAT(time, '%Y-%m-%d') AS 날짜,
     date_format(time, '%k:%i') as 시간,
@@ -38,6 +26,18 @@ const getUserDay = (userId, year, month, day, callback) => {
     });
 };
 
+//backend-16 monthModel
+const getUserMonth = (userId, year, month, callback) => {
+    const sql = `select date_format(time, '%Y') as 년도, date_format(time, '%m') as 월, calendar_id, date_format(time, '%d') as 일, title
+    from calendar where users_id = ? and YEAR(time) = ? and MONTH(time) = ?
+    order by created_at desc`;
+
+    db.query(sql, [userId, year, month], (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+    });
+};
+
 //backend-17 dateaddModel
 const createDate = (userId, title, time, importance, memo, callback) => {
     const sql = `insert into calendar (users_id, title, time, importance, memo)
@@ -50,37 +50,45 @@ const createDate = (userId, title, time, importance, memo, callback) => {
 };
 
 //backend-18 dateupdateModel
-const getCalendarUpdate = (calendar_id, userId, title, time, importance, memo, callback) => { //모든 컬럼을 한 번에 수정하지 않고 하나하나 컬럼을 수정할 수 있게 함
+const getCalendarUpdate = (userId, calendar_id, title, time, importance, memo, callback) => {
+    //모든 컬럼을 한 번에 수정하지 않고 하나하나 컬럼을 수정할 수 있게 함
     let sql = `update calendar set `;
-    const arr = [], values = [];
+    const arr = [],
+        values = [];
 
-    if (title !== undefined){
+    if (title !== undefined) {
         arr.push(`title = ?`);
         values.push(title);
     }
 
-    if (time !== undefined){
+    if (time !== undefined) {
         arr.push(`time = ?`);
         values.push(time);
     }
 
-    if (importance !== undefined){
+    if (importance !== undefined) {
         arr.push(`importance = ?`);
         values.push(importance);
     }
 
-    if (memo !== undefined){
+    if (memo !== undefined) {
         arr.push(`memo = ?`);
         values.push(memo);
     }
 
     sql += arr.join(`, `) + ` where users_id = ? and calendar_id = ?`;
     values.push(userId);
-    values.push(calendar_id)
+    values.push(calendar_id);
 
     db.query(sql, values, (err, results) => {
         if (err) return callback(err);
-        callback(null, results);
+        //callback(null, results);
+
+        const selectSql = `SELECT * FROM calendar WHERE users_id = ? AND calendar_id = ?`;
+        db.query(selectSql, [userId, calendar_id], (err, rows) => {
+            if (err) return callback(err);
+            callback(null, rows[0]);
+        });
     });
 };
 
@@ -98,5 +106,5 @@ module.exports = {
     getUserMonth,
     createDate,
     getCalendarUpdate,
-    getCalendarDelete
-}
+    getCalendarDelete,
+};
