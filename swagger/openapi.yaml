@@ -1,0 +1,15 @@
+openapi: '3.0.4'
+info:
+  title: AInterview API
+  version: '1.0.0'
+paths:
+  /notice/{userId}:
+    $ref: './notice.yaml#/~1notice~1{userId}'
+  /notice/{userId}/{noticeId}/read:
+    $ref: './notice.yaml#/~1notice~1{userId}~1{noticeId}~1read'
+  /notice/{userId}/read:
+    $ref: './notice.yaml#/~1notice~1{userId}~1read'
+  /notice/push-token:
+    $ref: './notice.yaml#/~1notice~1push-token'
+  /notice/send:
+    $ref: './notice.yaml#/~1notice~1send'

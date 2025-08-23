@@ -1,0 +1,191 @@
+/notice/{userId}:
+  get:
+    tags:
+      - Notice
+    summary: 특정 유저의 알림 조회
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      '200':
+        description: 알림 리스트 반환
+        content:
+          application/json:
+            example:
+              success: true
+              data:
+                - notice_id: 1
+                  title: "제목"
+                  content: "내용"
+                  created_at: "2025-08-24T12:12:00.000Z"
+                  is_read: "N"
+      '400':
+        description: userId 미전달
+        content:
+          application/json:
+            example:
+              success: false
+              message: "userId가 필요합니다."
+      '500':
+        description: 알림 조회 실패
+        content:
+          application/json:
+            example:
+              success: false
+              message: "알림 조회 중 오류 발생"
+
+/notice/{userId}/{noticeId}/read:
+  patch:
+    tags:
+      - Notice
+    summary: 특정 알림 읽음 처리
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: number
+      - name: noticeId
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      '200':
+        description: 읽음 처리 성공
+        content:
+          application/json:
+            example:
+              success: true
+              message: "1 알림이 읽음 처리되었습니다."
+      '400':
+        description: userId 미전달
+        content:
+          application/json:
+            example:
+              success: false
+              message: "userId가 필요합니다."
+      '500':
+        description: 읽음 처리 중 오류 발생
+        content:
+          application/json:
+            example:
+              success: false
+              message: "알림 읽음 처리 중 오류 발생"
+
+/notice/{userId}/read:
+  patch:
+    tags:
+      - Notice
+    summary: 모든 알림 읽음 처리
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: number
+    responses:
+      '200':
+        description: 모든 알림 읽음 처리 성공
+        content:
+          application/json:
+            example:
+              success: true
+              message: "123 유저의 모든 알림이 읽음 처리되었습니다."
+      '400':
+        description: userId 미전달
+        content:
+          application/json:
+            example:
+              success: false
+              message: "userId가 필요합니다."
+      '500':
+        description: 읽음 처리 중 오류 발생
+        content:
+          application/json:
+            example:
+              success: false
+              message: "알림 읽음 처리 중 오류 발생"
+
+/notice/push-token:
+  post:
+    tags:
+      - Notice
+    summary: 푸시 토큰 등록/업데이트
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            userId: 1
+            pushToken: "pushToken"
+    responses:
+      '200':
+        description: 푸시 토큰 등록/업데이트 성공
+        content:
+          application/json:
+            example:
+              success: true
+              message: "푸시 토큰이 성공적으로 저장되었습니다."
+      '400':
+        description: userId 또는 pushToken 미전달
+        content:
+          application/json:
+            examples:
+              missingUserId:
+                summary: userId 미전달
+                value:
+                  success: false
+                  message: "userId가 필요합니다."
+              missingPushToken:
+                summary: pushToken 미전달
+                value:
+                  success: false
+                  message: "푸시 토큰이 전달되지 않았습니다."
+      '500':
+        description: 푸시 토큰 저장 중 오류 발생
+        content:
+          application/json:
+            example:
+              success: false
+              message: "푸시 토큰 저장 중 오류 발생"
+
+/notice/send:
+  post:
+    tags:
+      - Notice
+    summary: 알림 발송
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            userId: 1
+            title: "공지사항"
+            content: "새로운 기능이 추가되었습니다."
+    responses:
+      '200':
+        description: 알림 발송 성공
+        content:
+          application/json:
+            example:
+              success: true
+              message: "알림이 전송되었습니다."
+              noticeId: 15
+      '400':
+        description: 필수 필드 미전달
+        content:
+          application/json:
+            example:
+              success: false
+              message: "title, content가 필요합니다."
+      '500':
+        description: 알림 저장 중 오류 발생
+        content:
+          application/json:
+            example:
+              success: false
+              message: "알림 저장 중 오류 발생"
