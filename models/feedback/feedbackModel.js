@@ -106,32 +106,39 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 
 //backend-12
 const pinFeedback = (feedbackId, userId, callback) => {
-    const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-    db.query(sql, [feedbackId, userId], (err, result) => {
-        if (err) return callback(err);
-        //callback(null, result);
+  const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
+  db.query(sql, [feedbackId, userId], (err, result) => {
+    if (err) return callback(err);
 
-        const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
-        db.query(selectSql, [feedbackId, userId], (err, rows) => {
-            if (err) return callback(err);
-            callback(null, rows[0]);
-        });
+    if (result.affectedRows === 0) {
+      return callback(null, null);
+    }
+
+    const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
+    db.query(selectSql, [feedbackId, userId], (err, rows) => {
+      if (err) return callback(err);
+      callback(null, rows[0]);
     });
+  });
 };
 
 const unpinFeedback = (feedbackId, userId, callback) => {
-    const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-    db.query(sql, [feedbackId, userId], (err, result) => {
-        if (err) return callback(err);
-        //callback(null, result);
+  const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
+  db.query(sql, [feedbackId, userId], (err, result) => {
+    if (err) return callback(err);
 
-        const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
-        db.query(selectSql, [feedbackId, userId], (err, rows) => {
-            if (err) return callback(err);
-            callback(null, rows[0]);
-        });
+    if (result.affectedRows === 0) {
+      return callback(null, null);
+    }
+
+    const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
+    db.query(selectSql, [feedbackId, userId], (err, rows) => {
+      if (err) return callback(err);
+      callback(null, rows[0]);
     });
+  });
 };
+
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {
