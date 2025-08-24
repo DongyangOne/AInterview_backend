@@ -1,0 +1,33 @@
+openapi: '3.0.4'
+info:
+  title: AInterview API
+  version: '1.0.0'
+paths:
+  /notice/{userId}:
+    $ref: './paths/notice.yaml#/~1notice~1{userId}'
+  /notice/{userId}/{noticeId}/read:
+    $ref: './paths/notice.yaml#/~1notice~1{userId}~1{noticeId}~1read'
+  /notice/{userId}/read:
+    $ref: './paths/notice.yaml#/~1notice~1{userId}~1read'
+  /notice/push-token:
+    $ref: './paths/notice.yaml#/~1notice~1push-token'
+  /notice/send:
+    $ref: './paths/notice.yaml#/~1notice~1send'
+components:
+  schemas:
+    Notice:
+      $ref: './schemas/notice.yaml#/Notice'
+    NoticeListResponse:
+      $ref: './schemas/notice.yaml#/NoticeListResponse'
+    NoticeReadResponse:
+      $ref: './schemas/notice.yaml#/NoticeReadResponse'
+    NoticeReadAllResponse:
+      $ref: './schemas/notice.yaml#/NoticeReadAllResponse'
+    PushTokenRequest:
+      $ref: './schemas/notice.yaml#/PushTokenRequest'
+    PushTokenResponse:
+      $ref: './schemas/notice.yaml#/PushTokenResponse'
+    SendNoticeRequest:
+      $ref: './schemas/notice.yaml#/SendNoticeRequest'
+    SendNoticeResponse:
+      $ref: './schemas/notice.yaml#/SendNoticeResponse'
