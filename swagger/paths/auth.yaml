@@ -1,0 +1,219 @@
+/sign/login:
+  post:
+    tags:
+      - Auth
+    summary: 로그인
+    operationId: loginUser
+    requestBody:
+      required: true
+      content: 
+        application/json:
+          schema:
+            $ref: '../schemas/auth.yaml#/loginUserRequest'
+    responses:
+      '200':
+        description: 사용자 로그인 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/auth.yaml#/loginUserResponse'
+      '400':
+        description: 필수 필드 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            examples:
+              missingLoginUserId:
+                summary: loginUserId 미전달
+                value:
+                  success: false
+                  message: "loginUserId가 필요합니다."
+              missingPassword:
+                summary: password 미전달
+                value:
+                  success: false
+                  message: "password가 필요합니다."
+      '500':
+        description: 로그인 처리 중 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "로그인 처리 중 오류가 발생했습니다."
+      '404':
+        description: 해당 유저를 찾을 수 없음
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "해당 유저를 찾을 수가 없습니다."
+      '401':
+        description: 잘못된 비밀번호
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "비밀번호를 틀렸습니다."
+
+
+/sign/signup:
+  post:
+    tags: 
+      - Auth
+    summary: 회원가입
+    operationId: signupUser
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/auth.yaml#/signupUserRequest'
+    responses:
+      '201':
+        description: 회원가입 완료
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/auth.yaml#/signupUserResponse'
+      '400':
+        description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            examples:
+              missingLoginUserId:
+                summary: loginUserId 미전달
+                value:
+                  success: false
+                  message: "loginUserId가 필요합니다."
+              missingPassword:
+                summary: password 미전달
+                value:
+                  success: false
+                  message: "password가 필요합니다."
+              missingNickname:
+                summary: nickname 미전달
+                value:
+                  success: false
+                  message: "nickname이 필요합니다."
+              invalidLoginUserId:
+                summary: loginUserId 조건 불충족
+                value:
+                  success: false
+                  message: "loginUserId는 3-15자의 영어, 숫자만 가능합니다."
+              invalidPassword:
+                summary: password 조건 불충족
+                value:
+                  success: false
+                  message: "password는 8-16자의 영어대소문자, 숫자, 특수문자(!,@,#,$,%,^,&,*)만 가능합니다."
+              invalidNickname:
+                summary: nickname 조건 불충족
+                value:
+                  success: false
+                  message: "nickname은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)"
+              termsNotAccepted:
+                summary: 서비스 이용약관 동의 안함
+                value:
+                  success: false
+                  message: "서비스 이용약관에 동의해주세요."
+      '500':
+        description: 회원가입 처리 중 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "회원가입 처리 중 오류가 발생했습니다."
+      '409':
+        description: 중복된 아이디
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "중복된 아이디입니다."
+
+/sign/userIdCheck:
+  post:
+    tags: 
+      - Auth
+    summary: 아이디 중복
+    operationId: checkUserId
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/auth.yaml#/checkUserIdRequest'
+    responses:
+      '200':
+        description: 중복되지 않는 아이디
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/auth.yaml#/checkUserIdResponse'
+      '400':
+        description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            examples:
+              missingLoginUserId:
+                summary: loginUserId 미전달
+                value:
+                  success: false
+                  message: "loginUserId가 필요합니다."
+              invalidLoginUserId:
+                summary: loginUserId 조건 불충족
+                value:
+                  success: false
+                  message: "loginUserId는 3-15자의 영어, 숫자만 가능합니다."
+      '500':
+        description: 아이디 중복 검사 중 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "아이디 중복 검사 중 오류가 발생했습니다."
+      '409':
+        description: 중복된 아이디
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            example:
+              value:
+                success: false
+                message: "중복된 아이디입니다."
+
+
+
