@@ -1,0 +1,42 @@
+/myPage/myInfo:
+  get:
+    tags:
+      - mypage
+    summary: 사용자 정보 조회
+    operationId: getUserInfo
+    parameters:
+      - name: userId
+        in: 'query'
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: 정보 조회할 사용자 ID
+    responses:
+      '200':
+        description: 사용자 정보 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/mypage.yaml#/getUserInfoResponse'
+      '401':
+        description: userId 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                  message:
+                    example: "userId가 필요합니다."
+      '500':
+        description: 사용자 정보 조회 중 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                  message:
+                    example: "사용자 정보 조회 중 오류가 발생했습니다."
+

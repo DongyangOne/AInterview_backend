@@ -1,0 +1,16 @@
+getUserInfoResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - properties:
+      message:
+        exapmle: "사용자 정보 조회 성공"
+      loginUserId:
+        type: string
+        example: "testuser"
+      nickname:
+        type: string
+        example: "테스터"
+      profile:
+        type: string
+        example: null
+        
