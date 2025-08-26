@@ -234,6 +234,322 @@ paths:
                   - properties:
                       message:
                         example: 알림 저장 중 오류 발생
+  /calendar/month:
+    get:
+      tags:
+        - calendar
+      summary: 특정 유저의 해당 달 일정 조회
+      operationId: getSearchmonth
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정을 조회할 유저의 ID
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 2025
+          description: 일정을 조회할 연도 값
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 8
+          description: 일정을 조회할 월 값
+      responses:
+        '200':
+          description: 일정 반환
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monthResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 미입력 정보가 존재합니다.
+        '500':
+          description: 일정 조회 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 오류 발생
+  /calendar/day:
+    get:
+      tags:
+        - calendar
+      summary: 특정 유저의 일정 상세 조회
+      operationId: getUserDay
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정을 조회할 유저의 ID
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 2025
+          description: 일정을 조회할 연도 값
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 8
+          description: 일정을 조회할 월 값
+        - name: day
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 8
+          description: 일정을 조회할 일(day) 값
+      responses:
+        '200':
+          description: '일정이 있으면 일정 반환, 없으면 안내 문구 출력'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dayResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 미입력 정보가 존재합니다.
+        '500':
+          description: 일정 조회 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 오류 발생
+  /calendar/add:
+    get:
+      tags:
+        - calendar
+      summary: 일정 생성
+      operationId: addDate
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정 수정할 유저의 ID
+        - name: title
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 삼성 면접 일정
+          description: 제목 설정
+        - name: time
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: '2025-08-27 13:00:00'
+          description: '년/월/일, 시간 설정'
+        - name: importance
+          in: query
+          required: true
+          schema:
+            type: string
+            maxLength: 1
+            example: S
+          description: 중요도 설정
+        - name: memo
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 메모메모
+      responses:
+        '200':
+          description: '일정이 있으면 일정 반환, 없으면 안내 문구 출력'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addDateResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - allOf:
+                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - properties:
+                          message:
+                            example: 미입력 정보가 존재합니다.
+                  - allOf:
+                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - properties:
+                          message:
+                            example: 8자 미만을 입력해 주세요.
+                  - allOf:
+                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - properties:
+                          message:
+                            example: '중요도에는 S, I, N만 입력 가능합니다.'
+        '500':
+          description: 일정 추가 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 서버 오류 발생
+  /calendar/update:
+    get:
+      tags:
+        - calendar
+      summary: 일정 수정
+      operationId: getCalendarUpdate
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정 수정할 유저의 ID
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 삼성 면접 일정
+          description: 제목 설정
+        - name: time
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2025-08-27 13:00:00'
+          description: '년/월/일, 시간 설정'
+        - name: importance
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 1
+            example: S
+          description: 중요도 설정
+        - name: memo
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 메모메모
+          description: 메모 설정
+      responses:
+        '200':
+          description: 일정 수정
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getUpdateResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - allOf:
+                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - properties:
+                          message:
+                            example: 8자 미만을 입력해 주세요.
+                  - allOf:
+                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - properties:
+                          message:
+                            example: '중요도에는 S, I, N만 입력 가능합니다.'
+        '500':
+          description: 일정 조회 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 오류 발생
+  /calendar/delete:
+    get:
+      tags:
+        - calendar
+      summary: 일정 삭제
+      operationId: getDelete
+      parameters:
+        - name: calendar_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정 삭제할 캘린더의 ID
+      responses:
+        '200':
+          description: 일정 삭제
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDeleteResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 미입력 정보가 존재합니다
+        '500':
+          description: 일정 조회 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 오류 발생
 components:
   schemas:
     Notice:
@@ -260,7 +576,7 @@ components:
           example: 'N'
     NoticeListResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - properties:
             message:
               example: 알림 리스트 조회 성공
@@ -270,13 +586,13 @@ components:
                 $ref: '#/components/schemas/Notice'
     NoticeReadResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - properties:
             message:
               example: 1 알림이 읽음 처리되었습니다.
     NoticeReadAllResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - properties:
             message:
               example: 1 유저의 모든 알림이 읽음 처리되었습니다.
@@ -294,14 +610,7 @@ components:
           example: pushToken
     PushTokenResponse:
       allOf:
-        - type: object
-          properties:
-            success:
-              type: boolean
-              example: true
-            message:
-              type: string
-              example: 성공 메시지
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - properties:
             message:
               example: 푸시 토큰이 성공적으로 저장되었습니다.
@@ -323,10 +632,135 @@ components:
           example: 새로운 기능이 추가되었습니다.
     SendNoticeResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - properties:
             message:
               example: 알림이 전송되었습니다.
             noticeId:
               type: integer
               example: 15
+    calendar:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        year:
+          type: integer
+          example: 2025
+        month:
+          type: integer
+          example: 8
+        day:
+          type: integer
+          example: 27
+        time:
+          type: string
+          format: date-time
+          example: '2025-08-27 13:00:00'
+        title:
+          type: string
+          example: 삼성 면접 일정
+        importance:
+          type: string
+          enum:
+            - S
+            - I
+            - 'N'
+          example: 'N'
+        memo:
+          type: string
+          example: 메모메모
+    monthResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - properties:
+            message:
+              example: 캘린더 month 조회 성공
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  년도:
+                    type: string
+                    example: '2025'
+                  월:
+                    type: string
+                    example: '8'
+                  일:
+                    type: string
+                    example: '20'
+                  calendar_id:
+                    type: integer
+                    example: 53
+                  title:
+                    type: string
+                    example: test123
+    dayResponse:
+      allOf:
+        - type: object
+          properties:
+            success:
+              type: boolean
+              example: true
+            message:
+              type: string
+              example: 성공 메시지
+        - properties:
+            message:
+              example: 캘린더 day 조회 성공 / 일정이 없습니다
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  calendar_id:
+                    type: integer
+                    example: 53
+                  title:
+                    type: string
+                    example: test123
+                  날짜:
+                    type: string
+                    format: date
+                    example: '2025-08-20'
+                  시간:
+                    type: string
+                    example: '17:00'
+                  요일:
+                    type: string
+                    example: 수
+                  importance:
+                    type: string
+                    example: 중요
+                  memo:
+                    type: string
+                    example: test123
+    addDateResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - properties:
+            message:
+              example: 캘린더 일정 추가
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/calendar'
+    getUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - properties:
+            message:
+              example: 캘린더 일정 수정
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/calendar'
+    getDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - properties:
+            message:
+              type: string
+              example: 캘린더 일정 삭제
