@@ -30,7 +30,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: userId가 필요합니다.
@@ -40,7 +40,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 알림 조회 중 오류 발생
@@ -78,7 +78,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: userId가 필요합니다.
@@ -88,7 +88,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 알림 읽음 처리 중 오류 발생
@@ -119,7 +119,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: userId가 필요합니다.
@@ -129,7 +129,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 알림 읽음 처리 중 오류 발생
@@ -158,7 +158,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
               examples:
                 missingUserId:
                   summary: userId 미전달
@@ -176,7 +176,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 푸시 토큰 저장 중 오류 발생
@@ -205,14 +205,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - type: object
-                    properties:
-                      success:
-                        type: boolean
-                        example: false
-                      message:
-                        type: string
-                        example: 에러 메시지
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
               examples:
                 missingUserId:
                   summary: userId 미전달
@@ -230,10 +223,230 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 알림 저장 중 오류 발생
+  /sign/login:
+    post:
+      tags:
+        - Auth
+      summary: 로그인
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUserRequest'
+      responses:
+        '200':
+          description: 사용자 로그인 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginUserResponse'
+        '400':
+          description: 필수 필드 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: 에러 메시지
+              examples:
+                missingLoginUserId:
+                  summary: loginUserId 미전달
+                  value:
+                    success: false
+                    message: loginUserId가 필요합니다.
+                missingPassword:
+                  summary: password 미전달
+                  value:
+                    success: false
+                    message: password가 필요합니다.
+        '401':
+          description: 잘못된 비밀번호
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 비밀번호를 틀렸습니다.
+        '404':
+          description: 해당 유저를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 해당 유저를 찾을 수가 없습니다.
+        '500':
+          description: 로그인 처리 중 오류
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 로그인 처리 중 오류가 발생했습니다.
+  /sign/signup:
+    post:
+      tags:
+        - Auth
+      summary: 회원가입
+      operationId: signupUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signupUserRequest'
+      responses:
+        '201':
+          description: 회원가입 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/signupUserResponse'
+        '400':
+          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              examples:
+                missingLoginUserId:
+                  summary: loginUserId 미전달
+                  value:
+                    success: false
+                    message: loginUserId가 필요합니다.
+                missingPassword:
+                  summary: password 미전달
+                  value:
+                    success: false
+                    message: password가 필요합니다.
+                missingNickname:
+                  summary: nickname 미전달
+                  value:
+                    success: false
+                    message: nickname이 필요합니다.
+                invalidLoginUserId:
+                  summary: loginUserId 조건 불충족
+                  value:
+                    success: false
+                    message: 'loginUserId는 3-15자의 영어, 숫자만 가능합니다.'
+                invalidPassword:
+                  summary: password 조건 불충족
+                  value:
+                    success: false
+                    message: 'password는 8-16자의 영어대소문자, 숫자, 특수문자(!,@,#,$,%,^,&,*)만 가능합니다.'
+                invalidNickname:
+                  summary: nickname 조건 불충족
+                  value:
+                    success: false
+                    message: 'nickname은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)'
+                termsNotAccepted:
+                  summary: 서비스 이용약관 동의 안함
+                  value:
+                    success: false
+                    message: 서비스 이용약관에 동의해주세요.
+        '409':
+          description: 중복된 아이디
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 중복된 아이디입니다.
+        '500':
+          description: 회원가입 처리 중 오류
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 회원가입 처리 중 오류가 발생했습니다.
+  /sign/userIdCheck:
+    post:
+      tags:
+        - Auth
+      summary: 아이디 중복
+      operationId: checkUserId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/checkUserIdRequest'
+      responses:
+        '200':
+          description: 중복되지 않는 아이디
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkUserIdResponse'
+        '400':
+          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              examples:
+                missingLoginUserId:
+                  summary: loginUserId 미전달
+                  value:
+                    success: false
+                    message: loginUserId가 필요합니다.
+                invalidLoginUserId:
+                  summary: loginUserId 조건 불충족
+                  value:
+                    success: false
+                    message: 'loginUserId는 3-15자의 영어, 숫자만 가능합니다.'
+        '409':
+          description: 중복된 아이디
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 중복된 아이디입니다.
+        '500':
+          description: 아이디 중복 검사 중 오류
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 아이디 중복 검사 중 오류가 발생했습니다.
 components:
   schemas:
     Notice:
@@ -330,3 +543,82 @@ components:
             noticeId:
               type: integer
               example: 15
+    loginUserRequest:
+      type: object
+      required:
+        - loginUserId
+        - password
+      properties:
+        loginUserId:
+          type: string
+          example: testuser
+        password:
+          type: string
+          example: password123
+    loginUserResponse:
+      allOf:
+        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - type: object
+          properties:
+            loginUserId:
+              type: string
+              example: testuser
+            userId:
+              type: integer
+              example: 1
+            nickname:
+              type: string
+              example: gg
+            message:
+              example: 로그인을 성공했습니다.
+    signupUserRequest:
+      type: object
+      required:
+        - loginUserId
+        - nickname
+        - password
+        - service
+        - appPush
+      properties:
+        loginUserId:
+          type: string
+          example: testuser
+        nickname:
+          type: string
+          example: 홍길동
+        password:
+          type: string
+          example: password12@
+        service:
+          type: string
+          enum:
+            - 'Y'
+          example: 'Y'
+        appPush:
+          type: string
+          enum:
+            - 'Y'
+            - 'N'
+          example: 'N'
+    signupUserResponse:
+      allOf:
+        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 회원가입이 완료되었습니다.
+    checkUserIdRequest:
+      type: object
+      required:
+        - loginUserId
+      properties:
+        loginUserId:
+          type: string
+          example: testuser
+    checkUserIdResponse:
+      allOf:
+        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 중복되지 않는 아이디입니다.

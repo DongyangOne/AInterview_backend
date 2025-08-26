@@ -1,0 +1,81 @@
+loginUserRequest:
+  type: object
+  required:
+    - loginUserId
+    - password
+  properties:
+    loginUserId:
+      type: string
+      example: "testuser"
+    password:
+      type: string
+      example: "password123"
+
+loginUserResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        loginUserId:
+          type: string
+          example: "testuser"
+        userId:
+          type: integer
+          example: 1
+        nickname:
+          type: string
+          example: "gg"
+        message:
+          example: "로그인을 성공했습니다."
+
+signupUserRequest:
+  type: object
+  required:
+    - loginUserId
+    - nickname
+    - password
+    - service
+    - appPush
+  properties:
+    loginUserId:
+      type: string
+      example: "testuser"
+    nickname:
+      type: string
+      example: "홍길동"
+    password:
+      type: string
+      example: "password12@"
+    service:
+      type: string
+      enum: [Y]
+      example: "Y"
+    appPush:
+      type: string
+      enum: [Y, N]
+      example: "N"
+
+signupUserResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "회원가입이 완료되었습니다."
+
+checkUserIdRequest:
+  type: object
+  required:
+    - loginUserId
+  properties:
+    loginUserId:
+      type: string
+      example: "testuser"
+
+checkUserIdResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "중복되지 않는 아이디입니다."

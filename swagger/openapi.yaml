@@ -13,6 +13,12 @@ paths:
     $ref: './paths/notice.yaml#/~1notice~1push-token'
   /notice/send:
     $ref: './paths/notice.yaml#/~1notice~1send'
+  /sign/login:
+    $ref: './paths/auth.yaml#/~1sign~1login'
+  /sign/signup:
+    $ref: './paths/auth.yaml#/~1sign~1signup'
+  /sign/userIdCheck:
+    $ref: './paths/auth.yaml#/~1sign~1userIdCheck'
 components:
   schemas:
     Notice:
@@ -31,3 +37,16 @@ components:
       $ref: './schemas/notice.yaml#/SendNoticeRequest'
     SendNoticeResponse:
       $ref: './schemas/notice.yaml#/SendNoticeResponse'
+    loginUserRequest:
+      $ref: './schemas/auth.yaml#/loginUserRequest'
+    loginUserResponse:
+      $ref: './schemas/auth.yaml#/loginUserResponse'
+    signupUserRequest:
+      $ref: './schemas/auth.yaml#/signupUserRequest'
+    signupUserResponse:
+      $ref: './schemas/auth.yaml#/signupUserResponse'
+    checkUserIdRequest:
+      $ref: './schemas/auth.yaml#/checkUserIdRequest'
+    checkUserIdResponse:
+      $ref: './schemas/auth.yaml#/checkUserIdResponse'
+    
