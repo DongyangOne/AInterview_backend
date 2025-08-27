@@ -1,5 +1,5 @@
 //backend-2
-const { TwTODO, recentFeedback, todayQuestion } = require('../../models/mainpage/mainpageModel');
+const { TwTODO, recentFeedback, todayQuestion} = require('../../models/mainpage/mainpageModel');
 
 
 const Twcalendar = (req, res) => {
@@ -75,9 +75,10 @@ const koreaTime = date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
     });
 };
 
+
 module.exports = { 
     Twcalendar, 
     getRecentFeedback, 
     getTodayQuestion
 };
-    
+
