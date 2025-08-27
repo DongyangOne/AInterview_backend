@@ -2,8 +2,9 @@ const db = require('../../config/database');
 
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
-    const sql = `
-    SELECT feedback_id AS id, title, memo, created_at
+
+  const sql = `
+    SELECT feedback_id AS id, title, memo, created_at, pin  
     FROM feedback
     WHERE userId = ?
     ORDER BY created_at DESC
@@ -105,6 +106,7 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 };
 
 //backend-12
+// 피드백 상단 고정
 const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
@@ -122,6 +124,8 @@ const pinFeedback = (feedbackId, userId, callback) => {
   });
 };
 
+
+// 피드백 상단 고정 해제
 const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
   db.query(sql, [feedbackId, userId], (err, result) => {
