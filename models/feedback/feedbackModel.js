@@ -3,7 +3,7 @@ const db = require('../../config/database');
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
     const sql = `
-    SELECT feedback_id AS id, title, memo, created_at
+    SELECT feedback_id AS id, title, memo, created_at, pin  
     FROM feedback
     WHERE userId = ?
     ORDER BY created_at DESC
@@ -105,40 +105,41 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 };
 
 //backend-12
+// 피드백 상단 고정
 const pinFeedback = (feedbackId, userId, callback) => {
-  const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err);
+    const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
+    db.query(sql, [feedbackId, userId], (err, result) => {
+        if (err) return callback(err);
 
-    if (result.affectedRows === 0) {
-      return callback(null, null);
-    }
+        if (result.affectedRows === 0) {
+            return callback(null, null);
+        }
 
-    const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
-    db.query(selectSql, [feedbackId, userId], (err, rows) => {
-      if (err) return callback(err);
-      callback(null, rows[0]);
+        const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
+        db.query(selectSql, [feedbackId, userId], (err, rows) => {
+            if (err) return callback(err);
+            callback(null, rows[0]);
+        });
     });
-  });
 };
 
+// 피드백 상단 고정 해제
 const unpinFeedback = (feedbackId, userId, callback) => {
-  const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedbackId, userId], (err, result) => {
-    if (err) return callback(err);
+    const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
+    db.query(sql, [feedbackId, userId], (err, result) => {
+        if (err) return callback(err);
 
-    if (result.affectedRows === 0) {
-      return callback(null, null);
-    }
+        if (result.affectedRows === 0) {
+            return callback(null, null);
+        }
 
-    const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
-    db.query(selectSql, [feedbackId, userId], (err, rows) => {
-      if (err) return callback(err);
-      callback(null, rows[0]);
+        const selectSql = 'SELECT pin FROM feedback WHERE feedback_id = ? AND userId = ?';
+        db.query(selectSql, [feedbackId, userId], (err, rows) => {
+            if (err) return callback(err);
+            callback(null, rows[0]);
+        });
     });
-  });
 };
-
 
 //backend-13
 const deleteById = ({ feedbackId, userId }, callback) => {

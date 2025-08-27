@@ -13,7 +13,6 @@ paths:
     $ref: './paths/notice.yaml#/~1notice~1push-token'
   /notice/send:
     $ref: './paths/notice.yaml#/~1notice~1send'
-
   /feedback/{userId}:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}'
   /feedback/{userId}/{feedbackId}:
@@ -24,8 +23,22 @@ paths:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1title'
   /feedback/{userId}/{feedbackId}/memo:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1memo'
- 
-
+  /sign/login:
+    $ref: './paths/auth.yaml#/~1sign~1login'
+  /sign/signup:
+    $ref: './paths/auth.yaml#/~1sign~1signup'
+  /sign/userIdCheck:
+    $ref: './paths/auth.yaml#/~1sign~1userIdCheck'
+  /calendar/month:
+    $ref: './paths/calendar.yaml#/~1calendar~1month'
+  /calendar/day:
+    $ref: './paths/calendar.yaml#/~1calendar~1day'
+  /calendar/add:
+    $ref: './paths/calendar.yaml#/~1calendar~1add'
+  /calendar/update:
+    $ref: './paths/calendar.yaml#/~1calendar~1update'
+  /calendar/delete:
+    $ref: './paths/calendar.yaml#/~1calendar~1delete'
 components:
   schemas:
     Notice:
@@ -44,7 +57,6 @@ components:
       $ref: './schemas/notice.yaml#/SendNoticeRequest'
     SendNoticeResponse:
       $ref: './schemas/notice.yaml#/SendNoticeResponse'
-
     FeedbackSummary: { $ref: './schemas/Feedback1.yaml#/FeedbackSummary' }
     FeedbackDetail: { $ref: './schemas/Feedback1.yaml#/FeedbackDetail' }
     FeedbackListResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackListResponse' }
@@ -53,3 +65,27 @@ components:
     UpdateMemoRequest: { $ref: './schemas/Feedback1.yaml#/UpdateMemoRequest' }
     FeedbackTitleResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackTitleResponse' }
     FeedbackMemoResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackMemoResponse' }
+    loginUserRequest:
+      $ref: './schemas/auth.yaml#/loginUserRequest'
+    loginUserResponse:
+      $ref: './schemas/auth.yaml#/loginUserResponse'
+    signupUserRequest:
+      $ref: './schemas/auth.yaml#/signupUserRequest'
+    signupUserResponse:
+      $ref: './schemas/auth.yaml#/signupUserResponse'
+    checkUserIdRequest:
+      $ref: './schemas/auth.yaml#/checkUserIdRequest'
+    checkUserIdResponse:
+      $ref: './schemas/auth.yaml#/checkUserIdResponse'
+    calendar:
+      $ref: './schemas/calendar.yaml#/calendar'
+    monthResponse:
+      $ref: './schemas/calendar.yaml#/monthResponse'
+    dayResponse:
+      $ref: './schemas/calendar.yaml#/dayResponse'
+    addDateResponse:
+      $ref: './schemas/calendar.yaml#/addDateResponse'
+    getUpdateResponse:
+      $ref: './schemas/calendar.yaml#/getUpdateResponse'
+    getDeleteResponse:
+      $ref: './schemas/calendar.yaml#/getDeleteResponse'
