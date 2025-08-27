@@ -55,7 +55,7 @@ const pwChange = (req, res) => {
     const errors = [];
 
     if (!userId) {
-        console.log(`${requestTime} 비밀번호변경 ${500} 응답`);
+        console.log(`${requestTime} 비밀번호변경 ${401} 응답`);
         return res.status(401).json({ success: false, message: '미입력 정보가 존재합니다.', error: ['사용자 식별번호 필요'] });
     }
 
@@ -71,8 +71,8 @@ const pwChange = (req, res) => {
                         return res.status(400).json({ success: false, message: '미입력 정보가 존재합니다.', error: ['현재 비밀번호를 입력해주세요.'] });
                     }
                     else {
-                        console.log(`${requestTime} 비밀번호변경 ${401} 응답`);
-                        return res.status(401).json({ success: false, message: '형식에 맞지 않는 값이 존재합니다.', error: ['현재 비밀번호를 틀렸습니다. 다시 입력해주세요.'] });
+                        console.log(`${requestTime} 비밀번호변경 ${400} 응답`);
+                        return res.status(400).json({ success: false, message: '형식에 맞지 않는 값이 존재합니다.', error: ['현재 비밀번호를 틀렸습니다. 다시 입력해주세요.'] });
                     }
             }
         }
@@ -197,7 +197,7 @@ const setAppPush = (req, res) => {
                         }
                         else {
                             console.log(`${requestTime} 앱 푸시 전환 ${200} 응답`);
-                            return res.status(200).json({ success: true, message: '알람 수신 정보 전환 완료', status: result[0].push_agreed });
+                            return res.status(200).json({ success: true, message: '알람 수신 상태 전환 완료', status: result[0].push_agreed });
 
                         }
                     })
