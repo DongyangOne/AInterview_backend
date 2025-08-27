@@ -26,9 +26,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "userId가 필요합니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
       '500':
         description: 사용자 정보 조회 중 오류
         content:
@@ -36,9 +37,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "사용자 정보 조회 중 오류가 발생했습니다."
+                - type: object 
+                  properties:
+                    message:
+                      example: "사용자 정보 조회 중 오류가 발생했습니다."
 
 /user/changePw:
   post:
@@ -66,9 +68,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "userId가 필요합니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
       '400':
         description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
         content:
@@ -114,9 +117,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "비밀번호 변경 중 오류가 발생했습니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "비밀번호 변경 중 오류가 발생했습니다."
 
 /user/changeName:
   post:
@@ -153,7 +157,7 @@
               invalidNewName:
                 summary: newName 조건 불충족
                 value:
-                  sucess: false
+                  success: false
                   message: "newName은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)"
       '401':
         description: userId 미전달
@@ -162,19 +166,21 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "userId가 필요합니다."
-      '500':
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':  
         description: 닉네임 변경 중 오류 발생
         content:
           application/json:
             schema:
               allOf:
-              - $ref: '../schemas/base.yaml#/ErrorResponse'
-              - properties:
-                message: 
-                  example: "닉네임 변경 중 오류가 발생했습니다."
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message: 
+                      example: "닉네임 변경 중 오류가 발생했습니다."
 
 /user/setAppPush:
   get:
@@ -204,9 +210,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "userId가 필요합니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
       '500':
         description: 알림 수신 전환 중 오류 발생
         content:
@@ -214,9 +221,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                   example: "알림 수신 전환 중 오류가 발생했습니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "알림 수신 전환 중 오류가 발생했습니다."
 
 /user/getAppPush:
   get:
@@ -246,9 +254,10 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                    example: "userId가 필요합니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
       '500':
         description: 알림 수신 상태 조회 중 오류 발생
         content:
@@ -256,8 +265,155 @@
             schema:
               allOf:
                 - $ref: '../schemas/base.yaml#/ErrorResponse'
-                - properties:
-                  message:
-                   example: "알림 수신 상태 조회 중 오류가 발생했습니다."
+                - type: object
+                  properties:
+                    message:
+                      example: "알림 수신 상태 조회 중 오류가 발생했습니다."
 
-      
+/user/checkPw:
+  post:
+    tags:
+      - mypage
+    summary: 비밀번호 일치 확인
+    operationId: checkPassword
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/mypage.yaml#/checkPasswordRequest'
+    responses:
+      '200':
+        description: 올바른 비밀번호
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/mypage.yaml#/checkPasswordResponse'
+      '401':
+        description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            examples:
+              missingUserId:
+                summary: userId 미전달
+                value:
+                  success: false
+                  message: "userId가 필요합니다."
+              invalidPassword:
+                summary: password 불일치
+                value:
+                  success: false
+                  message: "올바르지 않은 password입니다."
+      '400':
+        description: password 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message:
+                      example: "password가 필요합니다."
+      '500':
+        description: 비밀번호 일치 확인 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message:
+                      example: "비밀번호 일치 확인 중 오류가 발생했습니다."
+
+/delete/feedInfo:
+  get:
+    tags:
+      - mypage
+    summary: 탈퇴 시 사용자 면접 내역 조회
+    operationId: getUserFeedInfo
+    parameters:
+      - name: userId
+        in: 'query'
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: 면접 내역 조회할 사용자 ID
+    responses:
+      '200':
+        description: 사용자 면접 내역 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/mypage.yaml#/getUserFeedInfoResponse'
+      '401':
+        description: userId 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':
+        description: 탈퇴 시 사용자 면접 내역 조회 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message:
+                      example: "탈퇴 시 사용자 면접 내역 조회 중 오류가 발생했습니다."
+
+/delete/deleteUser:
+  get:
+    tags:
+      - mypage
+    summary: 사용자 탈퇴
+    operationId: deleteUser
+    parameters:
+      - name: userId
+        in: 'query'
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: 탈퇴할 사용자 ID
+    responses:
+      '200':
+        description: 사용자 탈퇴 완료
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/mypage.yaml#/deleteUserResponse'
+      '401':
+        description: userId 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':
+        description: 사용자 탈퇴 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - type: object
+                  properties:
+                    message:
+                      example: "사용자 탈퇴 중 오류가 발생했습니다."
