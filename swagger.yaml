@@ -248,43 +248,6 @@ paths:
                 $ref: '#/components/schemas/loginUserResponse'
         '400':
           description: 필수 필드 미전달
-  /calendar/month:
-    get:
-      tags:
-        - calendar
-      summary: 특정 유저의 해당 달 일정 조회
-      operationId: getSearchmonth
-      parameters:
-        - name: userId
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 1
-          description: 일정을 조회할 유저의 ID
-        - name: year
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 2025
-          description: 일정을 조회할 연도 값
-        - name: month
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 8
-          description: 일정을 조회할 월 값
-      responses:
-        '200':
-          description: 일정 반환
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/monthResponse'
-        '400':
-          description: 필수 파라미터 누락
           content:
             application/json:
               schema:
@@ -310,12 +273,6 @@ paths:
                     message: password가 필요합니다.
         '401':
           description: 잘못된 비밀번호
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
-                  - properties:
-                      message:
-                        example: 미입력 정보가 존재합니다.
-        '500':
-          description: 일정 조회 실패
           content:
             application/json:
               schema:
@@ -327,54 +284,6 @@ paths:
                   message: 비밀번호를 틀렸습니다.
         '404':
           description: 해당 유저를 찾을 수 없음
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
-                  - properties:
-                      message:
-                        example: 오류 발생
-  /calendar/day:
-    get:
-      tags:
-        - calendar
-      summary: 특정 유저의 일정 상세 조회
-      operationId: getUserDay
-      parameters:
-        - name: userId
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 1
-          description: 일정을 조회할 유저의 ID
-        - name: year
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 2025
-          description: 일정을 조회할 연도 값
-        - name: month
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 8
-          description: 일정을 조회할 월 값
-        - name: day
-          in: query
-          required: true
-          schema:
-            type: integer
-            example: 8
-          description: 일정을 조회할 일(day) 값
-      responses:
-        '200':
-          description: '일정이 있으면 일정 반환, 없으면 안내 문구 출력'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/dayResponse'
-        '400':
-          description: 필수 파라미터 누락
           content:
             application/json:
               schema:
@@ -386,12 +295,6 @@ paths:
                   message: 해당 유저를 찾을 수가 없습니다.
         '500':
           description: 로그인 처리 중 오류
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
-                  - properties:
-                      message:
-                        example: 미입력 정보가 존재합니다.
-        '500':
-          description: 일정 조회 실패
           content:
             application/json:
               schema:
@@ -476,7 +379,188 @@ paths:
                   message: 중복된 아이디입니다.
         '500':
           description: 회원가입 처리 중 오류
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 회원가입 처리 중 오류가 발생했습니다.
+  /sign/userIdCheck:
+    post:
+      tags:
+        - Auth
+      summary: 아이디 중복
+      operationId: checkUserId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/checkUserIdRequest'
+      responses:
+        '200':
+          description: 중복되지 않는 아이디
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkUserIdResponse'
+        '400':
+          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              examples:
+                missingLoginUserId:
+                  summary: loginUserId 미전달
+                  value:
+                    success: false
+                    message: loginUserId가 필요합니다.
+                invalidLoginUserId:
+                  summary: loginUserId 조건 불충족
+                  value:
+                    success: false
+                    message: 'loginUserId는 3-15자의 영어, 숫자만 가능합니다.'
+        '409':
+          description: 중복된 아이디
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 중복된 아이디입니다.
+        '500':
+          description: 아이디 중복 검사 중 오류
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              example:
+                value:
+                  success: false
+                  message: 아이디 중복 검사 중 오류가 발생했습니다.
+  /calendar/month:
+    get:
+      tags:
+        - calendar
+      summary: 특정 유저의 해당 달 일정 조회
+      operationId: getSearchmonth
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정을 조회할 유저의 ID
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 2025
+          description: 일정을 조회할 연도 값
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 8
+          description: 일정을 조회할 월 값
+      responses:
+        '200':
+          description: 일정 반환
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monthResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 미입력 정보가 존재합니다.
+        '500':
+          description: 일정 조회 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 오류 발생
+  /calendar/day:
+    get:
+      tags:
+        - calendar
+      summary: 특정 유저의 일정 상세 조회
+      operationId: getUserDay
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 일정을 조회할 유저의 ID
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 2025
+          description: 일정을 조회할 연도 값
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 8
+          description: 일정을 조회할 월 값
+        - name: day
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 8
+          description: 일정을 조회할 일(day) 값
+      responses:
+        '200':
+          description: '일정이 있으면 일정 반환, 없으면 안내 문구 출력'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dayResponse'
+        '400':
+          description: 필수 파라미터 누락
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - properties:
+                      message:
+                        example: 미입력 정보가 존재합니다.
+        '500':
+          description: 일정 조회 실패
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 오류 발생
@@ -537,17 +621,17 @@ paths:
               schema:
                 oneOf:
                   - allOf:
-                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                       - properties:
                           message:
                             example: 미입력 정보가 존재합니다.
                   - allOf:
-                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                       - properties:
                           message:
                             example: 8자 미만을 입력해 주세요.
                   - allOf:
-                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                       - properties:
                           message:
                             example: '중요도에는 S, I, N만 입력 가능합니다.'
@@ -558,32 +642,6 @@ paths:
               schema:
                 allOf:
                   - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
-              example:
-                value:
-                  success: false
-                  message: 회원가입 처리 중 오류가 발생했습니다.
-  /sign/userIdCheck:
-    post:
-      tags:
-        - Auth
-      summary: 아이디 중복
-      operationId: checkUserId
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/checkUserIdRequest'
-      responses:
-        '200':
-          description: 중복되지 않는 아이디
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/checkUserIdResponse'
-        '400':
-          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 서버 오류 발생
@@ -645,12 +703,12 @@ paths:
               schema:
                 oneOf:
                   - allOf:
-                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                       - properties:
                           message:
                             example: 8자 미만을 입력해 주세요.
                   - allOf:
-                      - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
+                      - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
                       - properties:
                           message:
                             example: '중요도에는 S, I, N만 입력 가능합니다.'
@@ -661,20 +719,6 @@ paths:
               schema:
                 allOf:
                   - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
-              examples:
-                missingLoginUserId:
-                  summary: loginUserId 미전달
-                  value:
-                    success: false
-                    message: loginUserId가 필요합니다.
-                invalidLoginUserId:
-                  summary: loginUserId 조건 불충족
-                  value:
-                    success: false
-                    message: 'loginUserId는 3-15자의 영어, 숫자만 가능합니다.'
-        '409':
-          description: 중복된 아이디
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 오류 발생
@@ -706,13 +750,6 @@ paths:
               schema:
                 allOf:
                   - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
-              example:
-                value:
-                  success: false
-                  message: 중복된 아이디입니다.
-        '500':
-          description: 아이디 중복 검사 중 오류
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 미입력 정보가 존재합니다
@@ -723,14 +760,421 @@ paths:
               schema:
                 allOf:
                   - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
-              example:
-                value:
-                  success: false
-                  message: 아이디 중복 검사 중 오류가 발생했습니다.
-                  - $ref: '#/paths/~1notice~1send/post/responses/400/content/application~1json/schema/allOf/0'
                   - properties:
                       message:
                         example: 오류 발생
+  /myPage/myInfo:
+    get:
+      tags:
+        - mypage
+      summary: 사용자 정보 조회
+      operationId: getUserInfo
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 정보 조회할 사용자 ID
+      responses:
+        '200':
+          description: 사용자 정보 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getUserInfoResponse'
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 사용자 정보 조회 중 오류
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 사용자 정보 조회 중 오류가 발생했습니다.
+  /user/changePw:
+    post:
+      tags:
+        - mypage
+      summary: 비밀번호 변경
+      operationId: changePassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/changePasswordRequest'
+      responses:
+        '200':
+          description: 비밀번호 변경 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/changePasswordResponse'
+        '400':
+          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              examples:
+                missingPassword:
+                  summary: password 미전달
+                  value:
+                    success: false
+                    message: password가 필요합니다.
+                invalidPassword:
+                  summary: password 불일치
+                  value:
+                    success: false
+                    message: 사용자의 password가 올바르지 않습니다.
+                missingNewPassword:
+                  summary: newPassword 미전달
+                  value:
+                    success: false
+                    message: newPassword가 필요합니다.
+                invalidNewPassword:
+                  summary: newPassword 조건 불충족
+                  value:
+                    success: false
+                    message: 'newPassword는 8-16자의 영어대소문자, 숫자, 특수문자(!,@,#,$,%,^,&,*)만 가능합니다.'
+                missingNewPasswordCheck:
+                  summary: newPasswordCheck 미전달
+                  value:
+                    success: false
+                    message: newPasswordCheck가 필요합니다.
+                invalidNewPasswordCheck:
+                  summary: newPassword와 newPasswordCheck 불일치
+                  value:
+                    success: false
+                    message: 새 비밀번호와 일치하지 않습니다.
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 비밀번호 변경 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 비밀번호 변경 중 오류가 발생했습니다.
+  /user/changeName:
+    post:
+      tags:
+        - mypage
+      summary: 닉네임 변경
+      operationId: changeNickname
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/changeNicknameRequest'
+      responses:
+        '200':
+          description: 닉네임 변경 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/changeNicknameResponse'
+        '400':
+          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              examples:
+                missingNewName:
+                  summary: newName 미전달
+                  value:
+                    success: false
+                    message: newName이 필요합니다.
+                invalidNewName:
+                  summary: newName 조건 불충족
+                  value:
+                    success: false
+                    message: 'newName은 2-8자의 한글, 영어, 숫자만 가능합니다. (부적절한 단어 사용 x)'
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 닉네임 변경 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 닉네임 변경 중 오류가 발생했습니다.
+  /user/setAppPush:
+    get:
+      tags:
+        - mypage
+      summary: 알림 수신 상태 전환
+      operationId: setAppPush
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 알림 수신 상태 전환할 사용자 ID
+      responses:
+        '200':
+          description: 알람 수신 상태 전환 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/setAppPushResponse'
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 알림 수신 전환 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 알림 수신 전환 중 오류가 발생했습니다.
+  /user/getAppPush:
+    get:
+      tags:
+        - mypage
+      summary: 알림 수신 상태 조회
+      operationId: getAppPush
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 알림 수신 상태 조회할 사용자 ID
+      responses:
+        '200':
+          description: 알람 수신 상태 조회 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAppPushResponse'
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 알림 수신 상태 조회 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 알림 수신 상태 조회 중 오류가 발생했습니다.
+  /user/checkPw:
+    post:
+      tags:
+        - mypage
+      summary: 비밀번호 일치 확인
+      operationId: checkPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/checkPasswordRequest'
+      responses:
+        '200':
+          description: 올바른 비밀번호
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkPasswordResponse'
+        '400':
+          description: password 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: password가 필요합니다.
+        '401':
+          description: 필수 필드 미전달 또는 형식에 맞지 않는 값 존재
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+              examples:
+                missingUserId:
+                  summary: userId 미전달
+                  value:
+                    success: false
+                    message: userId가 필요합니다.
+                invalidPassword:
+                  summary: password 불일치
+                  value:
+                    success: false
+                    message: 올바르지 않은 password입니다.
+        '500':
+          description: 비밀번호 일치 확인 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 비밀번호 일치 확인 중 오류가 발생했습니다.
+  /delete/feedInfo:
+    get:
+      tags:
+        - mypage
+      summary: 탈퇴 시 사용자 면접 내역 조회
+      operationId: getUserFeedInfo
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 면접 내역 조회할 사용자 ID
+      responses:
+        '200':
+          description: 사용자 면접 내역 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getUserFeedInfoResponse'
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 탈퇴 시 사용자 면접 내역 조회 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 탈퇴 시 사용자 면접 내역 조회 중 오류가 발생했습니다.
+  /delete/deleteUser:
+    get:
+      tags:
+        - mypage
+      summary: 사용자 탈퇴
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: 탈퇴할 사용자 ID
+      responses:
+        '200':
+          description: 사용자 탈퇴 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteUserResponse'
+        '401':
+          description: userId 미전달
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: userId가 필요합니다.
+        '500':
+          description: 사용자 탈퇴 중 오류 발생
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/paths/~1sign~1login/post/responses/400/content/application~1json/schema/allOf/0'
+                  - type: object
+                    properties:
+                      message:
+                        example: 사용자 탈퇴 중 오류가 발생했습니다.
 components:
   schemas:
     Notice:
@@ -834,7 +1278,7 @@ components:
           example: password123
     loginUserResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - type: object
           properties:
             loginUserId:
@@ -879,7 +1323,7 @@ components:
           example: 'N'
     signupUserResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - type: object
           properties:
             message:
@@ -894,7 +1338,7 @@ components:
           example: testuser
     checkUserIdResponse:
       allOf:
-        - $ref: '#/components/schemas/PushTokenResponse/allOf/0'
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
         - type: object
           properties:
             message:
@@ -1024,3 +1468,139 @@ components:
             message:
               type: string
               example: 캘린더 일정 삭제
+    feedList:
+      type: object
+      properties:
+        title:
+          type: string
+          example: ㅁㅁ회사 면접
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-07-21T19:20:27.000Z'
+    getUserInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 사용자 정보 조회 성공
+            loginUserId:
+              type: string
+              example: testuser
+            nickname:
+              type: string
+              example: 테스터
+            profile:
+              type: string
+              example: null
+    changePasswordRequest:
+      type: object
+      required:
+        - userId
+        - password
+        - newPassword
+        - newPasswordCheck
+      properties:
+        userId:
+          type: integer
+          example: 1
+        password:
+          type: string
+          example: password123
+        newPassword:
+          type: string
+          example: password12
+        newPasswordCheck:
+          type: string
+          example: password12
+    changePasswordResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 비밀번호 변경 완료
+    changeNicknameRequest:
+      type: object
+      required:
+        - userId
+        - newName
+      properties:
+        userId:
+          type: integer
+          example: 1
+        newName:
+          type: string
+          example: 강아지똥
+    changeNicknameResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 닉네임 변경 완료
+    setAppPushResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 알람 수신 상태 전환 완료
+            status:
+              type: string
+              enum:
+                - 'Y'
+                - 'N'
+              example: 'Y'
+    getAppPushResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 현재 알림 수신 상태 입니다.
+            status:
+              type: string
+              enum:
+                - 'Y'
+                - 'N'
+              example: 'N'
+    checkPasswordRequest:
+      type: object
+      required:
+        - userId
+        - password
+      properties:
+        userId:
+          type: integer
+          example: 1
+        password:
+          type: string
+          example: password123
+    checkPasswordResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 올바른 비밀번호입니다.
+    getUserFeedInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            count:
+              type: integer
+              example: 7
+            list:
+              type: array
+              items:
+                $ref: '#/components/schemas/feedList'
+    deleteUserResponse:
+      allOf:
+        - $ref: '#/components/schemas/dayResponse/allOf/0'
+        - type: object
+          properties:
+            message:
+              example: 사용자 탈퇴 완료

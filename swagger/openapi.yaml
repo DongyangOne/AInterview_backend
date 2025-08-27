@@ -29,6 +29,22 @@ paths:
     $ref: './paths/calendar.yaml#/~1calendar~1update'
   /calendar/delete:
     $ref: './paths/calendar.yaml#/~1calendar~1delete'
+  /myPage/myInfo:
+    $ref: './paths/mypage.yaml#/~1myPage~1myInfo'
+  /user/changePw:
+    $ref: './paths/mypage.yaml#/~1user~1changePw'
+  /user/changeName:
+    $ref: './paths/mypage.yaml#/~1user~1changeName'
+  /user/setAppPush:
+    $ref: './paths/mypage.yaml#/~1user~1setAppPush'
+  /user/getAppPush:
+    $ref: './paths/mypage.yaml#/~1user~1getAppPush'
+  /user/checkPw:
+    $ref: './paths/mypage.yaml#/~1user~1checkPw'
+  /delete/feedInfo:
+    $ref: './paths/mypage.yaml#/~1delete~1feedInfo'
+  /delete/deleteUser:
+    $ref: './paths/mypage.yaml#/~1delete~1deleteUser'
 components:
   schemas:
     Notice:
@@ -71,3 +87,27 @@ components:
       $ref: './schemas/calendar.yaml#/getUpdateResponse'
     getDeleteResponse:
       $ref: './schemas/calendar.yaml#/getDeleteResponse'
+    feedList:
+      $ref: './schemas/mypage.yaml#/feedList'
+    getUserInfoResponse:
+      $ref: './schemas/mypage.yaml#/getUserInfoResponse'
+    changePasswordRequest:
+      $ref: './schemas/mypage.yaml#/changePasswordRequest'
+    changePasswordResponse:
+      $ref: './schemas/mypage.yaml#/changePasswordResponse'
+    changeNicknameRequest:
+      $ref: './schemas/mypage.yaml#/changeNicknameRequest'
+    changeNicknameResponse:
+      $ref: './schemas/mypage.yaml#/changeNicknameResponse'
+    setAppPushResponse:
+      $ref: './schemas/mypage.yaml#/setAppPushResponse'
+    getAppPushResponse:
+      $ref: './schemas/mypage.yaml#/getAppPushResponse'
+    checkPasswordRequest:
+      $ref: './schemas/mypage.yaml#/checkPasswordRequest'
+    checkPasswordResponse:
+      $ref: './schemas/mypage.yaml#/checkPasswordResponse'
+    getUserFeedInfoResponse:
+      $ref: './schemas/mypage.yaml#/getUserFeedInfoResponse'
+    deleteUserResponse:
+      $ref: './schemas/mypage.yaml#/deleteUserResponse'

@@ -7,7 +7,7 @@ feedList:
     created_at:
       type: string
       format: date-time
-      example: "2024-02-03"
+      example: "2025-07-21T19:20:27.000Z"
 
 
 getUserInfoResponse:
