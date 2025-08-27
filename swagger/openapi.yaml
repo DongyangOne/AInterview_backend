@@ -13,6 +13,16 @@ paths:
     $ref: './paths/notice.yaml#/~1notice~1push-token'
   /notice/send:
     $ref: './paths/notice.yaml#/~1notice~1send'
+  /feedback/{userId}:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}'
+  /feedback/{userId}/{feedbackId}:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}'
+  /feedback/{feedbackId}/{userId}:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{feedbackId}~1{userId}'
+  /feedback/{userId}/{feedbackId}/title:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1title'
+  /feedback/{userId}/{feedbackId}/memo:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1memo'
   /sign/login:
     $ref: './paths/auth.yaml#/~1sign~1login'
   /sign/signup:
@@ -63,6 +73,14 @@ components:
       $ref: './schemas/notice.yaml#/SendNoticeRequest'
     SendNoticeResponse:
       $ref: './schemas/notice.yaml#/SendNoticeResponse'
+    FeedbackSummary: { $ref: './schemas/Feedback1.yaml#/FeedbackSummary' }
+    FeedbackDetail: { $ref: './schemas/Feedback1.yaml#/FeedbackDetail' }
+    FeedbackListResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackListResponse' }
+    FeedbackDetailResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackDetailResponse' }
+    UpdateTitleRequest: { $ref: './schemas/Feedback1.yaml#/UpdateTitleRequest' }
+    UpdateMemoRequest: { $ref: './schemas/Feedback1.yaml#/UpdateMemoRequest' }
+    FeedbackTitleResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackTitleResponse' }
+    FeedbackMemoResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackMemoResponse' }
     loginUserRequest:
       $ref: './schemas/auth.yaml#/loginUserRequest'
     loginUserResponse:
