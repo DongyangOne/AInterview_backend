@@ -1,0 +1,320 @@
+/calendar/month:
+    get:
+        tags:
+            - calendar
+        summary: 특정 유저의 해당 달 일정 조회
+        operationId: getSearchmonth
+        parameters:
+            - name: userId
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 1
+              description: 일정을 조회할 유저의 ID
+            - name: year
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 2025
+              description: 일정을 조회할 연도 값
+            - name: month
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 8
+              description: 일정을 조회할 월 값
+        responses:
+            '200':
+                description: 일정 반환
+                content:
+                    application/json:
+                        schema:
+                            $ref: '../schemas/calendar.yaml#/monthResponse'
+            '400':
+                description: 필수 파라미터 누락
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '미입력 정보가 존재합니다.'
+            '500':
+                description: 일정 조회 실패
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '오류 발생'
+
+/calendar/day:
+    get:
+        tags:
+            - calendar
+        summary: 특정 유저의 일정 상세 조회
+        operationId: getUserDay
+        parameters:
+            - name: userId
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 1
+              description: 일정을 조회할 유저의 ID
+            - name: year
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 2025
+              description: 일정을 조회할 연도 값
+            - name: month
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 8
+              description: 일정을 조회할 월 값
+            - name: day
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 8
+              description: 일정을 조회할 일(day) 값
+        responses:
+            '200':
+                description: 일정이 있으면 일정 반환, 없으면 안내 문구 출력
+                content:
+                    application/json:
+                        schema:
+                            $ref: '../schemas/calendar.yaml#/dayResponse'
+            '400':
+                description: 필수 파라미터 누락
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '미입력 정보가 존재합니다.'
+            '500':
+                description: 일정 조회 실패
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '오류 발생'
+
+/calendar/add:
+    get:
+        tags:
+            - calendar
+        summary: 일정 생성
+        operationId: addDate
+        parameters:
+            - name: userId
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 1
+              description: 일정 수정할 유저의 ID
+            - name: title
+              in: 'query'
+              required: true
+              schema:
+                  type: string
+                  example: 삼성 면접 일정
+              description: 제목 설정
+            - name: time
+              in: 'query'
+              required: true
+              schema:
+                  type: string
+                  format: date-time
+                  example: 2025-08-27 13:00:00
+              description: 년/월/일, 시간 설정
+            - name: importance
+              in: 'query'
+              required: true
+              schema:
+                  type: string
+                  maxLength: 1
+                  example: S
+              description: 중요도 설정
+            - name: memo
+              in: 'query'
+              required: true
+              schema:
+                  type: string
+                  example: 메모메모
+        responses:
+            '200':
+                description: 일정이 있으면 일정 반환, 없으면 안내 문구 출력
+                content:
+                    application/json:
+                        schema:
+                            $ref: '../schemas/calendar.yaml#/addDateResponse'
+            '400':
+                description: 필수 파라미터 누락
+                content:
+                    application/json:
+                        schema:
+                            oneOf:
+                                - allOf:
+                                      - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                      - properties:
+                                            message:
+                                                example: '미입력 정보가 존재합니다.'
+                                - allOf:
+                                      - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                      - properties:
+                                            message:
+                                                example: '8자 미만을 입력해 주세요.'
+                                - allOf:
+                                      - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                      - properties:
+                                            message:
+                                                example: '중요도에는 S, I, N만 입력 가능합니다.'
+            '500':
+                description: 일정 추가 실패
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '서버 오류 발생'
+
+/calendar/update:
+    get:
+        tags:
+            - calendar
+        summary: 일정 수정
+        operationId: getCalendarUpdate
+        parameters:
+            - name: userId
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 1
+              description: 일정 수정할 유저의 ID
+            - name: title
+              in: 'query'
+              required: false
+              schema:
+                  type: string
+                  example: 삼성 면접 일정
+              description: 제목 설정
+            - name: time
+              in: 'query'
+              required: false
+              schema:
+                  type: string
+                  format: date-time
+                  example: 2025-08-27 13:00:00
+              description: 년/월/일, 시간 설정
+            - name: importance
+              in: 'query'
+              required: false
+              schema:
+                  type: string
+                  maxLength: 1
+                  example: S
+              description: 중요도 설정
+            - name: memo
+              in: 'query'
+              required: false
+              schema:
+                  type: string
+                  example: 메모메모
+              description: 메모 설정
+        responses:
+            '200':
+                description: 일정 수정
+                content:
+                    application/json:
+                        schema:
+                            $ref: '../schemas/calendar.yaml#/getUpdateResponse'
+            '400':
+                description: 필수 파라미터 누락
+                content:
+                    application/json:
+                        schema:
+                            oneOf:
+                                - allOf:
+                                      - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                      - properties:
+                                            message:
+                                                example: '8자 미만을 입력해 주세요.'
+                                - allOf:
+                                      - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                      - properties:
+                                            message:
+                                                example: '중요도에는 S, I, N만 입력 가능합니다.'
+            '500':
+                description: 일정 조회 실패
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '오류 발생'
+
+/calendar/delete:
+    get:
+        tags:
+            - calendar
+        summary: 일정 삭제
+        operationId: getDelete
+        parameters:
+            - name: calendar_id
+              in: 'query'
+              required: true
+              schema:
+                  type: integer
+                  example: 1
+              description: 일정 삭제할 캘린더의 ID
+        responses:
+            '200':
+                description: 일정 삭제
+                content:
+                    application/json:
+                        schema:
+                            $ref: '../schemas/calendar.yaml#/getDeleteResponse'
+            '400':
+                description: 필수 파라미터 누락
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '미입력 정보가 존재합니다'
+            '500':
+                description: 일정 조회 실패
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                                - properties:
+                                      message:
+                                          example: '오류 발생'
