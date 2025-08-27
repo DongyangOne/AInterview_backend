@@ -1,13 +1,13 @@
 require('dotenv').config();
 const express = require('express');
-//const swaggerUi = require('swagger-ui-express');
-//const YAML = require('yamljs');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 const path = require('path');
 
 const app = express();
 
-//const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
-//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(express.json());
 

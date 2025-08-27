@@ -3,6 +3,15 @@ info:
   title: AInterview API
   version: '1.0.0'
 paths:
+  # 로그인 / 회원가입
+  /sign/login:
+    $ref: './paths/auth.yaml#/~1sign~1login'
+  /sign/signup:
+    $ref: './paths/auth.yaml#/~1sign~1signup'
+  /sign/userIdCheck:
+    $ref: './paths/auth.yaml#/~1sign~1userIdCheck'
+
+  # 메인 > 알림
   /notice/{userId}:
     $ref: './paths/notice.yaml#/~1notice~1{userId}'
   /notice/{userId}/{noticeId}/read:
@@ -13,6 +22,8 @@ paths:
     $ref: './paths/notice.yaml#/~1notice~1push-token'
   /notice/send:
     $ref: './paths/notice.yaml#/~1notice~1send'
+
+  # 메인 > 피드백 리스트 & 상세
   /feedback/{userId}:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}'
   /feedback/{userId}/{feedbackId}:
@@ -23,12 +34,8 @@ paths:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1title'
   /feedback/{userId}/{feedbackId}/memo:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1memo'
-  /sign/login:
-    $ref: './paths/auth.yaml#/~1sign~1login'
-  /sign/signup:
-    $ref: './paths/auth.yaml#/~1sign~1signup'
-  /sign/userIdCheck:
-    $ref: './paths/auth.yaml#/~1sign~1userIdCheck'
+
+  # 메인 > 일정
   /calendar/month:
     $ref: './paths/calendar.yaml#/~1calendar~1month'
   /calendar/day:
@@ -39,6 +46,8 @@ paths:
     $ref: './paths/calendar.yaml#/~1calendar~1update'
   /calendar/delete:
     $ref: './paths/calendar.yaml#/~1calendar~1delete'
+
+  # 메인 > 마이페이지
   /myPage/myInfo:
     $ref: './paths/mypage.yaml#/~1myPage~1myInfo'
   /user/changePw:
@@ -55,8 +64,24 @@ paths:
     $ref: './paths/mypage.yaml#/~1delete~1feedInfo'
   /delete/deleteUser:
     $ref: './paths/mypage.yaml#/~1delete~1deleteUser'
+
 components:
   schemas:
+    # 로그인 / 회원가입
+    loginUserRequest:
+      $ref: './schemas/auth.yaml#/loginUserRequest'
+    loginUserResponse:
+      $ref: './schemas/auth.yaml#/loginUserResponse'
+    signupUserRequest:
+      $ref: './schemas/auth.yaml#/signupUserRequest'
+    signupUserResponse:
+      $ref: './schemas/auth.yaml#/signupUserResponse'
+    checkUserIdRequest:
+      $ref: './schemas/auth.yaml#/checkUserIdRequest'
+    checkUserIdResponse:
+      $ref: './schemas/auth.yaml#/checkUserIdResponse'
+
+    # 알림
     Notice:
       $ref: './schemas/notice.yaml#/Notice'
     NoticeListResponse:
@@ -73,26 +98,26 @@ components:
       $ref: './schemas/notice.yaml#/SendNoticeRequest'
     SendNoticeResponse:
       $ref: './schemas/notice.yaml#/SendNoticeResponse'
-    FeedbackSummary: { $ref: './schemas/Feedback1.yaml#/FeedbackSummary' }
-    FeedbackDetail: { $ref: './schemas/Feedback1.yaml#/FeedbackDetail' }
-    FeedbackListResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackListResponse' }
-    FeedbackDetailResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackDetailResponse' }
-    UpdateTitleRequest: { $ref: './schemas/Feedback1.yaml#/UpdateTitleRequest' }
-    UpdateMemoRequest: { $ref: './schemas/Feedback1.yaml#/UpdateMemoRequest' }
-    FeedbackTitleResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackTitleResponse' }
-    FeedbackMemoResponse: { $ref: './schemas/Feedback1.yaml#/FeedbackMemoResponse' }
-    loginUserRequest:
-      $ref: './schemas/auth.yaml#/loginUserRequest'
-    loginUserResponse:
-      $ref: './schemas/auth.yaml#/loginUserResponse'
-    signupUserRequest:
-      $ref: './schemas/auth.yaml#/signupUserRequest'
-    signupUserResponse:
-      $ref: './schemas/auth.yaml#/signupUserResponse'
-    checkUserIdRequest:
-      $ref: './schemas/auth.yaml#/checkUserIdRequest'
-    checkUserIdResponse:
-      $ref: './schemas/auth.yaml#/checkUserIdResponse'
+
+    # 피드백
+    FeedbackSummary:
+      $ref: './schemas/Feedback1.yaml#/FeedbackSummary'
+    FeedbackDetail:
+      $ref: './schemas/Feedback1.yaml#/FeedbackDetail'
+    FeedbackListResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackListResponse'
+    FeedbackDetailResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackDetailResponse'
+    UpdateTitleRequest:
+      $ref: './schemas/Feedback1.yaml#/UpdateTitleRequest'
+    UpdateMemoRequest:
+      $ref: './schemas/Feedback1.yaml#/UpdateMemoRequest'
+    FeedbackTitleResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackTitleResponse'
+    FeedbackMemoResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackMemoResponse'
+
+    # 일정
     calendar:
       $ref: './schemas/calendar.yaml#/calendar'
     monthResponse:
@@ -105,6 +130,8 @@ components:
       $ref: './schemas/calendar.yaml#/getUpdateResponse'
     getDeleteResponse:
       $ref: './schemas/calendar.yaml#/getDeleteResponse'
+
+    # 마이페이지
     feedList:
       $ref: './schemas/mypage.yaml#/feedList'
     getUserInfoResponse:
