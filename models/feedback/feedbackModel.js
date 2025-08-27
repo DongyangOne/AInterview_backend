@@ -80,18 +80,18 @@ const sortFeedbacks = (userId, orderBy, callback) => {
 
 //backend-12
 // 피드백 상단 고정
-const pinFeedback = (feedback_id, userId, callback) => {
+const pinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'Y' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) return callback(err);
     callback(null, result);
   });
 };
 
 // 피드백 상단 고정 해제
-const unpinFeedback = (feedback_id, userId, callback) => {
+const unpinFeedback = (feedbackId, userId, callback) => {
   const sql = "UPDATE feedback SET pin = 'N' WHERE feedback_id = ? AND userId = ?";
-  db.query(sql, [feedback_id, userId], (err, result) => {
+  db.query(sql, [feedbackId, userId], (err, result) => {
     if (err) return callback(err);
     callback(null, result);
   });
