@@ -11,6 +11,16 @@ paths:
   /sign/userIdCheck:
     $ref: './paths/auth.yaml#/~1sign~1userIdCheck'
 
+#메인 >메인페이지
+
+  /mainpage/calendar:
+    $ref: './paths/mainpage.yaml#/~1mainpage~1calendar'
+  /mainpage/feedback:
+    $ref: './paths/mainpage.yaml#/~1mainpage~1feedback'
+  /mainpage/question:
+    $ref: './paths/mainpage.yaml#/~1mainpage~1question'
+
+
   # 메인 > 알림
   /notice/{userId}:
     $ref: './paths/notice.yaml#/~1notice~1{userId}'
