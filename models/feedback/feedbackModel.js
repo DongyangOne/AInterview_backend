@@ -160,17 +160,27 @@ const deleteById = ({ feedbackId, userId }, callback) => {
 const findById = ({ feedbackId, userId }, callback) => {
     const sql = `
     SELECT 
-      feedback_id AS id, 
-      userId, 
-      title, 
-      good,
-      bad,
-      content,
-      memo, 
-      pin,
-      created_at
-    FROM feedback
-    WHERE feedback_id = ? AND userId = ?
+    f.feedback_id AS id, 
+    f.userId, 
+    f.title, 
+    f.good,
+    f.bad,
+    f.content,
+    f.memo, 
+    f.pin,
+    f.created_at,
+    a.pose,
+    a.confidence,
+    a.facial,
+    a.risk_response,
+    a.tone,
+    a.understanding
+FROM 
+    feedback AS f
+LEFT JOIN 
+    analysis AS a ON f.feedback_id = a.feedback_id
+WHERE 
+    f.feedback_id = ? AND f.userId = ?
   `;
 
     db.query(sql, [feedbackId, userId], (err, rows) => {
