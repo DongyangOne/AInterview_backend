@@ -45,6 +45,17 @@ paths:
   /feedback/{userId}/{feedbackId}/memo:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1memo'
 
+  /feedback/{userId}/search/keyword/{keyword}:
+    $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1search~1keyword~1{keyword}'
+  /feedback/{userId}/sort:
+    $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1sort'
+  /feedback/{userId}/sort/alpha:
+    $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1sort~1alpha'
+  /feedback/pin/{feedbackId}/{userId}:
+    $ref: './paths/feedback.yaml#/~1feedback~1pin~1{feedbackId}~1{userId}'
+  /feedback/unpin/{feedbackId}/{userId}:
+    $ref: './paths/feedback.yaml#/~1feedback~1unpin~1{feedbackId}~1{userId}'
+
   # 메인 > 일정
   /calendar/month:
     $ref: './paths/calendar.yaml#/~1calendar~1month'
