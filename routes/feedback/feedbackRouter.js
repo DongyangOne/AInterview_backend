@@ -22,4 +22,8 @@ router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
 router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
 
 
+//피드백 본문 수정 
+router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
+
+
 module.exports = router;
