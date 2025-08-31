@@ -56,13 +56,8 @@ paths:
     $ref: './paths/feedback.yaml#/~1feedback~1pin~1{feedbackId}~1{userId}'
   /feedback/unpin/{feedbackId}/{userId}:
     $ref: './paths/feedback.yaml#/~1feedback~1unpin~1{feedbackId}~1{userId}'
-
-  /feedback:
-    $ref: './paths/feedback1.yaml#/~1feedback'
-
   /feedback/{feedbackId}/content:
     $ref: './paths/feedback1.yaml#/~1feedback~1{feedbackId}~1content'
-
 
   # 메인 > 일정
   /calendar/month:
