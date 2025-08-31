@@ -191,6 +191,37 @@ WHERE
     });
 };
 
+//backend-26 피드백 생성
+const createFeedback = (data, callback) => {
+  
+  const feedbackSql = `
+    INSERT INTO feedback (userId, title, good, bad, content, memo) 
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  const feedbackParams = [data.userId, data.title, data.good, data.bad, data.content, data.memo];
+
+  db.query(feedbackSql, feedbackParams, (err, result) => {
+    if (err) return callback(err, null);
+
+    const newFeedbackId = result.insertId;
+
+    
+    const analysisSql = `
+      INSERT INTO analysis (feedback_id, pose, confidence, facial, risk_response, tone, understanding) 
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const analysisParams = [
+      newFeedbackId, data.pose, data.confidence, data.facial, 
+      data.risk_response, data.tone, data.understanding
+    ];
+
+    db.query(analysisSql, analysisParams, (err, analysisResult) => {
+      if (err) return callback(err, null);
+      callback(null, { feedbackId: newFeedbackId });
+    });
+  });
+};
+
 module.exports = {
     findAllByUserId,
     findTitleById,
@@ -203,4 +234,5 @@ module.exports = {
     unpinFeedback,
     deleteById,
     findById,
+    createFeedback
 };
