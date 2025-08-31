@@ -219,6 +219,8 @@ const createFeedback = (data, callback) => {
       if (err) return callback(err, null);
       callback(null, { feedbackId: newFeedbackId });
     });
+  });
+};
     
 //backend-27 피드백 수정 (good, bad, content)
 const updateFeedback = ({ feedbackId, userId, good, bad, content }, callback) => {

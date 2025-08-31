@@ -10,7 +10,7 @@ const {
   unpinFeedback,
   deleteById,
   findById,
-  createFeedback
+  createFeedback,
   updateFeedback
 } = require('../../models/feedback/feedbackModel');
 
@@ -416,6 +416,8 @@ const createNewFeedback = (req, res) => {
     }
     logSimple('피드백 생성', 200);
     res.status(200).json({ success: true, message: '피드백이 성공적으로 생성되었습니다.', data: result });
+  });
+};
 
 //backend-27 피드백 본문 수정
 const updateFeedbackContent = (req, res) => {
