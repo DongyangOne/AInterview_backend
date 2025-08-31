@@ -191,6 +191,19 @@ WHERE
     });
 };
 
+//backend-27 피드백 수정 (good, bad, content)
+const updateFeedback = ({ feedbackId, userId, good, bad, content }, callback) => {
+  const sql = `
+    UPDATE feedback 
+    SET good = ?, bad = ?, content = ?, updated_at = NOW() 
+    WHERE feedback_id = ? AND userId = ?
+  `;
+  db.query(sql, [good, bad, content, feedbackId, userId], (err, result) => {
+    if (err) return callback(err, null);
+    callback(null, result);
+  });
+};
+
 module.exports = {
     findAllByUserId,
     findTitleById,
@@ -203,4 +216,5 @@ module.exports = {
     unpinFeedback,
     deleteById,
     findById,
+    updateFeedback
 };
