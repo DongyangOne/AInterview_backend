@@ -15,9 +15,7 @@ router.patch('/:userId/:feedbackId/title', feedbackController.updateFeedbackTitl
 router.delete('/:feedbackId/:userId', feedbackController.deleteFeedback);
 router.get('/:userId/:feedbackId', feedbackController.getFeedbackDetail);
 router.get('/:userId', feedbackController.getAllFeedback);
-
-//피드백 본문 수정 
+router.post('/', feedbackController.createNewFeedback);
 router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
-
 
 module.exports = router;
