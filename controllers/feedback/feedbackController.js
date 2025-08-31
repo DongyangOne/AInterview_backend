@@ -1,15 +1,18 @@
-const {findAllByUserId,
-    findTitleById,
-    updateTitle,
-    findMemoById,
-    updateMemo,
-    searchFeedbacks,
-    sortFeedbacks,
-    pinFeedback,
-    unpinFeedback,
-    deleteById,
-    findById,
-  createFeedback} = require('../../models/feedback/feedbackModel');
+const {
+  findAllByUserId,
+  findTitleById,
+  updateTitle,
+  findMemoById,
+  updateMemo,
+  searchFeedbacks,
+  sortFeedbacks,
+  pinFeedback,
+  unpinFeedback,
+  deleteById,
+  findById,
+  createFeedback,
+  updateFeedback
+} = require('../../models/feedback/feedbackModel');
 
 const formatTimestamp = () => {
   const now = new Date();
@@ -416,17 +419,42 @@ const createNewFeedback = (req, res) => {
   });
 };
 
+//backend-27 피드백 본문 수정
+const updateFeedbackContent = (req, res) => {
+  const { feedbackId } = req.params;
+  const { userId, good, bad, content } = req.body;
+
+  if (good === undefined || bad === undefined || content === undefined) {
+    logSimple('피드백 본문 수정', 400);
+    return res.status(400).json({ success: false, message: '모든 필드(good, bad, content)가 필요합니다.' });
+  }
+
+  updateFeedback({ feedbackId, userId, good, bad, content }, (err, result) => {
+    if (err) {
+      logSimple('피드백 본문 수정', 500);
+      return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
+    }
+    if (result.affectedRows === 0) {
+      logSimple('피드백 본문 수정', 404);
+      return res.status(404).json({ success: false, message: '해당 피드백을 찾을 수 없습니다.' });
+    }
+    logSimple('피드백 본문 수정', 200);
+    res.status(200).json({ success: true, message: '피드백 본문이 성공적으로 수정되었습니다.' });
+  });
+};
+
 module.exports= {
-    getAllFeedback,
-    getFeedbackTitle, 
-    updateFeedbackTitle,
-getFeedbackMemo,
-updateFeedbackMemo,
-searchFeedbacks: searchFeedbacksController,
-sortFeedbacks: sortFeedbacksController,
-getPin,
-getUnpin,
-deleteFeedback,
-getFeedbackDetail,
-createNewFeedback
+  getAllFeedback,
+  getFeedbackTitle, 
+  updateFeedbackTitle,
+  getFeedbackMemo,
+  updateFeedbackMemo,
+  searchFeedbacks: searchFeedbacksController,
+  sortFeedbacks: sortFeedbacksController,
+  getPin,
+  getUnpin,
+  deleteFeedback,
+  getFeedbackDetail,
+  createNewFeedback,
+  updateFeedbackContent
 }
