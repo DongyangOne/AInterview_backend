@@ -16,4 +16,7 @@ router.delete('/:feedbackId/:userId', feedbackController.deleteFeedback);
 router.get('/:userId/:feedbackId', feedbackController.getFeedbackDetail);
 router.get('/:userId', feedbackController.getAllFeedback);
 
+//피드백 생성
+router.post('/', feedbackController.createNewFeedback);
+
 module.exports = router;
