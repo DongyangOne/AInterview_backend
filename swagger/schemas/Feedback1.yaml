@@ -202,3 +202,24 @@ CreateFeedbackResponse:
             feedbackId:
               type: integer
               example: 101
+
+# 피드백 본문 수정 요청 스키마
+UpdateFeedbackContentRequest:
+  type: object
+  properties:
+    userId:
+      type: integer
+      description: 사용자 ID (본인 확인용)
+      example: 1
+    good:
+      type: string
+      description: 수정할 '좋았던 점' 내용
+      example: '수정된 좋은 점 내용입니다.'
+    bad:
+      type: string
+      description: 수정할 '아쉬웠던 점' 내용
+      example: '수정된 아쉬운 점 내용입니다.'
+    content:
+      type: string
+      description: 수정할 기타 의견 사항
+      example: '수정된 기타 의견 내용'

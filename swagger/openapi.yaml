@@ -48,6 +48,10 @@ paths:
   /feedback:
     $ref: './paths/feedback1.yaml#/~1feedback'
 
+  /feedback/{feedbackId}/content:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{feedbackId}~1content'
+
+
   # 메인 > 일정
   /calendar/month:
     $ref: './paths/calendar.yaml#/~1calendar~1month'
@@ -134,6 +138,10 @@ components:
       $ref: './schemas/Feedback1.yaml#/CreateFeedbackRequest'
     CreateFeedbackResponse:
       $ref: './schemas/Feedback1.yaml#/CreateFeedbackResponse'
+
+    UpdateFeedbackContentRequest:
+      $ref: './schemas/Feedback1.yaml#/UpdateFeedbackContentRequest'
+
 
     # 일정
     calendar:
