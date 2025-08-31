@@ -205,3 +205,27 @@
           application/json:
             schema:
               $ref: '../schemas/base.yaml#/BaseResponse'
+
+# 피드백 생성 (POST /feedback)
+/feedback:
+  post:
+    tags: [Feedback]
+    summary: 새로운 피드백 생성
+    operationId: createNewFeedback
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/Feedback1.yaml#/CreateFeedbackRequest'
+    responses:
+      '200':
+        description: 피드백 생성 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback1.yaml#/CreateFeedbackResponse'
+      '400':
+        description: 필수 정보 누락
+      '500':
+        description: 서버 오류

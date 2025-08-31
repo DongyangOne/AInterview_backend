@@ -166,3 +166,64 @@ UpdateMemoRequest:
       maxLength: 30
       description: 수정할 메모 내용
       example: 'UI/UX팀 검토 예정'
+
+# 피드백 생성 요청 스키마
+CreateFeedbackRequest:
+  type: object
+  required:
+    - userId
+    - title
+  properties:
+    userId:
+      type: integer
+      example: 1
+    title:
+      type: string
+      maxLength: 20
+      example: '새로운 면접 피드백'
+    memo:
+      type: string
+      maxLength: 50
+      example: '생성 시 남기는 메모입니다.'
+    good:
+      type: string
+      example: 'AI가 분석한 좋았던 점 내용'
+    bad:
+      type: string
+      example: 'AI가 분석한 아쉬웠던 점 내용'
+    content:
+      type: string
+      example: 'AI가 분석한 기타 내용'
+    pose:
+      type: integer
+      example: 85
+    confidence:
+      type: integer
+      example: 70
+    facial:
+      type: integer
+      example: 90
+    risk_response:
+      type: integer
+      example: 65
+    tone:
+      type: integer
+      example: 80
+    understanding:
+      type: integer
+      example: 75
+
+# 피드백 생성 응답 스키마
+CreateFeedbackResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "피드백이 성공적으로 생성되었습니다."
+        data:
+          type: object
+          properties:
+            feedbackId:
+              type: integer
+              example: 101

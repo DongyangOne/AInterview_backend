@@ -34,6 +34,8 @@ paths:
     $ref: './paths/notice.yaml#/~1notice~1send'
 
   # 메인 > 피드백 리스트 & 상세
+  /feedback:
+    $ref: './paths/feedback1.yaml#/~1feedback'
   /feedback/{userId}:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}'
   /feedback/{userId}/{feedbackId}:
@@ -44,7 +46,6 @@ paths:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1title'
   /feedback/{userId}/{feedbackId}/memo:
     $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1memo'
-
   /feedback/{userId}/search/keyword/{keyword}:
     $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1search~1keyword~1{keyword}'
   /feedback/{userId}/sort:
@@ -137,6 +138,11 @@ components:
       $ref: './schemas/Feedback1.yaml#/FeedbackTitleResponse'
     FeedbackMemoResponse:
       $ref: './schemas/Feedback1.yaml#/FeedbackMemoResponse'
+
+    CreateFeedbackRequest:
+      $ref: './schemas/Feedback1.yaml#/CreateFeedbackRequest'
+    CreateFeedbackResponse:
+      $ref: './schemas/Feedback1.yaml#/CreateFeedbackResponse'
 
     # 일정
     calendar:

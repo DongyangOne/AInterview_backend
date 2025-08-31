@@ -18,4 +18,8 @@ router.get('/:userId', feedbackController.getAllFeedback);
 router.post('/', feedbackController.createNewFeedback);
 router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
 
+//피드백 본문 수정 
+router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
+
+
 module.exports = router;
