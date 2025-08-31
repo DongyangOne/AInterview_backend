@@ -1,0 +1,230 @@
+# 피드백 검색
+/feedback/{userId}/search/keyword/{keyword}:
+  get:
+    tags: [Feedback]
+    summary: 특정 유저의 피드백을 키워드로 검색
+    operationId: searchFeedbackByKeyword
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 피드백을 검색할 유저의 ID
+        schema: 
+          type: integer
+          example: 1
+      - name: keyword
+        in: path
+        required: true
+        description: 검색할 키워드
+        schema: 
+          type: string
+          example: "디자인"
+    responses:
+      '200':
+        description: 피드백 검색 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback.yaml#/FeedbackListResponse'
+      '400':
+        description: 파라미터 누락
+        content:
+          application/json:
+            schema: 
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "필수 파라미터가 누락되었습니다."
+      '500':
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "서버 오류가 발생했습니다."
+
+# 피드백 정렬 (날짜순)
+/feedback/{userId}/sort:
+  get:
+    tags: [Feedback]
+    summary: 특정 유저의 피드백을 날짜순으로 정렬
+    operationId: sortFeedbackByDate
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 피드백을 정렬할 유저의 ID
+        schema: 
+          type: integer
+          example: 1
+    responses:
+      '200':
+        description: 피드백 정렬 성공 (날짜순)
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback.yaml#/FeedbackListResponse'
+      '400':
+        description: 파라미터 누락
+        content:
+          application/json:
+            schema: 
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "필수 파라미터가 누락되었습니다."
+      '500':
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "서버 오류가 발생했습니다."
+
+# 피드백 정렬 (가나다순)
+/feedback/{userId}/sort/alpha:
+  get:
+    tags: [Feedback]
+    summary: 특정 유저의 피드백을 가나다순으로 정렬
+    operationId: sortFeedbackByAlpha
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: 피드백을 정렬할 유저의 ID
+        schema: 
+          type: integer
+          example: 1
+    responses:
+      '200':
+        description: 피드백 정렬 성공 (가나다순)
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback.yaml#/FeedbackListResponse'
+      '400':
+        description: 파라미터 누락
+        content:
+          application/json:
+            schema: 
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "필수 파라미터가 누락되었습니다."
+      '500':
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "서버 오류가 발생했습니다."
+
+# 피드백 상단 고정
+/feedback/pin/{feedbackId}/{userId}:
+  patch:
+    tags: [Feedback]
+    summary: 피드백 상단 고정
+    operationId: pinFeedback
+    parameters:
+      - name: feedbackId
+        in: path
+        required: true
+        description: 고정할 피드백 ID
+        schema: 
+          type: integer
+          example: 21
+      - name: userId
+        in: path
+        required: true
+        description: 피드백을 고정할 유저의 ID
+        schema: 
+          type: integer
+          example: 1
+    responses:
+      '200':
+        description: 피드백 상단 고정 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/base.yaml#/BaseResponse'
+      '400':
+        description: 파라미터 누락
+        content:
+          application/json:
+            schema: 
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "필수 파라미터가 누락되었습니다."
+      '500':
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "서버 오류가 발생했습니다."
+
+# 피드백 상단 고정 해제
+/feedback/unpin/{feedbackId}/{userId}:
+  patch:
+    tags: [Feedback]
+    summary: 피드백 상단 고정 해제
+    operationId: unpinFeedback
+    parameters:
+      - name: feedbackId
+        in: path
+        required: true
+        description: 고정 해제할 피드백 ID
+        schema: 
+          type: integer
+          example: 21
+      - name: userId
+        in: path
+        required: true
+        description: 피드백을 고정 해제할 유저의 ID
+        schema: 
+          type: integer
+          example: 1
+    responses:
+      '200':
+        description: 피드백 상단 고정 해제 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/base.yaml#/BaseResponse'
+      '400':
+        description: 파라미터 누락
+        content:
+          application/json:
+            schema: 
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "필수 파라미터가 누락되었습니다."
+      '500':
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "서버 오류가 발생했습니다."
