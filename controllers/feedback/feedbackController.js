@@ -1,16 +1,18 @@
-const {findAllByUserId,
-    findTitleById,
-    updateTitle,
-    findMemoById,
-    updateMemo,
-    searchFeedbacks,
-    sortFeedbacks,
-    pinFeedback,
-    unpinFeedback,
-    deleteById,
-    findById,
-    updateFeedback
-  } = require('../../models/feedback/feedbackModel');
+const {
+  findAllByUserId,
+  findTitleById,
+  updateTitle,
+  findMemoById,
+  updateMemo,
+  searchFeedbacks,
+  sortFeedbacks,
+  pinFeedback,
+  unpinFeedback,
+  deleteById,
+  findById,
+  createFeedback,
+  updateFeedback
+} = require('../../models/feedback/feedbackModel');
 
 const formatTimestamp = () => {
   const now = new Date();
@@ -383,6 +385,40 @@ const getFeedbackDetail = (req, res) => {
   });
 };
 
+//backend-26 피드백 생성
+const createNewFeedback = (req, res) => {
+  
+  const feedbackData = {
+    userId: req.body.userId,
+    title: req.body.title,
+    good: req.body.good,
+    bad: req.body.bad,
+    content: req.body.content,
+    memo: req.body.memo,
+    pose: req.body.pose,
+    confidence: req.body.confidence,
+    facial: req.body.facial,
+    risk_response: req.body.risk_response,
+    tone: req.body.tone,
+    understanding: req.body.understanding,
+  };
+
+  
+  if (!feedbackData.userId || !feedbackData.title) {
+    logSimple('피드백 생성', 400);
+    return res.status(400).json({ success: false, message: '필수 정보(userId, title)가 누락되었습니다.' });
+  }
+
+  createFeedback(feedbackData, (err, result) => {
+    if (err) {
+      logSimple('피드백 생성', 500);
+      return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
+    }
+    logSimple('피드백 생성', 200);
+    res.status(200).json({ success: true, message: '피드백이 성공적으로 생성되었습니다.', data: result });
+  });
+};
+
 //backend-27 피드백 본문 수정
 const updateFeedbackContent = (req, res) => {
   const { feedbackId } = req.params;
@@ -408,16 +444,17 @@ const updateFeedbackContent = (req, res) => {
 };
 
 module.exports= {
-    getAllFeedback,
-    getFeedbackTitle, 
-    updateFeedbackTitle,
-getFeedbackMemo,
-updateFeedbackMemo,
-searchFeedbacks: searchFeedbacksController,
-sortFeedbacks: sortFeedbacksController,
-getPin,
-getUnpin,
-deleteFeedback,
-getFeedbackDetail,
-updateFeedbackContent
+  getAllFeedback,
+  getFeedbackTitle, 
+  updateFeedbackTitle,
+  getFeedbackMemo,
+  updateFeedbackMemo,
+  searchFeedbacks: searchFeedbacksController,
+  sortFeedbacks: sortFeedbacksController,
+  getPin,
+  getUnpin,
+  deleteFeedback,
+  getFeedbackDetail,
+  createNewFeedback,
+  updateFeedbackContent
 }
