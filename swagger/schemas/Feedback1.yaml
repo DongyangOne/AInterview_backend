@@ -67,26 +67,44 @@ FeedbackDetail:
       type: integer
       description: 자세 점수
       example: 90
+      minimum: 0
+      maximum: 100
+
     confidence:
       type: integer
       description: 자신감 점수
       example: 55
+      minimum: 0
+      maximum: 100
+
     facial:
       type: integer
       description: 표정 점수
       example: 85
+      minimum: 0
+      maximum: 100
+
     risk_response:
       type: integer
       description: 위기대처능력 점수
       example: 45
+      minimum: 0
+      maximum: 100
+
     tone:
       type: integer
       description: 말투 점수
       example: 60
+      minimum: 0
+      maximum: 100
+
     understanding:
       type: integer
       description: 업무이해도 점수
       example: 40
+      minimum: 0   
+      maximum: 100
+
     
 
 # 피드백 리스트 응답 스키마
