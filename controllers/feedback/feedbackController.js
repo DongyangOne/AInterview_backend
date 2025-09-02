@@ -409,6 +409,20 @@ const createNewFeedback = (req, res) => {
     return res.status(400).json({ success: false, message: '필수 정보(userId, title)가 누락되었습니다.' });
   }
 
+  //육각형 그래프 값에 대한 유효성 검사
+  const scores = [
+    feedbackData.pose, feedbackData.confidence, feedbackData.facial,
+    feedbackData.risk_response, feedbackData.tone, feedbackData.understanding
+  ];
+
+  for (const score of scores) {
+    // score가 null이나 undefined가 아니고, 0~100 사이의 숫자가 아닐 경우 에러 처리
+    if (score != null && (typeof score !== 'number' || score < 0 || score > 100)) {
+      logSimple('피드백 생성', 400);
+      return res.status(400).json({ success: false, message: '그래프 점수는 0에서 100 사이의 숫자여야 합니다.' });
+    }
+  }
+
   createFeedback(feedbackData, (err, result) => {
     if (err) {
       logSimple('피드백 생성', 500);
