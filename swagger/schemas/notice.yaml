@@ -1,0 +1,92 @@
+Notice:
+  type: object
+  properties:
+    notice_id:
+      type: integer
+      example: 1
+    title:
+      type: string
+      example: "제목"
+    content:
+      type: string
+      example: "내용"
+    created_at:
+      type: string
+      format: date-time
+      example: "2025-08-24T12:12:00.000Z"
+    is_read:
+      type: string
+      enum: [Y, N]
+      example: "N"
+
+NoticeListResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - properties:
+        message:
+          example: "알림 리스트 조회 성공"
+        data:
+          type: array
+          items:
+            $ref: '#/Notice'
+
+NoticeReadResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - properties:
+        message:
+          example: "1 알림이 읽음 처리되었습니다."
+
+NoticeReadAllResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - properties:
+        message:
+          example: "1 유저의 모든 알림이 읽음 처리되었습니다."
+
+PushTokenRequest:
+  type: object
+  required:
+    - userId
+    - pushToken
+  properties:
+    userId:
+      type: integer
+      example: 1
+    pushToken:
+      type: string
+      example: "pushToken"
+
+PushTokenResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - properties:
+        message:
+          example: "푸시 토큰이 성공적으로 저장되었습니다."
+
+SendNoticeRequest:
+  type: object
+  required:
+    - userId
+    - title
+    - content
+  properties:
+    userId:
+      type: integer
+      example: 1
+    title:
+      type: string
+      example: "공지사항"
+    content:
+      type: string
+      example: "새로운 기능이 추가되었습니다."
+
+SendNoticeResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - properties:
+        message:
+          example: "알림이 전송되었습니다."
+        noticeId:
+          type: integer
+          example: 15

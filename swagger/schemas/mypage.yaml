@@ -1,0 +1,144 @@
+feedList:
+  type: object
+  properties:
+    title:
+      type: string
+      example: "ㅁㅁ회사 면접"
+    created_at:
+      type: string
+      format: date-time
+      example: "2025-07-21T19:20:27.000Z"
+
+
+getUserInfoResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "사용자 정보 조회 성공"
+        loginUserId:
+          type: string
+          example: "testuser"
+        nickname:
+          type: string
+          example: "테스터"
+        profile:
+          type: string
+          example: null
+
+changePasswordRequest:
+  type: object
+  required:
+    - userId
+    - password
+    - newPassword
+    - newPasswordCheck
+  properties:
+    userId:
+      type: integer
+      example: 1
+    password:
+      type: string
+      example: "password123"
+    newPassword:
+      type: string
+      example: "password12"
+    newPasswordCheck:
+      type: string
+      example: "password12"
+
+changePasswordResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "비밀번호 변경 완료"
+
+changeNicknameRequest:
+  type: object
+  required:
+    - userId
+    - newName
+  properties:
+    userId:
+      type: integer
+      example: 1
+    newName:
+      type: string
+      example: "강아지똥"
+
+changeNicknameResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "닉네임 변경 완료"
+
+setAppPushResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties: 
+        message:
+          example: "알람 수신 상태 전환 완료"
+        status:
+          type: string
+          enum: [Y, N]
+          example: "Y"
+
+getAppPushResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties: 
+        message:
+          example: "현재 알림 수신 상태 입니다."
+        status:
+          type: string
+          enum: [Y, N]
+          example: "N"
+
+checkPasswordRequest:
+  type: object
+  required:
+    - userId
+    - password
+  properties:
+    userId:
+      type: integer
+      example: 1
+    password:
+      type: string
+      example: "password123"
+
+checkPasswordResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "올바른 비밀번호입니다."
+
+getUserFeedInfoResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        count:
+          type: integer
+          example: 7
+        list:
+          type: array
+          items:
+            $ref: './mypage.yaml#/feedList'
+      
+deleteUserResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "사용자 탈퇴 완료"
