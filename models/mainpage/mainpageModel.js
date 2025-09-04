@@ -24,8 +24,27 @@ const TwTODO=(userId,callback)=>{
 //최근 피드백 조회
 const recentFeedback=(userId,callback)=>{
     const sql=
-    `SELECT feedback_id, userId, title, content, created_at, datediff(date(now()), date(created_at)) as days_ago
-    FROM feedback WHERE userId = ? ORDER BY created_at DESC LIMIT 1`;
+    `SELECT 
+    f.feedback_id,
+    f.userId,
+    f.title,
+    f.content,
+    f.created_at,
+    DATEDIFF(NOW(), f.created_at) AS days_ago,
+    a.analysisId,
+    a.pose,
+    a.confidence,
+    a.facial,
+    a.risk_response,
+    a.tone,
+    a.understanding
+FROM feedback AS f
+JOIN analysis AS a 
+    ON f.feedback_id = a.feedback_id
+WHERE f.userId = ?
+ORDER BY f.created_at DESC
+LIMIT 1;`
+
      db.query(sql,[userId],(err,result)=>{
           if(err){
             console.log('recentFeedback오류 : ', err);
@@ -35,6 +54,9 @@ const recentFeedback=(userId,callback)=>{
         return callback(null,result);
     })
 }
+
+
+
 
 //backend-4
 const todayQuestion=(callback)=>{
