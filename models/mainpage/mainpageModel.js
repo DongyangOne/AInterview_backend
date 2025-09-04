@@ -23,7 +23,27 @@ const TwTODO=(userId,callback)=>{
 //backend-3
 //최근 피드백 조회
 const recentFeedback=(userId,callback)=>{
-    const sql='select f.feedback_id, f.userId, f.title, f.content, f.created_at,datediff(date(now()), date(created_at)) as days_ago,a.analysisId,a.pose,a.confidence,a.facial,a.risk_responese,a.tone,a.understanding from feedback as f,analysis as a where f.feedback_id=a.feedback_id and userId= ? ORDER BY created_at DESC LIMIT 1';
+    const sql=
+    `SELECT 
+    f.feedback_id,
+    f.userId,
+    f.title,
+    f.content,
+    f.created_at,
+    DATEDIFF(NOW(), f.created_at) AS days_ago,
+    a.analysisId,
+    a.pose,
+    a.confidence,
+    a.facial,
+    a.risk_response,
+    a.tone,
+    a.understanding
+FROM feedback AS f
+JOIN analysis AS a 
+    ON f.feedback_id = a.feedback_id
+WHERE f.userId = ?
+ORDER BY f.created_at DESC
+LIMIT 1;`
 
      db.query(sql,[userId],(err,result)=>{
           if(err){
