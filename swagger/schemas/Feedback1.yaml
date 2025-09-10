@@ -283,3 +283,33 @@ UpdateFeedbackContentRequest:
       type: string
       description: 수정할 기타 의견 사항
       example: '수정된 기타 의견 내용'
+    pose:
+      type: integer
+      example: 85
+      minimum: 0
+      maximum: 100
+    confidence:
+      type: integer
+      example: 70
+      minimum: 0
+      maximum: 100
+    facial:
+      type: integer
+      example: 90
+      minimum: 0
+      maximum: 100
+    risk_response:
+      type: integer
+      example: 65
+      minimum: 0
+      maximum: 100
+    tone:
+      type: integer
+      example: 80
+      minimum: 0
+      maximum: 100
+    understanding:
+      type: integer
+      example: 75
+      minimum: 0
+      maximum: 100
