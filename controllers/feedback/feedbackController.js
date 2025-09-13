@@ -50,7 +50,7 @@ return res.status(400).json({ success: false, message: "미입력 정보가 존�
     const formattedList = feedbackList.map(feedback => ({
       id: feedback.id,
       title: feedback.title,
-      memo: feedback.memo,
+      content: feedback.content,
       created_at: formatDate(feedback.created_at),
       pin: feedback.pin
     }));
