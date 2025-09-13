@@ -11,11 +11,12 @@ FeedbackSummary:
       maxLength: 20
       description: 피드백 제목
       example: '피드백 제목 입력'
-    memo:
+    content:
       type: string
-      maxLength: 30
-      description: 피드백에 대한 메모
-      example: '피드백 메모'
+      maxLength: 1000
+      description: 피드백 본문 요약
+      example: 'ai가 분석한 기타 의견을 이 부분에 표시합니다'
+      
     created_at:
       type: string
       format: date
