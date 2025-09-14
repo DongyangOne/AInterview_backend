@@ -111,8 +111,18 @@ const addDate = (req, res) => {
         }
 
         const importanceResult = importanceArr[importance];
+
+        const responseData = {
+            userId,
+            calendarId: result.insertId,
+            title,
+            time,
+            importance,
+            importanceText: importanceResult,
+            memo,
+        };
         console.log(datetime, `캘린더 일정 추가 200`);
-        res.status(200).json({ success: true, data: result, importanceResult });
+        res.status(200).json({ success: true, data: responseData, importanceResult });
     });
 };
 
