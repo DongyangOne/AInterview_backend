@@ -1,0 +1,190 @@
+openapi: '3.0.4'
+info:
+  title: AInterview API
+  version: '1.0.0'
+paths:
+  # 로그인 / 회원가입
+  /sign/login:
+    $ref: './paths/auth.yaml#/~1sign~1login'
+  /sign/signup:
+    $ref: './paths/auth.yaml#/~1sign~1signup'
+  /sign/userIdCheck:
+    $ref: './paths/auth.yaml#/~1sign~1userIdCheck'
+
+#메인 >메인페이지
+
+  /mainpage/calendar:
+    $ref: './paths/mainpage.yaml#/~1mainpage~1calendar'
+  /mainpage/feedback:
+    $ref: './paths/mainpage.yaml#/~1mainpage~1feedback'
+  /mainpage/question:
+    $ref: './paths/mainpage.yaml#/~1mainpage~1question'
+
+
+  # 메인 > 알림
+  /notice/{userId}:
+    $ref: './paths/notice.yaml#/~1notice~1{userId}'
+  /notice/{userId}/{noticeId}/read:
+    $ref: './paths/notice.yaml#/~1notice~1{userId}~1{noticeId}~1read'
+  /notice/{userId}/read:
+    $ref: './paths/notice.yaml#/~1notice~1{userId}~1read'
+  /notice/push-token:
+    $ref: './paths/notice.yaml#/~1notice~1push-token'
+  /notice/send:
+    $ref: './paths/notice.yaml#/~1notice~1send'
+
+  # 메인 > 피드백 리스트 & 상세
+  /feedback:
+    $ref: './paths/feedback1.yaml#/~1feedback'
+  /feedback/{userId}:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}'
+  /feedback/{userId}/{feedbackId}:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}'
+  /feedback/{feedbackId}/{userId}:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{feedbackId}~1{userId}'
+  /feedback/{userId}/{feedbackId}/title:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1title'
+  /feedback/{userId}/{feedbackId}/memo:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{userId}~1{feedbackId}~1memo'
+  /feedback/{userId}/search/keyword/{keyword}:
+    $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1search~1keyword~1{keyword}'
+  /feedback/{userId}/sort:
+    $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1sort'
+  /feedback/{userId}/sort/alpha:
+    $ref: './paths/feedback.yaml#/~1feedback~1{userId}~1sort~1alpha'
+  /feedback/pin/{feedbackId}/{userId}:
+    $ref: './paths/feedback.yaml#/~1feedback~1pin~1{feedbackId}~1{userId}'
+  /feedback/unpin/{feedbackId}/{userId}:
+    $ref: './paths/feedback.yaml#/~1feedback~1unpin~1{feedbackId}~1{userId}'
+  /feedback/{feedbackId}/content:
+    $ref: './paths/feedback1.yaml#/~1feedback~1{feedbackId}~1content'
+
+  # 메인 > 일정
+  /calendar/month:
+    $ref: './paths/calendar.yaml#/~1calendar~1month'
+  /calendar/day:
+    $ref: './paths/calendar.yaml#/~1calendar~1day'
+  /calendar/add:
+    $ref: './paths/calendar.yaml#/~1calendar~1add'
+  /calendar/update:
+    $ref: './paths/calendar.yaml#/~1calendar~1update'
+  /calendar/delete:
+    $ref: './paths/calendar.yaml#/~1calendar~1delete'
+
+  # 메인 > 마이페이지
+  /myPage/myInfo:
+    $ref: './paths/mypage.yaml#/~1myPage~1myInfo'
+  /user/changePw:
+    $ref: './paths/mypage.yaml#/~1user~1changePw'
+  /user/changeName:
+    $ref: './paths/mypage.yaml#/~1user~1changeName'
+  /user/setAppPush:
+    $ref: './paths/mypage.yaml#/~1user~1setAppPush'
+  /user/getAppPush:
+    $ref: './paths/mypage.yaml#/~1user~1getAppPush'
+  /user/checkPw:
+    $ref: './paths/mypage.yaml#/~1user~1checkPw'
+  /delete/feedInfo:
+    $ref: './paths/mypage.yaml#/~1delete~1feedInfo'
+  /delete/deleteUser:
+    $ref: './paths/mypage.yaml#/~1delete~1deleteUser'
+
+components:
+  schemas:
+    # 로그인 / 회원가입
+    loginUserRequest:
+      $ref: './schemas/auth.yaml#/loginUserRequest'
+    loginUserResponse:
+      $ref: './schemas/auth.yaml#/loginUserResponse'
+    signupUserRequest:
+      $ref: './schemas/auth.yaml#/signupUserRequest'
+    signupUserResponse:
+      $ref: './schemas/auth.yaml#/signupUserResponse'
+    checkUserIdRequest:
+      $ref: './schemas/auth.yaml#/checkUserIdRequest'
+    checkUserIdResponse:
+      $ref: './schemas/auth.yaml#/checkUserIdResponse'
+
+    # 알림
+    Notice:
+      $ref: './schemas/notice.yaml#/Notice'
+    NoticeListResponse:
+      $ref: './schemas/notice.yaml#/NoticeListResponse'
+    NoticeReadResponse:
+      $ref: './schemas/notice.yaml#/NoticeReadResponse'
+    NoticeReadAllResponse:
+      $ref: './schemas/notice.yaml#/NoticeReadAllResponse'
+    PushTokenRequest:
+      $ref: './schemas/notice.yaml#/PushTokenRequest'
+    PushTokenResponse:
+      $ref: './schemas/notice.yaml#/PushTokenResponse'
+    SendNoticeRequest:
+      $ref: './schemas/notice.yaml#/SendNoticeRequest'
+    SendNoticeResponse:
+      $ref: './schemas/notice.yaml#/SendNoticeResponse'
+
+    # 피드백
+    FeedbackSummary:
+      $ref: './schemas/Feedback1.yaml#/FeedbackSummary'
+    FeedbackDetail:
+      $ref: './schemas/Feedback1.yaml#/FeedbackDetail'
+    FeedbackListResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackListResponse'
+    FeedbackDetailResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackDetailResponse'
+    UpdateTitleRequest:
+      $ref: './schemas/Feedback1.yaml#/UpdateTitleRequest'
+    UpdateMemoRequest:
+      $ref: './schemas/Feedback1.yaml#/UpdateMemoRequest'
+    FeedbackTitleResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackTitleResponse'
+    FeedbackMemoResponse:
+      $ref: './schemas/Feedback1.yaml#/FeedbackMemoResponse'
+
+    CreateFeedbackRequest:
+      $ref: './schemas/Feedback1.yaml#/CreateFeedbackRequest'
+    CreateFeedbackResponse:
+      $ref: './schemas/Feedback1.yaml#/CreateFeedbackResponse'
+
+    UpdateFeedbackContentRequest:
+      $ref: './schemas/Feedback1.yaml#/UpdateFeedbackContentRequest'
+
+    # 일정
+    calendar:
+      $ref: './schemas/calendar.yaml#/calendar'
+    monthResponse:
+      $ref: './schemas/calendar.yaml#/monthResponse'
+    dayResponse:
+      $ref: './schemas/calendar.yaml#/dayResponse'
+    addDateResponse:
+      $ref: './schemas/calendar.yaml#/addDateResponse'
+    getUpdateResponse:
+      $ref: './schemas/calendar.yaml#/getUpdateResponse'
+    getDeleteResponse:
+      $ref: './schemas/calendar.yaml#/getDeleteResponse'
+
+    # 마이페이지
+    feedList:
+      $ref: './schemas/mypage.yaml#/feedList'
+    getUserInfoResponse:
+      $ref: './schemas/mypage.yaml#/getUserInfoResponse'
+    changePasswordRequest:
+      $ref: './schemas/mypage.yaml#/changePasswordRequest'
+    changePasswordResponse:
+      $ref: './schemas/mypage.yaml#/changePasswordResponse'
+    changeNicknameRequest:
+      $ref: './schemas/mypage.yaml#/changeNicknameRequest'
+    changeNicknameResponse:
+      $ref: './schemas/mypage.yaml#/changeNicknameResponse'
+    setAppPushResponse:
+      $ref: './schemas/mypage.yaml#/setAppPushResponse'
+    getAppPushResponse:
+      $ref: './schemas/mypage.yaml#/getAppPushResponse'
+    checkPasswordRequest:
+      $ref: './schemas/mypage.yaml#/checkPasswordRequest'
+    checkPasswordResponse:
+      $ref: './schemas/mypage.yaml#/checkPasswordResponse'
+    getUserFeedInfoResponse:
+      $ref: './schemas/mypage.yaml#/getUserFeedInfoResponse'
+    deleteUserResponse:
+      $ref: './schemas/mypage.yaml#/deleteUserResponse'

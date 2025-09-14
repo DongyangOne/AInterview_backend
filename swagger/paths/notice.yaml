@@ -1,0 +1,228 @@
+/notice/{userId}:
+  get:
+    tags:
+      - Notice
+    summary: 특정 유저의 알림 조회
+    operationId: getNoticesByUser
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: 알림을 조회할 유저의 ID
+    responses:
+      '200':
+        description: 알림 리스트 반환
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/notice.yaml#/NoticeListResponse'
+      '400':
+        description: userId 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':
+        description: 알림 조회 실패
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "알림 조회 중 오류 발생"
+
+/notice/{userId}/{noticeId}/read:
+  patch:
+    tags:
+      - Notice
+    summary: 특정 알림 읽음 처리
+    operationId: markNoticeAsRead
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: 알림 소유자의 유저 ID
+      - name: noticeId
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 18
+        description: 읽음 처리할 알림의 ID
+    responses:
+      '200':
+        description: 읽음 처리 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/notice.yaml#/NoticeReadResponse'
+      '400':
+        description: userId 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':
+        description: 읽음 처리 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "알림 읽음 처리 중 오류 발생"
+
+/notice/{userId}/read:
+  patch:
+    tags:
+      - Notice
+    summary: 모든 알림 읽음 처리
+    operationId: markAllNoticesAsRead
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 1
+        description: 모든 알림을 읽음 처리할 유저의 ID
+    responses:
+      '200':
+        description: 모든 알림 읽음 처리 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/notice.yaml#/NoticeReadAllResponse'
+      '400':
+        description: userId 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':
+        description: 읽음 처리 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "알림 읽음 처리 중 오류 발생"
+
+/notice/push-token:
+  post:
+    tags:
+      - Notice
+    summary: 푸시 토큰 등록/업데이트
+    operationId: registerPushToken
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/notice.yaml#/PushTokenRequest'
+    responses:
+      '200':
+        description: 푸시 토큰 등록/업데이트 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/notice.yaml#/PushTokenResponse'
+      '400':
+        description: 필수 필드 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            examples:
+              missingUserId:
+                summary: userId 미전달
+                value:
+                  success: false
+                  message: "userId가 필요합니다."
+              missingPushToken:
+                summary: pushToken 미전달
+                value:
+                  success: false
+                  message: "pushToken이 필요합니다."
+      '500':
+        description: 푸시 토큰 저장 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "푸시 토큰 저장 중 오류 발생"
+
+/notice/send:
+  post:
+    tags:
+      - Notice
+    summary: 알림 발송
+    operationId: sendNotice
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/notice.yaml#/SendNoticeRequest'
+    responses:
+      '200':
+        description: 알림 발송 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/notice.yaml#/SendNoticeResponse'
+      '400':
+        description: 필수 필드 미전달
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+            examples:
+              missingUserId:
+                summary: userId 미전달
+                value:
+                  success: false
+                  message: "userId가 필요합니다."
+              missingTitleOrContent:
+                summary: title 또는 content 미전달
+                value:
+                  success: false
+                  message: "title 또는 content가 필요합니다."
+      '500':
+        description: 알림 저장 중 오류 발생
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "알림 저장 중 오류 발생"

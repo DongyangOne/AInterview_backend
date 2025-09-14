@@ -1,0 +1,261 @@
+# 특정 유저의 모든 피드백 리스트 조회
+/feedback/{userId}:
+  get:
+    tags: [Feedback]
+    summary: 특정 유저의 모든 피드백 리스트 조회
+    operationId: getAllFeedbackByUser
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: '피드백을 조회할 유저의 ID'
+        schema: 
+          type: integer
+          example: 1
+    responses:
+      '200':
+        description: 모든 피드백 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback1.yaml#/FeedbackListResponse'
+      '400':
+        description: userId 미입력
+        content:
+          application/json:
+            schema: 
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "userId가 필요합니다."
+      '500':
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "서버 오류가 발생했습니다."
+
+# 피드백 상세 조회
+/feedback/{userId}/{feedbackId}:
+  get:
+    tags: [Feedback]
+    summary: 피드백 상세 조회
+    operationId: getFeedbackDetail
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: '유저 ID'
+        schema:
+          type: integer
+          example: 1
+      - name: feedbackId
+        in: path
+        required: true
+        description: '피드백 ID'
+        schema:
+          type: integer
+          example: 21
+    responses:
+      '200':
+        description: 피드백 상세 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback1.yaml#/FeedbackDetailResponse'
+      '404':
+        description: 해당 피드백을 찾을 수 없음
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '../schemas/base.yaml#/ErrorResponse'
+                - properties:
+                    message:
+                      example: "해당 피드백을 찾을 수 없습니다."
+
+# 피드백 삭제
+/feedback/{feedbackId}/{userId}:
+  delete:
+    tags: [Feedback]
+    summary: 피드백 삭제
+    operationId: deleteFeedback
+    parameters:
+      - name: feedbackId
+        in: path
+        required: true
+        description: '삭제할 피드백 ID'
+        schema:
+          type: integer
+          example: 21
+      - name: userId
+        in: path
+        required: true
+        description: '유저 ID'
+        schema:
+          type: integer
+          example: 1
+    responses:
+      '200':
+        description: 피드백 삭제 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/base.yaml#/BaseResponse'
+
+# 피드백 제목 관련 API
+/feedback/{userId}/{feedbackId}/title:
+  get:
+    tags: [Feedback]
+    summary: 피드백 제목 조회
+    operationId: getFeedbackTitle
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema: { type: integer, example: 1 }
+      - name: feedbackId
+        in: path
+        required: true
+        schema: { type: integer, example: 21 }
+    responses:
+      '200':
+        description: 기존 제목 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback1.yaml#/FeedbackTitleResponse'
+  patch:
+    tags: [Feedback]
+    summary: 피드백 제목 수정
+    operationId: updateFeedbackTitle
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema: { type: integer, example: 1 }
+      - name: feedbackId
+        in: path
+        required: true
+        schema: { type: integer, example: 21 }
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/Feedback1.yaml#/UpdateTitleRequest'
+    responses:
+      '200':
+        description: 피드백 제목 수정 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/base.yaml#/BaseResponse'
+
+# 피드백 메모 관련 API
+/feedback/{userId}/{feedbackId}/memo:
+  get:
+    tags: [Feedback]
+    summary: 피드백 메모 조회
+    operationId: getFeedbackMemo
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema: { type: integer, example: 1 }
+      - name: feedbackId
+        in: path
+        required: true
+        schema: { type: integer, example: 21 }
+    responses:
+      '200':
+        description: 기존 메모 조회 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback1.yaml#/FeedbackMemoResponse'
+  patch:
+    tags: [Feedback]
+    summary: 피드백 메모 수정
+    operationId: updateFeedbackMemo
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema: { type: integer, example: 1 }
+      - name: feedbackId
+        in: path
+        required: true
+        schema: { type: integer, example: 21 }
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/Feedback1.yaml#/UpdateMemoRequest'
+    responses:
+      '200':
+        description: 피드백 메모 수정 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/base.yaml#/BaseResponse'
+
+# 피드백 생성 (POST /feedback)
+/feedback:
+  post:
+    tags: [Feedback]
+    summary: 새로운 피드백 생성
+    operationId: createNewFeedback
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/Feedback1.yaml#/CreateFeedbackRequest'
+    responses:
+      '200':
+        description: 피드백 생성 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Feedback1.yaml#/CreateFeedbackResponse'
+      '400':
+        description: 필수 정보 누락
+      '500':
+        description: 서버 오류
+
+# 피드백 본문(good, bad, content) 수정
+/feedback/{feedbackId}/content:
+  patch:
+    tags: [Feedback]
+    summary: 피드백 본문 내용 수정
+    operationId: updateFeedbackContent
+    parameters:
+      - name: feedbackId
+        in: path
+        required: true
+        description: '수정할 피드백의 ID'
+        schema:
+          type: integer
+          example: 21
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/Feedback1.yaml#/UpdateFeedbackContentRequest'
+    responses:
+      '200':
+        description: 피드백 본문 수정 성공
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/base.yaml#/BaseResponse'
+      '404':
+        description: 해당 피드백을 찾을 수 없음

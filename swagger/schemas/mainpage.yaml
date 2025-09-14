@@ -1,0 +1,128 @@
+components:
+  schemas:
+    # 에러 응답
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "연결실패"
+        error:
+          type: string
+          nullable: true
+          example: "DB 연결 실패"
+
+    ErrorResponse400:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "연결실패"
+        error:
+          type: string
+          nullable: true
+          example: "DB 연결 실패"
+
+
+
+
+
+    # /mainpage/calendar 성공 응답
+    CalendarResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          description: "이번 주에 해당하는 일정 "
+          items:
+            type: object
+            properties:
+              calendar_id:
+                type: integer
+                example: 12
+              title:
+                type: string
+                example: "프로젝트 회의"
+              time:
+                type: string
+                format: date-time
+                example: "2025-08-27 13:00:00"
+        today:
+          type: integer
+          description: "반환하는 현재 일"
+          example: 14
+      required:
+        - success
+        - data
+
+    # /mainpage/feedback 성공 응답
+    FeedbackResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          description: "최근 피드백 결과(최대 1건)"
+          items:
+            type: object
+            properties:
+              feedback_id:
+                type: integer
+                example: 5
+              userId:
+                type: integer
+                example: 42
+              title:
+                type: string
+                example: "프로젝트 피드백"
+              content:
+                type: string
+                example: "피드백성공"
+              created_at:
+                type: string
+                format: date-time
+                example: "2025-08-27 13:00:00"
+              days_ago:
+                type: integer
+                example: 4
+      required:
+        - success
+        - data
+
+    # /mainpage/question 성공 응답
+    QuestionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          description: "랜덤으로 선택된 질문"
+          items:
+            type: object
+            properties:
+              question_id:
+                type: integer
+                example: 3
+              question_text:
+                type: string
+                example: "오늘의 질문 예시"
+              created_at:
+                type: string
+                format: date-time
+                example: "2025-08-27 13:00:00"
+      required:
+        - success
+        - data

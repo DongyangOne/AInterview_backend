@@ -1,0 +1,79 @@
+"/mainpage/calendar":
+  get:
+    summary: "금주 일정 조회"
+    description: "금주 일정을 조회"
+    parameters:
+      - name: userId
+        in: query
+        description: "조회할 사용자 ID"
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "성공 - 일정 목록 반환"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/CalendarResponse"
+      "400":
+        description: "userId 누락"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/ErrorResponse400"
+      "500":
+        description: "서버 오류"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/ErrorResponse"
+
+"/mainpage/feedback":
+  get:
+    summary: "가장 최근 피드백 조회"
+    description: "사용자의 가장 최근 피드백 1건을 조회"
+    parameters:
+      - name: userId
+        in: query
+        description: "조회할 사용자 ID"
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: "성공 - 최근 피드백 반환"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/FeedbackResponse"
+      "400":
+        description: "userId 누락"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/ErrorResponse400"
+      "500":
+        description: "서버 오류 - 피드백 조회 실패"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/ErrorResponse"
+
+"/mainpage/question":
+  get:
+    summary: "오늘의 질문 랜덤 조회"
+    description: "DB의 questions 테이블에서 랜덤으로 1개의 질문을 반환"
+    responses:
+      "200":
+        description: "성공 - 오늘의 질문 반환"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/QuestionResponse"
+      "500":
+        description: "서버 오류 - 질문 조회 실패"
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/mainpage.yaml#/components/schemas/ErrorResponse"

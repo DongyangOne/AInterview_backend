@@ -4,14 +4,16 @@ const db = require('../../config/database');
 //일정 조회
 const TwTODO=(userId,callback)=>{
     const sql=
-    `SELECT calendar_id, title,time FROM calendar WHERE
-    DATE(time) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL (WEEKDAY(CURRENT_DATE()) + 1) DAY) AND 
-    DATE_ADD(CURRENT_DATE(), INTERVAL (5 - WEEKDAY(CURRENT_DATE())) DAY) AND users_id = ?
-     order by created_at desc;`
+    `SELECT calendar_id, title, time FROM calendar WHERE DATE(time) BETWEEN 
+    DATE_SUB(CURRENT_DATE(), INTERVAL (DAYOFWEEK(CURRENT_DATE()) - 1) DAY)
+    AND DATE_ADD(CURRENT_DATE(), INTERVAL (7 - DAYOFWEEK(CURRENT_DATE())) DAY)
+    AND users_id = ?
+    ORDER BY created_at DESC;`
      db.query(sql,[userId],(err,result)=>{
           if(err){
-            console.log('오류 : ', err);
-            return callback({code : 'calendar_error', message : '캘린더 오류', error : err});
+            console.log('twtodo오류 : ', err);
+
+            return callback(err);
         }
         console.log(result)
         return callback(null,result);
@@ -22,17 +24,39 @@ const TwTODO=(userId,callback)=>{
 //최근 피드백 조회
 const recentFeedback=(userId,callback)=>{
     const sql=
-    `SELECT feedback_id, userId, title, content, created_at, datediff(date(now()), date(created_at)) as days_ago
-    FROM feedback WHERE userId = ? ORDER BY created_at DESC LIMIT 1`;
+    `SELECT 
+    f.feedback_id,
+    f.userId,
+    f.title,
+    f.content,
+    f.created_at,
+    DATEDIFF(NOW(), f.created_at) AS days_ago,
+    a.analysisId,
+    a.pose,
+    a.confidence,
+    a.facial,
+    a.risk_response,
+    a.tone,
+    a.understanding
+FROM feedback AS f
+JOIN analysis AS a 
+    ON f.feedback_id = a.feedback_id
+WHERE f.userId = ?
+ORDER BY f.created_at DESC
+LIMIT 1;`
+
      db.query(sql,[userId],(err,result)=>{
           if(err){
-            console.log('오류 : ', err);
-            return callback({code : 'feedback_error', message : '피드백오류', error : err});
+            console.log('recentFeedback오류 : ', err);
+            return callback(err);
         }
         console.log(result)
         return callback(null,result);
     })
 }
+
+
+
 
 //backend-4
 const todayQuestion=(callback)=>{
@@ -40,8 +64,8 @@ const todayQuestion=(callback)=>{
     'SELECT * FROM questions ORDER BY RAND()LIMIT 1;';
      db.query(sql,(err,result)=>{
           if(err){
-            console.log('오류 : ', err);
-            return callback({code : 'feedback_error', message : '피드백오류', error : err});
+            console.log('todayQuestion sql 오류 : ', err);
+            return callback(err);
         }
         console.log(result)
         return callback(null,result);

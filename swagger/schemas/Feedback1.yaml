@@ -1,0 +1,315 @@
+# 피드백 기본 정보 스키마 (리스트 조회에서 사용)
+FeedbackSummary:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: 피드백 ID
+      example: 21
+    title:
+      type: string
+      maxLength: 20
+      description: 피드백 제목
+      example: '피드백 제목 입력'
+    memo:
+      type: string
+      maxLength: 30
+      description: 피드백에 대한 메모
+      example: '피드백 메모'
+    created_at:
+      type: string
+      format: date
+      description: 생성일자
+      example: '2025-08-25'
+
+# 피드백 상세 정보 스키마
+FeedbackDetail:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: 피드백 ID
+      example: 21
+    userId:
+      type: integer
+      description: 사용자 ID
+      example: 1
+    title:
+      type: string
+      maxLength: 20
+      description: 피드백 제목
+      example: '피드백 제목'
+    good:
+      type: string
+      description: 좋았던 점
+      example: '전체적으로 색감이 통일되어 있어서 보기 편안합니다.'
+    bad:
+      type: string
+      description: 아쉬웠던 점
+      example: '일부 버튼이 너무 작아서 누르기 힘들어요.'
+    content:
+      type: string
+      description: 기타 의견
+      example: '다크 모드를 지원해주시면 좋겠습니다.'
+    memo:
+      type: string
+      maxLength: 30
+      description: 피드백에 대한 메모
+      example: '디자이너에게 전달 완료'
+   
+    created_at:
+      type: string
+      format: date
+      description: 생성일
+      example: '2025-08-26'
+
+    pose:
+      type: integer
+      description: 자세 점수
+      example: 90
+      minimum: 0
+      maximum: 100
+
+    confidence:
+      type: integer
+      description: 자신감 점수
+      example: 55
+      minimum: 0
+      maximum: 100
+
+    facial:
+      type: integer
+      description: 표정 점수
+      example: 85
+      minimum: 0
+      maximum: 100
+
+    risk_response:
+      type: integer
+      description: 위기대처능력 점수
+      example: 45
+      minimum: 0
+      maximum: 100
+
+    tone:
+      type: integer
+      description: 말투 점수
+      example: 60
+      minimum: 0
+      maximum: 100
+
+    understanding:
+      type: integer
+      description: 업무이해도 점수
+      example: 40
+      minimum: 0   
+      maximum: 100
+
+    
+
+# 피드백 리스트 응답 스키마
+FeedbackListResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "피드백 리스트 조회 성공"
+        data:
+          type: array
+          items:
+            $ref: '#/FeedbackSummary'
+
+# 피드백 상세 정보 응답 스키마
+FeedbackDetailResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "피드백 상세 조회 성공"
+        data:
+          $ref: '#/FeedbackDetail'
+
+# 피드백 제목 응답 스키마
+FeedbackTitleResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "피드백 제목 조회 성공"
+        data:
+          type: object
+          properties:
+            title:
+              type: string
+              example: '피드백 제목입니다.'
+
+# 피드백 메모 응답 스키마
+FeedbackMemoResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "피드백 메모 조회 성공"
+        data:
+          type: object
+          properties:
+            memo:
+              type: string
+              example: '피드백 메모입니다.'
+
+# 피드백 제목 수정 요청 스키마
+UpdateTitleRequest:
+  type: object
+  required:
+    - title
+  properties:
+    title:
+      type: string
+      maxLength: 20
+      description: 수정할 피드백 제목
+      example: '디자인 일부 수정 제안'
+
+# 피드백 메모 수정 요청 스키마
+UpdateMemoRequest:
+  type: object
+  required:
+    - memo
+  properties:
+    memo:
+      type: string
+      maxLength: 30
+      description: 수정할 메모 내용
+      example: 'UI/UX팀 검토 예정'
+
+# 피드백 생성 요청 스키마
+CreateFeedbackRequest:
+  type: object
+  required:
+    - userId
+    - title
+  properties:
+    userId:
+      type: integer
+      example: 1
+    title:
+      type: string
+      maxLength: 20
+      example: '새로운 면접 피드백'
+    memo:
+      type: string
+      maxLength: 50
+      example: '생성 시 남기는 메모입니다.'
+    good:
+      type: string
+      example: 'AI가 분석한 좋았던 점 내용'
+    bad:
+      type: string
+      example: 'AI가 분석한 아쉬웠던 점 내용'
+    content:
+      type: string
+      example: 'AI가 분석한 기타 내용'
+    pose:
+      type: integer
+      example: 85
+      minimum: 0
+      maximum: 100
+
+    confidence:
+      type: integer
+      example: 70
+      minimum: 0
+      maximum: 100
+
+    facial:
+      type: integer
+      example: 90
+      minimum: 0
+      maximum: 100
+
+    risk_response:
+      type: integer
+      example: 65
+      minimum: 0
+      maximum: 100
+
+    tone:
+      type: integer
+      example: 80
+      minimum: 0
+      maximum: 100
+
+    understanding:
+      type: integer
+      example: 75
+      minimum: 0
+      maximum: 100
+
+# 피드백 생성 응답 스키마
+CreateFeedbackResponse:
+  allOf:
+    - $ref: './base.yaml#/BaseResponse'
+    - type: object
+      properties:
+        message:
+          example: "피드백이 성공적으로 생성되었습니다."
+        data:
+          type: object
+          properties:
+            feedbackId:
+              type: integer
+              example: 101
+
+# 피드백 본문 수정 요청 스키마
+UpdateFeedbackContentRequest:
+  type: object
+  properties:
+    userId:
+      type: integer
+      description: 사용자 ID (본인 확인용)
+      example: 1
+    good:
+      type: string
+      description: 수정할 '좋았던 점' 내용
+      example: '수정된 좋은 점 내용입니다.'
+    bad:
+      type: string
+      description: 수정할 '아쉬웠던 점' 내용
+      example: '수정된 아쉬운 점 내용입니다.'
+    content:
+      type: string
+      description: 수정할 기타 의견 사항
+      example: '수정된 기타 의견 내용'
+    pose:
+      type: integer
+      example: 85
+      minimum: 0
+      maximum: 100
+    confidence:
+      type: integer
+      example: 70
+      minimum: 0
+      maximum: 100
+    facial:
+      type: integer
+      example: 90
+      minimum: 0
+      maximum: 100
+    risk_response:
+      type: integer
+      example: 65
+      minimum: 0
+      maximum: 100
+    tone:
+      type: integer
+      example: 80
+      minimum: 0
+      maximum: 100
+    understanding:
+      type: integer
+      example: 75
+      minimum: 0
+      maximum: 100

@@ -6,8 +6,8 @@ const { getPin, getUnpin } = require('../../controllers/feedback/feedbackControl
 
 router.get('/:userId/sort', feedbackController.sortFeedbacks);
 router.get('/:userId/search', feedbackController.searchFeedbacks);
-router.patch('/pin/:feedback_id/:userId', feedbackController.getPin);
-router.patch('/unpin/:feedback_id/:userId', feedbackController.getUnpin);
+router.patch('/pin/:feedbackId/:userId', feedbackController.getPin);
+router.patch('/unpin/:feedbackId/:userId', feedbackController.getUnpin);
 router.get('/:userId/:feedbackId/memo', feedbackController.getFeedbackMemo);
 router.patch('/:userId/:feedbackId/memo', feedbackController.updateFeedbackMemo);
 router.get('/:userId/:feedbackId/title', feedbackController.getFeedbackTitle);
@@ -15,5 +15,15 @@ router.patch('/:userId/:feedbackId/title', feedbackController.updateFeedbackTitl
 router.delete('/:feedbackId/:userId', feedbackController.deleteFeedback);
 router.get('/:userId/:feedbackId', feedbackController.getFeedbackDetail);
 router.get('/:userId', feedbackController.getAllFeedback);
+router.post('/', feedbackController.createNewFeedback);
+router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
+
+//피드백 본문 수정 
+router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
+
+
+//피드백 본문 수정 
+router.patch('/:feedbackId/content', feedbackController.updateFeedbackContent);
+
 
 module.exports = router;
