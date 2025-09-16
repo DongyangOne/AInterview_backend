@@ -3,7 +3,7 @@ const db = require('../../config/database');
 //backend-7 mainfeedbackModel 리스트 조회
 const findAllByUserId = ({ userId }, callback) => {
     const sql = `
-    SELECT feedback_id AS id, title, content, created_at, pin  
+    SELECT feedback_id AS id, title, content, memo, created_at, pin  
     FROM feedback
     WHERE userId = ?
     ORDER BY created_at DESC

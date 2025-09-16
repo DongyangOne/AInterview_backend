@@ -51,6 +51,7 @@ return res.status(400).json({ success: false, message: "미입력 정보가 존�
       id: feedback.id,
       title: feedback.title,
       content: feedback.content,
+      memo: feedback.memo,
       created_at: formatDate(feedback.created_at),
       pin: feedback.pin
     }));
