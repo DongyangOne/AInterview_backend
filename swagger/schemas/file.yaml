@@ -1,0 +1,23 @@
+UploadFileSuccessResponse:
+    allOf:
+        - $ref: './base.yaml#/BaseResponse'
+        - type: object
+          properties:
+              message:
+                  example: '파일 업로드 성공'
+
+UploadFileInvalidResponse:
+    allOf:
+        - $ref: './base.yaml#/BaseResponse'
+        - type: object
+          properties:
+              message:
+                  example: '허용되지 않는 확장자입니다.'
+
+UploadFileServerErrorResponse:
+    allOf:
+        - $ref: './base.yaml#/BaseResponse'
+        - type: object
+          properties:
+              message:
+                  example: '서버 오류 발생'
