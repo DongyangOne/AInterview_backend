@@ -36,15 +36,6 @@ app.use('/delete', mypageRouter);
 
 app.use('/notice', noticeRouter);
 
-app.use((err, req, res, next) => {
-    if (err instanceof multer.MulterError) {
-        return res.status(500).json({ success: false, message: `Multer 오류: ${err}` });
-    } else if (err instanceof Error) {
-        return res.status(500).json({ success: false, message: `파일 업로드 오류: ${err}` });
-    }
-    next();
-});
-
 const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
     console.log(`\n서버 시작: http://localhost:${port}`);
