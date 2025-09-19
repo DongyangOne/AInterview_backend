@@ -50,6 +50,7 @@ return res.status(400).json({ success: false, message: "미입력 정보가 존�
     const formattedList = feedbackList.map(feedback => ({
       id: feedback.id,
       title: feedback.title,
+      content: feedback.content,
       memo: feedback.memo,
       created_at: formatDate(feedback.created_at),
       pin: feedback.pin
@@ -437,14 +438,30 @@ const createNewFeedback = (req, res) => {
 //backend-27 피드백 본문 수정
 const updateFeedbackContent = (req, res) => {
   const { feedbackId } = req.params;
-  const { userId, good, bad, content } = req.body;
+  const { userId, good, bad, content, 
+          pose, confidence, facial, 
+          risk_response, tone, understanding 
+        } = req.body;
+
 
   if (good === undefined || bad === undefined || content === undefined) {
     logSimple('피드백 본문 수정', 400);
     return res.status(400).json({ success: false, message: '모든 필드(good, bad, content)가 필요합니다.' });
   }
 
-  updateFeedback({ feedbackId, userId, good, bad, content }, (err, result) => {
+  //육각형 점수 유효성 검사
+const scores = { pose, confidence, facial, risk_response, tone, understanding };
+for (const [key, value] of Object.entries(scores)) {
+if (value != null && (typeof value !== 'number' || value < 0 || value > 100)) {
+logSimple('피드백 본문 수정', 400);
+return res.status(400).json({ success: false, message: `${key} 값은 0~100 사이의 숫자여야 합니다.` });
+}
+}
+
+  updateFeedback({ 
+    feedbackId, userId, good, bad, content, 
+    pose, confidence, facial, 
+    risk_response, tone, understanding }, (err, result) => {
     if (err) {
       logSimple('피드백 본문 수정', 500);
       return res.status(500).json({ success: false, message: '서버 오류', error: err.message });
