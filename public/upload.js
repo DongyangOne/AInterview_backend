@@ -5,7 +5,7 @@ const path = require('path');
 
 const router = express.Router();
 
-const sambaPath = path.join(__dirname, '..', '..', 'shared');
+const sambaPath = path.join(__dirname, 'shared');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -21,7 +21,6 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const safeName = `${Date.now()}_${file.originalname}`;
-        const fullPath = path.join(sambaPath, safeName);
         cb(null, safeName);
     },
 });
@@ -35,7 +34,12 @@ const limits = {
 };
 
 const fileFilter = (req, file, callback) => {
-    callback(null, true);
+    if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
+        callback(null, true);
+    } else {
+        console.log('허용되지 않는 확장자입니다', file.mimetype);
+        callback(new Error('허용되지 않는 확장자입니다.'));
+    }
 };
 
 const upload = multer({
@@ -69,17 +73,15 @@ function handleFile(req, res) {
     res.status(200).json({ success: true, message: 'file upload success' });
 }
 
-router.post(
-    '/upload',
-    upload.fields([{ name: 'file1', maxCount: 10 }]),
-    (err, req, res, next) => {
-        if (err) {
-            console.log(`파일 추가 중 에러, 500`);
-            return res.status(500).json({ success: false, message: '서버 오류 발생', details: err.message });
-        }
-        next();
-    },
-    handleFile
-);
+router.post('/upload', upload.fields([{ name: 'file1', maxCount: 10 }]), handleFile);
+
+router.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        return res.status(500).json({ success: false, message: `Multer 오류: ${err}` });
+    } else if (err instanceof Error) {
+        return res.status(500).json({ success: false, message: `파일 업로드 오류: ${err}` });
+    }
+    next();
+});
 
 module.exports = router;
