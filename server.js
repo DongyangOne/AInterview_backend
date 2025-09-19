@@ -3,8 +3,8 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const path = require('path');
-
 const app = express();
+const multer = require('multer');
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -17,6 +17,9 @@ const feedbackRouter = require('./routes/feedback/feedbackRouter');
 const mainpageRouter = require('./routes/mainpage/mainpageRouter');
 const mypageRouter = require('./routes/mypage/mypageRouter');
 const noticeRouter = require('./routes/notice/noticeRouter');
+const fileRouter = require('./public/upload');
+
+app.use('/file', fileRouter);
 
 app.use('/sign', authRouter);
 app.use('/logout', authRouter);
@@ -33,8 +36,17 @@ app.use('/delete', mypageRouter);
 
 app.use('/notice', noticeRouter);
 
+app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        return res.status(500).json({ success: false, message: `Multer 오류: ${err}` });
+    } else if (err instanceof Error) {
+        return res.status(500).json({ success: false, message: `파일 업로드 오류: ${err}` });
+    }
+    next();
+});
+
 const port = process.env.s_port || 3000;
 app.listen(port, '0.0.0.0', () => {
-  console.log(`\n서버 시작: http://localhost:${port}`);
-  console.log(`Swagger UI: http://localhost:${port}/api-docs`);
+    console.log(`\n서버 시작: http://localhost:${port}`);
+    console.log(`Swagger UI: http://localhost:${port}/api-docs`);
 });
