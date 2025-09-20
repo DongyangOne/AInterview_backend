@@ -191,6 +191,25 @@ WHERE
     });
 };
 
+// 가장 최근의 피드백 한개를 조회
+const findPreviousFeedback = ({ userId, feedbackId }, callback) => {
+  const sql = `
+    SELECT a.pose, a.confidence, a.facial, a.risk_response, a.tone, a.understanding
+    FROM feedback f
+    LEFT JOIN analysis a ON f.feedback_id = a.feedback_id
+    WHERE f.userId = ? AND f.feedback_id < ?
+    ORDER BY f.created_at DESC
+    LIMIT 1
+  `;
+  db.query(sql, [userId, feedbackId], (err, rows) => {
+    if (err) return callback(err, null);
+    callback(null, rows[0] || null); //피드백이 없을 경우
+  });
+};
+
+
+
+
 //backend-26 피드백 생성
 const createFeedback = (data, callback) => {
   
@@ -264,5 +283,6 @@ module.exports = {
     deleteById,
     findById,
     createFeedback,
-    updateFeedback
+    updateFeedback,
+    findPreviousFeedback
 };
