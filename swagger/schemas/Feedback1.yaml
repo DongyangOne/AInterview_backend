@@ -112,6 +112,11 @@ FeedbackDetail:
       minimum: 0   
       maximum: 100
 
+    mostImproved:
+      type: string
+      nullable: true
+      description: 이전 피드백 데이터를 비교하여 가장 많이 향상된 항목을 표시합니다
+      example: "confidence(예시)"
     
 
 # 피드백 리스트 응답 스키마
