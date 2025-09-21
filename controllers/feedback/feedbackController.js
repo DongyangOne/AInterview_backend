@@ -347,6 +347,7 @@ success: true,
 
 //backend-14
 const feedbackModel = require('../../models/feedback/feedbackModel');
+const { findPreviousFeedback } = feedbackModel;
 
 
 const formatDate2 = (date) => {
@@ -374,6 +375,30 @@ const getFeedbackDetail = (req, res) => {
       return res.status(404).json({ success: false, message: '해당 피드백을 찾을 수 없습니다.' });
     }
 
+    findPreviousFeedback({ userId, feedbackId }, (err2, previous) => {
+      if (err2) {
+        logSimple('피드백 비교 실패', 500);
+        return res.status(500).json({ success: false, message: '이전 피드백 조회 중 오류', error: err2.message });
+      }
+
+      let mostImproved = null;
+
+      if (previous) {
+        const keys = ['pose', 'confidence', 'facial', 'risk_response', 'tone', 'understanding'];
+        let maxDiff = -Infinity;
+
+        keys.forEach((key) => {
+          const prev = previous[key] ?? 0;
+          const curr = feedback[key] ?? 0;
+          const diff = curr - prev;
+
+          if (diff > maxDiff) {
+            maxDiff = diff;
+            mostImproved = key;
+          }
+        });
+      }
+
     logSimple('피드백 상세 조회', 200);
     res.status(200).json({
       success: true,
@@ -381,8 +406,10 @@ const getFeedbackDetail = (req, res) => {
       data: {
         ...feedback,
         created_at: formatDate2(feedback.created_at)
+        ,mostImproved: mostImproved || null
       }
     });
+  });
   });
 };
 
@@ -423,6 +450,7 @@ const createNewFeedback = (req, res) => {
       return res.status(400).json({ success: false, message: '그래프 점수는 0에서 100 사이의 숫자여야 합니다.' });
     }
   }
+
 
   createFeedback(feedbackData, (err, result) => {
     if (err) {
