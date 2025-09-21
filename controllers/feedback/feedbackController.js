@@ -381,7 +381,7 @@ const getFeedbackDetail = (req, res) => {
         return res.status(500).json({ success: false, message: '이전 피드백 조회 중 오류', error: err2.message });
       }
 
-      let mostImproved = null;
+      let mostImproved = [];
 
       if (previous) {
         const keys = ['pose', 'confidence', 'facial', 'risk_response', 'tone', 'understanding'];
@@ -394,7 +394,9 @@ const getFeedbackDetail = (req, res) => {
 
           if (diff > maxDiff) {
             maxDiff = diff;
-            mostImproved = key;
+            mostImproved = [key];
+          } else if (diff === maxDiff) {
+            mostImproved.push(key);
           }
         });
       }
@@ -405,8 +407,8 @@ const getFeedbackDetail = (req, res) => {
       message: '피드백 상세 조회 성공',
       data: {
         ...feedback,
-        created_at: formatDate2(feedback.created_at)
-        ,mostImproved: mostImproved || null
+        created_at: formatDate2(feedback.created_at),
+        mostImproved: mostImproved.length > 0 ? mostImproved : null
       }
     });
   });
