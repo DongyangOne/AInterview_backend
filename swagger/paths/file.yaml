@@ -1,49 +1,58 @@
 /file/upload:
-    post:
-        tags:
-            - file
-        summary: 파일 업로드
-        description: 이미지, 동영상 등 파일을 업로드합니다.
-        operationId: uploadFile
-        requestBody:
-            required: true
-            content:
-                multipart/form-data:
-                    schema:
-                        type: object
-                        properties:
-                            file1:
-                                type: array
-                                items:
-                                    type: string
-                                    format: binary
-                                description: 업로드할 파일 (최대 10개)
-        responses:
-            '200':
-                description: 파일 업로드 성공
-                content:
-                    application/json:
-                        schema:
-                            $ref: '../schemas/file.yaml#/UploadFileSuccessResponse'
-            '400':
-                description: 파일 형식 또는 크기 오류
-                content:
-                    application/json:
-                        schema:
-                            allOf:
-                                - $ref: '../schemas/base.yaml#/ErrorResponse'
-                                - type: object
-                                  properties:
-                                      message:
-                                          example: '허용되지 않는 파일 형식입니다.'
-            '500':
-                description: 서버 오류
-                content:
-                    application/json:
-                        schema:
-                            allOf:
-                                - $ref: '../schemas/base.yaml#/ErrorResponse'
-                                - type: object
-                                  properties:
-                                      message:
-                                          example: '파일 업로드 중 오류가 발생했습니다.'
+  post:
+    tags:
+      - file
+    summary: 파일 업로드
+    description: 이미지, 동영상 등 파일을 업로드합니다.
+    operationId: uploadFile
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: integer
+                description: 사용자의 ID
+              feedbackId:
+                type: integer
+                description: 분석 진행할 피드백 ID
+              file1:
+                type: array
+                items:
+                  type: string
+                  format: binary
+                description: 업로드할 파일 (최대 10개)
+            required:
+              - feedbackId
+              - file1
+    responses:
+      "200":
+        description: 파일 업로드 성공
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/file.yaml#/UploadFileSuccessResponse"
+      "400":
+        description: 파일 형식 또는 크기 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "../schemas/base.yaml#/ErrorResponse"
+                - type: object
+                  properties:
+                    message:
+                      example: "허용되지 않는 파일 형식입니다."
+      "500":
+        description: 서버 오류
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "../schemas/base.yaml#/ErrorResponse"
+                - type: object
+                  properties:
+                    message:
+                      example: "파일 업로드 중 오류가 발생했습니다."
