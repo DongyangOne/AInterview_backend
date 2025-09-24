@@ -78,14 +78,14 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
   // DB API에서 요구하는 형태에 맞춰 JSON 생성
   const payload = {
     userId,
-    good: "빈 컨텐츠",
-    bad: "빈 컨텐츠",
-    content: "빈 컨텐츠",
+    good: analysisResult.good,
+    bad: analysisResult.bad,
+    content: analysisResult.content,
     pose: analysisResult.pose,
-    confidence: 30,
+    confidence: analysisResult.confidence,
     facial: analysisResult.facial,
-    risk_response: 30,
-    tone: 30,
+    risk_response: analysisResult.risk_response,
+    tone: analysisResult.tone,
     understanding: analysisResult.understanding,
   };
 
