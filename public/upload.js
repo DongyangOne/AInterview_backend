@@ -74,6 +74,7 @@ async function callPythonAnalyze(feedbackId, filePath) {
 async function callUpdateFeedback(feedbackId, userId, analysisResult) {
   // DB API에서 요구하는 형태에 맞춰 JSON 생성
   const payload = {
+    feedbackId,
     userId,
     good: analysisResult.good,
     bad: analysisResult.bad,
@@ -86,7 +87,7 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
     understanding: analysisResult.understanding,
   };
 
-  return updateFeedback(feedbackId, payload);
+  return updateFeedback(payload);
 }
 
 function handleFile(req, res) {
