@@ -3,6 +3,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const fetch = require("node-fetch"); // Python API 호출용
+const { updateFeedback } = require("../models/feedback/feedbackModel");
 
 const router = express.Router();
 
@@ -89,23 +90,21 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
     understanding: analysisResult.understanding,
   };
 
-  const baseUrl = process.env.API_BASE_URL;
+  return updateFeedback(feedbackId, payload);
 
-  console.log(baseUrl);
+  // const res = await fetch(`${baseUrl}/feedback/${feedbackId}/content`, {
+  //   method: "PATCH",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(payload),
+  // });
 
-  const res = await fetch(`${baseUrl}/feedback/${feedbackId}/content`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  // if (!res.ok) {
+  //   throw new Error(`feedback api 호출 에러 : ${res.status} ${res.statusText}`);
+  // }
 
-  if (!res.ok) {
-    throw new Error(`feedback api 호출 에러 : ${res.status} ${res.statusText}`);
-  }
-
-  return res.json();
+  // return res.json();
 }
 
 function handleFile(req, res) {

@@ -47,6 +47,5 @@ app.use("/notice", noticeRouter);
 
 const port = process.env.s_port || 3000;
 app.listen(port, "0.0.0.0", () => {
-  console.log(`\n서버 시작: http://localhost:${port}`);
   console.log(`Swagger UI: http://localhost:${port}/api-docs`);
 });
