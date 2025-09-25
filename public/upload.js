@@ -3,6 +3,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const fetch = require("node-fetch"); // Python API 호출용
+const { updateFeedback } = require("../models/feedback/feedbackModel");
 
 const router = express.Router();
 
@@ -89,23 +90,7 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
     understanding: analysisResult.understanding,
   };
 
-  const baseUrl = process.env.API_BASE_URL;
-  const res = await fetch(`${baseUrl}/feedback/${feedbackId}/content`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const text = await res.text(); // ← 응답 메시지 확인
-    throw new Error(
-      `Feedback 수정 API 오류: ${res.status} ${res.statusText} - ${text}`
-    );
-  }
-
-  return res.json();
+  return updateFeedback(feedbackId, payload);
 }
 
 function handleFile(req, res) {
