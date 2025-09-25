@@ -91,20 +91,6 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
   };
 
   return updateFeedback(feedbackId, payload);
-
-  // const res = await fetch(`${baseUrl}/feedback/${feedbackId}/content`, {
-  //   method: "PATCH",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(payload),
-  // });
-
-  // if (!res.ok) {
-  //   throw new Error(`feedback api 호출 에러 : ${res.status} ${res.statusText}`);
-  // }
-
-  // return res.json();
 }
 
 function handleFile(req, res) {
