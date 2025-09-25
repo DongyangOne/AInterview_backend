@@ -94,7 +94,7 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
 }
 
 function handleFile(req, res) {
-  const { file1 } = req.files;
+  const { file1 } = req.file;
   const { name } = req.body;
 
   console.log("body 데이터: ", name);
@@ -118,60 +118,52 @@ function handleFile(req, res) {
   res.status(200).json({ success: true, message: "file upload success" });
 }
 
-router.post(
-  "/upload",
-  upload.fields([{ name: "file1", maxCount: 10 }]),
-  async (req, res) => {
-    try {
-      const { file1 } = req.files;
-      const feedbackId = parseInt(req.body.feedbackId, 10);
-      const userId = parseInt(req.body.userId, 10);
+router.post("/upload", upload.single("file1"), async (req, res) => {
+  try {
+    const file = req.file;
+    const feedbackId = parseInt(req.body.feedbackId, 10);
+    const userId = parseInt(req.body.userId, 10);
 
-      if (Number.isNaN(feedbackId)) {
-        return res
-          .status(400)
-          .json({ success: false, message: "feedbackId는 숫자여야 합니다." });
-      }
-
-      if (!feedbackId || !file1 || file1.length < 1) {
-        return res
-          .status(400)
-          .json({ success: false, message: "feedbackId와 파일이 필요합니다." });
-      }
-
-      const files = file1.map((f) => f.path);
-
-      console.log(
-        `업로드 완료: feedbackId=${feedbackId}, 파일 개수=${files.length}`
-      );
-
-      // Python API 호출
-      const analysisResult = await callPythonAnalyze(feedbackId, files);
-      console.log("분석 결과 : ", analysisResult);
-
-      // 분석 결과 피드백 본문 수정 API를 사용해 수정
-      const updateResult = await callUpdateFeedback(
-        feedbackId,
-        userId,
-        analysisResult
-      );
-
-      return res.status(200).json({
-        success: true,
-        message: "파일 업로드 및 분석/DB 업데이트 성공",
-        analysis: analysisResult,
-        update: updateResult,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        success: false,
-        message: "업로드/분석 처리 중 오류 : ",
-        error,
-      });
+    if (Number.isNaN(feedbackId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "feedbackId는 숫자여야 합니다." });
     }
+
+    if (!feedbackId || !file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "feedbackId와 파일이 필요합니다." });
+    }
+
+    console.log(`업로드 완료: feedbackId=${feedbackId}`);
+
+    // Python API 호출
+    const analysisResult = await callPythonAnalyze(feedbackId, file.path);
+    console.log("분석 결과 : ", analysisResult);
+
+    // 분석 결과 피드백 본문 수정 API를 사용해 수정
+    const updateResult = await callUpdateFeedback(
+      feedbackId,
+      userId,
+      analysisResult
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "파일 업로드 및 분석/DB 업데이트 성공",
+      analysis: analysisResult,
+      update: updateResult,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "업로드/분석 처리 중 오류 : ",
+      error,
+    });
   }
-);
+});
 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

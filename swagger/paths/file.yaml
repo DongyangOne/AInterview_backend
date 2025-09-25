@@ -19,11 +19,9 @@
                 type: integer
                 description: 분석 진행할 피드백 ID
               file1:
-                type: array
-                items:
-                  type: string
-                  format: binary
-                description: 업로드할 파일 (최대 10개)
+                type: string
+                format: binary
+                description: 업로드할 파일 (1개 기준)
             required:
               - feedbackId
               - file1
