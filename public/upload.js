@@ -53,13 +53,10 @@ const upload = multer({
 });
 
 //Python 분석 API 호출
-async function callPythonAnalyze(feedbackId, files) {
+async function callPythonAnalyze(feedbackId, filePath) {
   const formData = new (require("form-data"))();
   formData.append("feedbackId", feedbackId);
-
-  files.forEach((filePath, idx) => {
-    formData.append("videos", fs.createReadStream(filePath));
-  });
+  formData.append("videos", fs.createReadStream(filePath));
 
   const res = await fetch("http://127.0.0.1:8000/analyze", {
     method: "POST",
