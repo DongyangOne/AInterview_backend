@@ -90,6 +90,9 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
   };
 
   const baseUrl = process.env.API_BASE_URL;
+
+  console.log(baseUrl);
+
   const res = await fetch(`${baseUrl}/feedback/${feedbackId}/content`, {
     method: "PATCH",
     headers: {
@@ -99,10 +102,7 @@ async function callUpdateFeedback(feedbackId, userId, analysisResult) {
   });
 
   if (!res.ok) {
-    const text = await res.text(); // ← 응답 메시지 확인
-    throw new Error(
-      `Feedback 수정 API 오류: ${res.status} ${res.statusText} - ${text}`
-    );
+    throw new Error(`feedback api 호출 에러 : ${res.status} ${res.statusText}`);
   }
 
   return res.json();
